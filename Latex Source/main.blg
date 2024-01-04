@@ -1,0 +1,56 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: ieeetr.bst
+Database file #1: src/bib.bib
+"{" immediately follows a field part---line 235 of file src/bib.bib
+ :  doi = \url
+ :            {https://doi.org/10.1016/j.cor.2016.04.022},
+I'm skipping whatever remains of this entry
+Warning--entry type for "dlr-nemo-bili" isn't style-file defined
+--line 414 of file src/bib.bib
+Warning--empty author in VASCO2016118
+Warning--can't use both author and editor fields in doi:10.1137/1.9780898718515
+Warning--empty publisher in inbook_twvrp
+You've used 34 entries,
+            1876 wiz_defined-function locations,
+            687 strings with 9879 characters,
+and the built_in function-call counts, 9526 in all, are:
+= -- 975
+> -- 342
+< -- 0
++ -- 128
+- -- 94
+* -- 648
+:= -- 1320
+add.period$ -- 41
+call.type$ -- 34
+change.case$ -- 33
+chr.to.int$ -- 0
+cite$ -- 37
+duplicate$ -- 504
+empty$ -- 876
+format.name$ -- 94
+if$ -- 2376
+int.to.chr$ -- 0
+int.to.str$ -- 34
+missing$ -- 32
+newline$ -- 112
+num.names$ -- 33
+pop$ -- 89
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 376
+stack$ -- 0
+substring$ -- 640
+swap$ -- 235
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 3
+while$ -- 88
+width$ -- 36
+write$ -- 345
+(There was 1 error message)

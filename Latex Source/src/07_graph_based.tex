@@ -1,0 +1,352 @@
+\chapter{Time-invariant Approach}
+This chapter focuses on tackling dispatching, routing and rebalancing problems for an AToD system. First, a time-invariant vehicle-centric model for the transportation network is developed. The model presented in this document expands upon the one formulated in \cite{project_thesis}, using graph theory and a vehicle-centric approach to provide flexibility in handling different vehicle capacities and types. Additionally, this model addresses the combination of mobility of people with goods transportation, allowing for a more comprehensive analysis of transportation networks. This model will then be used to formulate and solve the aforementioned problems in a real-time fashion. Finally, the proposed formualtin is evaluated on a ficticious use-case. 
+\section{Vehicle-centric Model}\label{sec:vc_model}
+The model provided in this section will expand the model formulated in \cite{project_thesis}. It is worth noting that, although the model presented in \cite{project_thesis} is specific for the scenario described in previous sections of the same work, it can be expanded to cover more general use cases. \\
+It follows that the transportation network will be modeled using graph theory. Most of the literature makes use of (Eulerian) fluid-dynamic models (\cite{amod_review}), i.e. customers and AVs are represented as (non-integer) flow between nodes, in this work,
+this model will be used in addition to a vehicle-centric approach, where customers and AVs will be modeled individuall. Contrary to the solutions proposed by most of the literature, this work combines mobility of people with goods transportation, therefore modeling vehicles individually will provided the required flexibility to handle different capacities and the increased complexity given by the plethora and variety of vehicles, as we will see later in this section. The set of vehicles will be refered to as $\mathcal{A}$. \\ 
+As previously stated, let $\mathcal{G} = \langle \mathcal{V}, \mathcal{E} \rangle$ being the directed graph representing corresponding transportation network of the  city in question, where $\mathcal{V}$ is the set of vertices and $\mathcal{E} \subseteq \mathcal{V} \times \mathcal{V}$ is the set of edges. Any vertex, or node,  $ v \in  \mathcal{V}$ represents a location. Following the notation in \cite{project_thesis}, each node consists of an area of interests. For the context of this paper, the two terms will be used intercheangeably, as they ultimately indicate the same thing. An edge $\langle v_i, v_j \rangle \in \mathcal{E}$ represents a connection, which can consist of a road or a combination of those, linking $v_i$ to $v_j$. The level of abstraction is decided by the engineer and can be used to regulate the granularity of the model. Locations $v_i$ and $v_j$ can indicate low level key points, such as cross roads or trafficated traffic lights, as well as higher level areas such as residental areas or leisure centers. Similarly, an edge can contain multiple crossroads or joints or simply indicating a path from $v_i$ to $v_j$, regardless of additional details. A correct granularity is not trivial to decide a priori and a general approach is likewise hard to delineate.  Determining the level of abstraction remains, therefore, an engineer's prerogative and highly depends on the system in question. It is also worth noting that the, for conveniency and to better reflect the situation in real world applications, the graph is not a bidirect graph. To model a two-way road, one should simply make use of two edges from locations $v_i$ and $v_j$. \\
+As also described in \cite{project_thesis}, each edge is associated with multiple metrics and information. \\
+Firstly, at each edge one must attribute a travel time $T$. $T$ is a function $T: \mathcal{E} \times \mathcal{A} \rightarrow \mathbb{R}_{> 0}$, which at each given a vehicle and edge maps a float value $T_{i,j}^a \in \mathbb{R}_{\geq 0}$ indicating the time required for the  vehicle of type $a$ to travel the path from $v_i$ to $v_j$. In this work, the unit of  $T_{i.j}^a$ is of particular interest, as it depends on the application. \\
+Secondly, each edge is also associated with a distance $d: \mathcal{E} \rightarrow \mathbb{R}_{\geq 0}$, which maps an edge to a float value $d_{i,j}$ indicating the distance from $v_i$ to $v_j$. \\
+Another factor which is considered in this work, as stated above, is pollution. This metric is associated to each edge and is a function 
+$f: \mathcal{E} \times \mathcal{A} \rightarrow \mathbb{R}_{\geq 0}$. To simplify the discussion for this work, $f$ is assumed to produce a certain value refered to as pollution index. In other words, it is not supposed to represent a measurable element, such as $\text{CO}_2$ emissions, but rather a value which can represent multiple quantitative factors and is higher if the combination of path and vehicle type is highly polluting. While it can be argued that the pollution can also be simply a function of $d$ and $T$, this abstraction does not account for other elements, such as road type, vehicle fuel and road slope. The index $f$, therefore, is a mathematical abstraction which allows a more flexible model for the system. To use this abstraction, however, each edge must include additional information, including the one mentioned before. \\
+Similarly to what observed by \citepaperofs{congestion_vrp_phd_graph}{Zhang}, we can introduce the concept of congestions in the model by constraining the routing by the capacity of each road. In other words, we can associate each edge with a capacity $c: \mathcal{E} \rightarrow \mathbb{N}_{> 0}$ indicating the limit in terms of car occupancy above which the traffic in that edge slows down eventually reaching a congestion. As pointed out in \cite{congestion_vrp_phd_graph}, this semplified model is adequate in this context as well as the aim of this work focusing solely on the control of vehicles to prevent congestion rather than analyzing their behavior in congested network. While it is understood that congestions behave differently in real world scenarios and other, more sophisticated approaches exist (\cite{lindsey1999congestion}, \cite{verhoef1999time}), for the sake of simplicity, we will assume $T_{ija} = \infty $ if the number of vehicles in that edge from  $\langle v_i, v_j \rangle$ to be larger than the capacity $c_{ij}$.\\
+In addition, each edge $\langle v_i, v_j \rangle$ will also include information regarding traffic limitations, i.e. whether a vehicle type is allowed or not to travel that link. Intuitively, limitations will be represented as a function $s: \mathcal{E} \times \mathcal{A} \rightarrow\{0,1\}$, where $1$ implies the vehicle can traver that edge. Following the example in \cite{project_thesis}, limitations can be because of various factors, like for e.g. weight or height. For this reason, it is convenient to abstract away such details and just indicate wether a link is can be traversed or not. Notably, one could use this representation to transform a bidirect graph $G'$ to be equivalent to $G$ by letting $s(e,a) = 0$ for any one-way road $e = \langle v_i, v_j \rangle$ for all $a \in \mathcal{A}$. For convenience, this function will be incorporated in the definition of the capacity, updating it to become \equaref{eq:capacity}. 
+\begin{equation}
+	c(e = \langle v_i, v_j \rangle) = 
+	\begin{cases}
+		0 & \text{if } s(e) = 0 \\
+		c(e) & \text{otherwise}
+	\end{cases}
+	\label{eq:capacity}
+\end{equation}
+Following the discussion above, this is equivalent to setting $T_{ija} = \infty$ for all $a \in \mathcal{A}$ according to this model specifications. In this way, we can treat the road as being unaccessible without increasing the number of conditions and decrease the redeability of the model. \\
+As mentioned above, the set of autonomous vehicles is indicated as $\mathcal{A}$ and each vehicle will be modeled as a tuple $\langle \underline{s_a},\bar{t_a}, S_a, Q_a, I^b_a, R^-_a, R^+_a, \theta_a, B_a(t),\mathcal{R}_a, \mathcal{T}_a \rangle$. $\underline{s_a}\in \mathcal{E} \text{ and } \bar{t_a}\in \mathcal{E}$ are the starting and terminal node respectively; $Q_a \in \mathbb{R}_{>0}$ will be used to indicate battery capacity and charing rate and discharging rate will be represented as  $R^+_a \in \mathbb{R}_{>0}\text{ and } R^-_a\in \mathbb{R}_{>0}$ respectively; $\theta_a \in [0,1]$ is used to model the battery breakpoint and $B_a(t)\in \mathbb{R}_{\ge0}$ is the state of charge at time $t$; $\mathcal{R}_a$ is the set of requests assigned to vehicle $a$ and $\mathcal{T}_a$ is the type. For a more detailed understanding of the vehicle type, the reader is encouraged to analyze the discussion in \cite{project_thesis}. For the purpose of this work, the vehicle type will be understood as a tuple $\langle P_a, G_a, C_a, F_a \rangle$, where , $G_a \in \mathbb{R}_{\ge0}$ and $P_a \in \mathbb{R}_{\ge0}$
+are the goods and people capacity and $C_a \in \mathbb{R}_{>0}$ and $F_a \in \mathbb{R}_{>0}$ indicate operational cost and pollution factor respectively. Furthermore, each set of assigned requests $\mathcal{R}_a$ is a subset of the set of all requests in the systems, i.e. $\mathcal{R}_a \subseteq\mathcal{R}$. For the purpose of this model, we will assume each request assignment to be unique, i.e. $\mathcal{R}_a \neq \mathcal{R}_b \text{ and } \mathcal{R}_a \subseteq \mathcal{R} \setminus \mathcal{R}_b,  \text{ for all } (a,b) \in \mathcal{A} \text{ with } a\neq b$. \\
+The battery will be modeled according to the two operating mode, i.e. charging and discharging. While it is understood that these two operations are highly influenced by multiple factors, it is sensible to make assumptions in order to simplify the model. 
+As it is also widely spread in industry, one can neglet the influence of external factors such as weather condition or intrinsic characteristics of the battery, such as temperature or age. The charging profile will be modelled taking inspiration from the model proposed by \citepaperofs{lee2020model}{Lee}. As mentioned above, the vehicles have a charging rate, a battery capacity and a breakpoint, namely $R^+_a, Q_a \text{ and } \theta_a$ respectively. The state of charge at time $t \in \mathbb{R}_{\ge0}$ of a certain vehicle will be obtained according to the model described in \equaref{eq:cc_cv}, which is derived from the CC-CV (Constant current - Constant Voltage ) scheme. (A more complete explenation can be found in \cite{LIU2020101342}).%$B :\mathbb{R}_{\ge 0} \times \mathcal{A}  \rightarrow \mathbb{R}_{\ge0}$
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width =12.5cm]{assets/img/07_graph_based/R_theta_combinations.png}
+	\caption[Different Charging Profiles According To The Model]
+	{Different charging profile obtained according to the model developed in \equaref{eq:cc_cv}. B is the State of Charge in Percentage, while $i(t)$ in function of the time unit $t$. The battery have $Q = 100$ %and the breakpoint is calculated as $b = \dfrac{Q\theta}{R^+}$  
+	}
+	\label{fig:charging_profiles}
+\end{figure}
+\begin{equation}
+	B_a(t+1) = 
+	\begin{cases} 
+		%0 & \text{if } t+1 \leq 0 \\
+		%B(t)_a + \int_{t}^{t+1} i(t)dt & \quad \text{if } t \leq  b_a\\
+		B(t)_a + R^+_a & \quad \text{if } t \leq  b_a\\
+		\\
+		%R^+_a e^{-t+b_a} %& \text{else}
+		Q_a - \dfrac{Q_ai(t)(1-\theta_a)}{R^+_a}
+		\end{cases}
+		\label{eq:cc_cv}
+\end{equation}
+
+with $b_a = \dfrac{\theta_a Q_a}{R^+_a}$,  $i(t)= \begin{cases} R^+_a \quad \text{if } t \leq  b_a\\
+	R^+_a e^{-(t-b_a)/\tau}\\ \end{cases}$ and $\tau \in \mathbb{R}_{\ge0}$ being the time constant, representing how quickly the current decreases. \\
+	An example of the charging profiles from this model can be seen in \figref{fig:charging_profiles}. 
+	 Since $i(t)$ is assumed to be constant at time $t\leq b_a$, i.e. $i(t) = R^+_a$,the first condition is derived as follows. 
+\begin{align*}
+	B_a(t+\alpha) &= B_a(t) + \int_{t}^{t+\alpha}R^+_adt\\
+	B_a(t+\alpha) &= B_a(t) +R^+_a \int_{t}^{t+\alpha}dt\\
+	B_a(t+\alpha) &= B_a(t) +R^+_a \quad t \bigg|_{t}^{t+\alpha}\\
+	B_a(t+\alpha) &= B_a(t) +R^+_a (t+\alpha - t)\\
+	B_a(t+\alpha) &= B_a(t) +\alpha R^+_a\\
+\end{align*}
+with $\alpha = 1$. \\
+The discharging, on the other hand, will be modeled as it being directly proportional to the travel time $T$, as described in \equaref{eq:discharging}. 
+%\begin{equation}
+%	B_a(t+1) = B(t)_a - R^-_a ( \gamma d_a + (1-\gamma)T_a)
+%	\label{eq:discharging}
+%\end{equation} 
+%where $\gamma \in [0,1]$. \\
+\begin{equation}
+	B_a(t+T_{u,v}^a) = B(t)_a - R^-_a T_{u,v}^a
+	\label{eq:discharging}
+\end{equation} 
+The equation describes the relationship between the initial and final battery levels on edge $\langle v_u, v_v \rangle$ during the transit. Following \equaref{eq:discharging}, one can assign to each edge a rate of battery discharge by defining it as the difference between the state of charge at time $t$ and at time $t+T_{u,v}^a$. \\
+\begin{equation}
+	 D^a_{u,v} = B(t)_a - B_a(t+T_{u,v}^a) =  R^-_a T_{u,v}^a
+	\label{eq:discharging_rate_per_edge}
+\end{equation} 
+\equaref{eq:discharging_rate_per_edge} allows to describe the discharging rate as a function of only the edge and the vehicle. \\
+In terms of operational costs, multiple factors should be considered and the analysis must be extended from the one developed in \cite{project_thesis}, where the operational cost was only in function of the vehicle type. Similarly to the aforementioned work, this model assumes a certain operational cost depending on the vehicle type, however the discussion is also extended in terms of vehicle charging cost. In other words, we can decouple it from the general concept of the operational cost per vehicle and considering in function of the charging or discharging profiles described above. Furthermore, it also makes sense to assign the cost also depending on the distance traveled, i.e. the value $d$ associated to the edges. \\
+Compared to \cite{project_thesis}, in this work, the model also extends the information associated to the nodes. Nodes will be of three categories namely \textup{(i)} normal nodes, \textup{(ii)} charging stations and \textup{(iii)} depots, whose sets are denoted as $\mathcal{V}_n$, $\mathcal{V}_c$, $\mathcal{V}_d$, respectively. We can, therefore, conclude that $\mathcal{V} = \mathcal{V}_n \cup \mathcal{V}_c \cup \mathcal{V}_d $. The information associated to the nodes depend from the category each node belongs to. Nodes belonging to $\mathcal{V}_n$ do not possess any specific information, as they are not of high importance for this work. Charging nodes $\mathcal{V}_c$ and depots $\mathcal{V}_d$, on the other hand, have in common the vehicle capacity they can host: charging nodes can only host as many vehicle as charging stations available, while depots can only station as many vehicles as the number of free parking places. Additionally, charging nodes are assumed to have all the same models of charging stations. For simplicity, only three types will be considered, i.e. fast, normal and slow charging, which will be based on the model in \equaref{eq:cc_cv}. The choice of parameters is explained in \tabref{tab:charging_stations}	
+\begin{table}[th]
+	\centering
+\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|  }
+	\hline
+	Charging station& $R^+$&$\theta$ \\
+	\hline
+	Slow & 1 &0.6 \\
+	Medium & 1   & 0.8 \\
+	Fast &2 & 0.8 \\
+	\hline
+\end{tabular}
+	\caption[Parameters choice for the Chargin Stations]{Choice of parameters for the charging stations according to the type. For the charging profile, please refer to \figref{fig:charging_profiles}}
+	\label{tab:charging_stations}	
+\end{table}\\
+
+Requests are modeled as tuples $\langle \underline{s'},\bar{t'}, Q', P',\lambda, a', b'\rangle$, where  $\underline{s'} \in \mathcal{E},\bar{t'} \in \mathcal{E}$ represent the pickup and delivery point respectively; $G'\in \mathbb{R}_{\ge0}$ ($P'\in \mathbb{R}_{\ge0}$) refers to the amount of goods (people) required to transport,  and $\lambda \in \mathbb{R}_{>0}$ is the rate of requests, in customers per unit time, which, therefore, makes the requests stationary and deterministic. Additionally, requests must be delivered within a time window within $[a',b']$. \\
+
+
+
+\subsection{Model Evalutation}
+Some comments are in order. The model in \secref{sec:vc_model} is time-invariant. According to the definition presented by \citepaperofs{amod_review}{Frazzoli}, time invariance in the context of transportation modeling refers to the assumption that the number of requests remain constant over time allowing for the simplification of temporal dynamics and treating specific time intervals as homogeneous units. This modeling concept is employed when the rate of change in transportation demands is deemed slow compared to the average travel time of individual trips, often observed in stable urban environments (\cite{neuburger1971}). While this model is indeed applied in a relatively dense urban environment, some integrations are required in order to adapt it to time-varying scenarios. Moreover, customer requests are also assumed to be known. This requirement can be fulfilled in practice with requests made in advance or some techniques to estimate requests throughout the day. It is important to note that request estimation might lead to suboptimal performance. \\
+Secondly, as already mentioned in the previous section, the model used to describe congestions is indeed rather simple and more complex formulation might better capture the phenomena. However, the semplification is considered powerful enough for the purpose of this work and, as pointed out by \citepaperofs{congestion_vrp_phd_graph}{Zhang} as well, more sophisticated models can be used offline using simulation techniques to derive the capacity metric used in this model.\\
+Some comments are in order also regarding vehicles. Firstly, we assume the vehicles to be autonomous and fault proof. It is outside of the scope of this work to deal malfunctioning vehicles or exceptional situations outside of the normale functioning regime of the system.Additionally, we assume the vehicles to be fully electric. This assumption is widely used in literature and it is motivated, among other aspects, also by the recent trends in industry to transition towards electrical mobility. Furthermore, the model provided for the battery charging and discharging profiles is rather simplistics and more sophisticated approaches exist in literature (see \chapref{ch:related_work} for more details). However, these models should be seen an addition to the corrent approach and, albeit with some potential modifications, it is plausible they can be integrated in the system model. \\
+While in \cite{project_thesis} vehicles have been designed to be capable of transporting a potentially large number of people, some considerations should be made in this regard. While it is sensitive to consider vehicles capable of transporting up to 50 people in terms of environmental, economical and overall transportation efficiency and while it is also expected that the model designed would work with those vehicles as well, in terms of practical use, it might be more appropriate to make use of those vehicles in different ways. Notably, it should be studied whether it is efficient to tailor the routes of those vehicles according to passenger needs. Firstly, if we do not consider ride-sharing possibilities, the scenario of such large group of people traveling together is very unlikely. Additionally, if we consider ride-sharing, the possible route combinations, which increases drastically as the number of requests and nodes in the graph increase, would likely make routing such vehicle relatively inefficient. Motivated also by the fact that passengers might have common stops, it might be more sensible to treat those vehicles as buses are treated nowadays, i.e. with a pre-determined route among stops which are placed according to the most common stops, such as hospitals or train stations. Similarly, if we consider large vehicles to transport goods, such as large trucks, those are not used for home delivery, but rather used to transport goods among specialized centers. It must be noted that both situations do not invalidate this work, or any previous work. It is clear that the system described in this work in combination to the truck for goods transportation. Regarding people mobility, while buses are indeed an already established and efficient transportation mean, this systems aims at filling up the situations where a bus system is indeed lacking, such as transportation of people with special needs or, in general, more tailored to the specific needs of potential customers. \\
+In this model, we also made certain assumptions on the nodes. First of all, we assumed the charging stations to be all of the same types. It might be argued that some stations might have different types of chargers. This characteristics can be reflected by the model simply by 'splitting' them. A station having, for instance, two types of chargers can be represented by two equivalent nodes in the graph having different category. Moreover, while in \tabref{tab:charging_stations} we only considered three modes, this can be easily extended. 
+
+
+\section{Problem Formulation}
+WE ASSUME THE CHARGE OF THE VEHICLE TO BE ENOUGH FOR ALL 
+REQUESTS, CHARGIN CAN ONLY BE DONE BEFORE REBALANCING, 
+THEREFORE WE ARE GOING TO LEAVE THIS PROBLEM TO ASSIGNMENT. 
+
+
+
+\subsection{Dispatching}
+
+\begin{figure}
+	\begin{subfigure}{0.5\linewidth}
+		\centering
+		\begin{tikzpicture}
+			% Nodes
+			\node[draw, circle] (A) at (0,0) {A};
+			\node[draw, circle] (B) at (2,0) {B};
+			\node[draw, circle] (C) at (2,2) {C};
+			\node[draw, circle] (D) at (0,2) {D};
+			\node[draw, circle] (E) at (1,4) {E};
+			
+			% Directed edges
+			\draw[->] (A) -- (B);
+			\draw[->, red] (A) -- (C) node[midway,above,sloped] {\includegraphics[width=0.5cm]{assets/img/07_graph_based/car.png} };
+			\draw[->] (B) -- (C);
+			\draw[->, red] (C) -- (D);
+			\draw[->] (D) -- (A);
+			\draw[->, black, dashed] ([yshift=2pt, xshift=-10]C.north) -- ([yshift=2pt, xshift=10pt]D.north);
+			\draw[->, blue] (D) -- (E)node[midway,above,sloped] {\includegraphics[width=0.5cm]{assets/img/07_graph_based/car.png} };
+			\draw[->, blue] (E) -- (C);
+		\end{tikzpicture}
+		\caption{}
+		\label{fig:req_assignable}
+	\end{subfigure}%
+	\begin{subfigure}{0.5\linewidth}
+		\centering
+		\begin{tikzpicture}
+			% Nodes (duplicated)
+			\node[draw, circle] (A) at (0,0) {A};
+			\node[draw, circle] (B) at (2,0) {B};
+			\node[draw, circle] (C) at (2,2) {C};
+			\node[draw, circle] (D) at (0,2) {D};
+			\node[draw, circle] (E) at (1,4) {E};
+			
+			% Directed edges (duplicated)
+			\draw[->] (A) -- (B);
+			\draw[->, red] (A) -- (C) node[midway,above,sloped] {\includegraphics[width=0.5cm]{assets/img/07_graph_based/car.png} };
+			\draw[->] (B) -- (C);
+			\draw[->, black, dashed] ([yshift=2pt, xshift=10]D.north) -- ([yshift=2pt, xshift=-10pt]C.north);
+			
+			\draw[->, red] (C) -- (D);
+			\draw[->] (D) -- (A);
+			\draw[->, blue] (D) -- (E)node[midway,above,sloped] {\includegraphics[width=0.5cm]{assets/img/07_graph_based/car.png} };
+			\draw[->, blue] (E) -- (C);
+		\end{tikzpicture}
+		\caption{}
+		\label{fig:req_notassignable}
+	\end{subfigure}
+	\caption[Example of a Sensible Request aAignment]{\figref{fig:req_assignable} and \figref{fig:req_notassignable} show a simplified example of a sensible request assignment. In red and blue are the paths the two AVs can traverse, while the dashed blue two different requests (In \figref{fig:req_assignable} the custoer asks to go from C to D, while in \figref{fig:req_notassignable} the customer asks to go from D to C). In the case of \figref{fig:req_assignable}, it is more sensible to assign the request to the red AV, while in the case of \figref{fig:req_notassignable}, the blue AV is a better choice. }
+	\label{fig:sens_assignment}
+\end{figure}
+
+Informally, the dispatching problem can be defined as the task of assigning requests to the most suitable vehicle. There exist already multiple solutions proposed for the problem and we refer to \chapref{ch:related_work} for a more thorough analysis. \\
+Dispatching is critical for the overall system performance and must be done in a way that can further facilitate the next steps. Clearly, dispatching can not be decoupled and solved as a stand-alone problem. For example, \figref{fig:sens_assignment} shows a simplified situation where a sensible dispatching, which depends on a posterior step, will improve system performance. Nevertheless, during the dispatching problem, some additional elements must be considered as well. \\
+Since the model proposed in \secref{sec:vc_model} is a vehicle centric model, we can model the dispatching problem with the help of a binary variable $x_{ar}$ defined in \equaref{eq:dispatching_var}. 
+\begin{equation*}
+	x_{a,r} = 
+	\begin{cases} 
+		%0 & \text{if } t+1 \leq 0 \\
+		%B(t)_a + \int_{t}^{t+1} i(t)dt & \quad \text{if } t \leq  b_a\\
+		1 & \quad \text{if $r$ is assigned to } a \in \mathcal{A}\\
+		\\
+		%R^+_a e^{-t+b_a} %& \text{else}
+		0
+	\end{cases}
+	\quad\quad \forall r \in \mathcal{R}
+	\label{eq:dispatching_var}
+\end{equation*}
+
+According to the model, each vehicle has a capacity which must not be exceeded. Such constraint can be expressed as follows for both people and goods. 
+\begin{align}
+	\sum_{r \in \mathcal{R}} P_r' \cdot x_{a,r} &\leq P_a \quad \forall a \in \mathcal{A}\label{eq:cons_quantity_p}\\
+	\sum_{r \in \mathcal{R}} G_r' \cdot x_{a,r} &\leq G_a \quad \forall a \in \mathcal{A}\label{eq:cons_quantity_g}
+\end{align}
+Furthermore, if a vehicle is already on the move, the request can be picked up only if the vehicle's charge is enough to satisfy such request as well. In this case, such requirement can be expressed as follows. 
+\begin{equation}
+	\sum_{r \in \mathcal{R}} e(\underline{s'_r}, \bar{t'_r}) x_{a,r}\leq B_a \quad \forall a \in \mathcal{A}\\
+	\label{eq:cons_charg}
+\end{equation}
+where $e: \mathcal{E} \times \mathcal{E} \rightarrow \mathbb{R}_{>0}$ is a function expressing the required energy to go from $\underline{s'_r}$ to $\bar{t'_r}$.\\
+Accordingly, using \equaref{eq:cons_quantity_p}, \ref{eq:cons_quantity_g}  and  \equaref{eq:cons_charg}, one can simply formulate it as an integer programming problem by finding the appropriate cost function to minimize, such as minimizing waiting times. Thanks to this formulation, one can also make sure that each request has been served at most once, i.e. \equaref{eq:req_served}. 
+\begin{equation}
+	\sum_{a \in \mathcal{A}} x_{a,r} \leq 1 \quad \forall r \in \mathcal{R}\\
+	\label{eq:req_served}
+\end{equation}
+Furthermore, we must ensure that each request must be assigned to only one vehicle. This is insured by \equaref{eq:req_served_per_vehicle}. 
+\begin{equation}
+	\sum_{r \in \mathcal{R}} x_{a,r} = 1 \quad \forall a \in \mathcal{A}\\
+	\label{eq:req_served_per_vehicle}
+\end{equation}
+The above mentioned equations are based upon the work presented by \citepaperofs{hyland2018dynamic}{Hyland}. \\
+This way allows to define the following cost function which expresses the number of served requests.
+\begin{equation}
+	\mathcal{J}_u = \sum_{r \in \mathcal{R}} (1  - \min_{a \in \mathcal{A}} (x_{a,r},1))\\
+	\label{eq:req_unserved}
+\end{equation}
+ The main strength of this approach is that can be integrated naturally in the formulation for the other steps, like for e.g. the one in \secref{sec:routing}. \\
+Alternatively, the dispatching problem can be solved independently without being integrated in other steps. For example, in \secref{ch:related_work}, some works are mentioned that make use of heuristics such as nearest neighbours. On the one hand,these approaches are known to obtain sub-optimal solutions for the problem; on the other hand, they provide flexibility and might result in less time or space complexity. \\
+
+
+\subsection{Routing}\label{sec:routing}
+After being assigned to incoming requests, vehicles must be routed in such a way that can reach all customers and therefore satisfy all the requests. In other words, the routing problem consists of determining paths, i.e. a series of edges, each vehicle must travel in the graph to fulfill the requests while respecting all the requirements and minimizing some metrics, i.e. a cost function. Since this problem can be reconduced to the
+vehicle routing problem, in particular dynamic pickup and delivery problems (reviewd by \citepaperofs{TothPVigoD2014}{Toth} and \citepaperofs{LaporteG2009}{Laporte}), the formulation used in this work will be based on this family of problems. \\
+Within our model, binary flow variables will be used to identify whether a vehicle should traverse a link. Formally, this can be expressed as 
+\begin{equation*}
+	V_{u,v}^a = 
+	\begin{cases} 
+		%0 & \text{if } t+1 \leq 0 \\
+		%B(t)_a + \int_{t}^{t+1} i(t)dt & \quad \text{if } t \leq  b_a\\
+		1 & \quad \text{if $a$ traverses } (u,v) \in \mathcal{E}\\
+		\\
+		%R^+_a e^{-t+b_a} %& \text{else}
+		0
+	\end{cases}
+	\quad\quad \forall a \in \mathcal{A}, \forall u,v \in \mathcal{V}
+	\label{eq:binary_edges}
+\end{equation*}
+Furthermore, another variable will be needed to deal with time-related requirements. This concept is based on the work in \cite{inbook_twvrp}. The decision variable $s_{u}^a$ indicates the service time of vehicle $a$ at node $u$. This  variable will be relevant only for nodes labeled as being terminal stations for the requests, i.e. $\underline{t'a}$ and will be irrelevant for other nodes. \\
+Accordingly, one can express the abovementioned cost function using this variable. Classical examples of cost functions are for e.g. travel time and travel distance. These are frequently used in literature (\cite{7579135}), as they are general, in a sense that many other metrics could be reconducted to them. For example, residual charging or operational costs are directly influenced by the two. Furthermore, the formualtion of the cost function derived from these metrics is rather trivial and intuitive, while at the same time producing desirable results in practice. The formulation is described in equation \equaref{eq:travel_time_routing} and \ref{eq:distance_time_routing}. \\
+\begin{align}
+	\mathcal{J}_T = \sum_{a \in \mathcal{A}} &\sum_{(u, v) \in \mathcal{E}} T^a_{ u,v} V^a_{u,v} \label{eq:travel_time_routing}\\
+	\mathcal{J}_d = \sum_{a \in \mathcal{A}} &\sum_{(u, v) \in \mathcal{E}} d_{ u,v} V^a_{u,v}\label{eq:distance_time_routing}
+\end{align} 
+Since we are trying to limit the environmental impact the AToD system will have, we can leverage the pollution index we described in previous sections and develop the cost function as described in \equaref{eq:pollution_metric}. 
+\begin{equation}
+	\mathcal{J}_f =\sum_{a \in \mathcal{A}} \sum_{(u, v) \in \mathcal{E}} f^a_{ u,v} V^a_{u,v} 
+	\label{eq:pollution_metric}
+\end{equation} 
+Up to this point, the metrics under consideration have been geared towards minimization. Put differently, the goal is to reduce travel, encompassing both distance and time, to enhance system performance. Likewise, minimizing environmental impact is crucial in this scenario. However, there are instances where maintaining certain metrics at higher levels is preferable. For instance, closely tied to operational costs and environmental impact, it is advantageous to keep the state of charge at its maximum. Hence, it is imperative to maximize the cost function in Equation \ref{eq:soc_metric}.
+\begin{equation}
+	\mathcal{J}_B =\sum_{a \in \mathcal{A}}  B_a 
+	\label{eq:soc_metric}
+\end{equation} 
+Finally, while it should also be explored whether the combination of those could improve the overall performance of the system. For this purpose, the cost functions can be combinated using weights as follows.  
+\begin{equation}
+	\mathcal{J}_{tot} = \lambda_T\mathcal{J}_T +\lambda_d\mathcal{J}d +\lambda_f\mathcal{J}_f +\lambda_B\mathcal{J}_B 
+	\label{eq:combined_metrics}
+\end{equation} \\
+
+Before formulating the routing problem formally, a small consideration must be made. For convenience, the set of nodes recheable from node $u$ by traversing a single edge $\mathcal{N}^+_u$, i.e. the outgoing neighbours of $u$, and $\mathcal{N}^-_u$ as the set of ingoing neighbours of $u$.\\ Additionally, just to ease the notation, we will indicate with $\underline{S_a'}$ as being the set containing all the initial stations of each request $r \in R_a$. Likewise,  will be the set of terminal stations of each request $r \in R_a$. \\
+
+\subsubsection*{Unconstrained Version}
+
+On a basic level, i.e. without constraints, one can formulate the \textit{Unconstrained Routing Problem (URP)} as follows. Given a transportation network $\mathcal{G}$, a set of vehicles $\mathcal{A}$ and a set of requests $\mathcal{R}$, defined within the description in section \secref{sec:vc_model}, solve:
+
+\begin{align}
+	\text{min}&  \text{
+	(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) or (\ref{eq:combined_metrics})
+	}\nonumber\\
+	\text{s.t.} &\nonumber\\
+&\sum_{u \in \mathcal{V}} V^a_{u, v} - \sum_{w \in \mathcal{V}} V^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus \{\underline{s_a}, \bar{t_a}\} \label{eq:flow_conservation_graph_u} \\
+&\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} = 1 \quad \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_u}\\
+&\sum_{u \in \mathcal{N}^+_{\bar{t_a}} } V^a_{u, \bar{t_a}} = 1 \quad \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u}\\
+%&\sum_{u \in \mathcal{V}} V^a_{u, v} - \sum_{w \in \mathcal{V}} V^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus ( \underline{S_a'} \cup \bar{T_a'})\label{eq:flow_conservation_graph2_u} \\
+&\sum_{u \in \mathcal{N}^+_{\underline{t'_a}} } V^a_{u, \bar{t'_a}} = 1 \quad \forall \bar{t'_a} \in \bar{T_a'}, \forall a \in \mathcal{A} 	\label{eq:flow_cons_arrival_graph_v_u}\\
+&\sum_{u \in \mathcal{N}^+_{\underline{s'_a}} } V^a_{u, \underline{s'_a}} = 1 \quad \forall \underline{s'_a} \in \underline{S_a'}, \forall a \in \mathcal{A}\label{eq:flow_cons_departure_graph_v_u} \\
+	\nonumber%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
+\end{align}
+(\ref{eq:flow_conservation_graph_u}) insures that for all edges which do not lead to a source or destination, if $a$ reaches $v$ from a road, an incoming flow will lead to an outgoing one. In other words, they guarantee connections between roads. (\ref{eq:flow_cons_arrival_graph_u}) -  (\ref{eq:flow_cons_departure_graph_u}) insure that each universal source and destination is reached ones. Similarly, (\ref{eq:flow_cons_arrival_graph_u}) -  (\ref{eq:flow_cons_departure_graph_v_u}) achieves the same result, but for each requests.  It should be mentioned that to guarantee that those special nodes are reached at most once one can simply change from equalities to inequalites, like for e.g. $\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} \ge 1$.\\
+ %Finally, (\ref{eq:s_before_t}) insures that source nodes are reached before the destinations. \\
+In order to find the minimum number of vehicles required, one can use the method described \citepaperof{project_thesis}{Brodo}. 
+\subsubsection*{Constrained Version}
+While it could bring some interesting insights, the URP does not contain the necessary information to provide efficient routing for the scenario considered in this work. The goal is to identify the best possible path that \textup{(i)} satisfies all the requests and \textup{ii} is congestion free. The \textit{Holistic Congestion-Free Routing Problem (HCRR)} is formally defined as follows.\\ Given a transportation network $\mathcal{G}$, a set of vehicles $\mathcal{A}$ and a set of requests $\mathcal{R}$, defined within the description in section \secref{sec:vc_model}, solve:
+
+\begin{align}
+	\text{min}&  \text{
+		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) or (\ref{eq:combined_metrics})
+	}\nonumber\\
+	\text{s.t.} &\nonumber\\
+	&\text{(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_v_u})}\nonumber\\
+	&\sum_{a \in \mathcal{A}}V^a_{u,v} \leq c_{u,v} \quad \forall (u,v) \in \mathcal{E} \label{eq:cong_free}\\
+	&V^a_{u,v}\cdot(s_{u}^a + T_{u,v}^a - s_{v}^a) \leq 0 \quad \forall (u,v) \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:relations_node_time}\\
+	&a'_v \leq s_{v}^a \leq b'_v \quad \forall v \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:time_window_constraint}\\
+	&\sum_{(u,v) \in \mathcal{E}}D^a_{u,v}\cdot V^a_{u,v} \leq B_a(0)\quad \forall a \in \mathcal{A} \label{eq:discharging_constraints}
+\end{align} 
+(\ref{eq:cong_free}) insures the number of vehicles in the link $(u,v)$ do not exceed the capacity of that link. (\ref{eq:relations_node_time}) establishes the relationship between the service time of each node, implying that the service time of a predecessor must be lower than the successor.  (\ref{eq:time_window_constraint}) establish the time window constraints, indicating that it must be within the interval of the request. For nodes which are not associated with a termination node of a  request, one will simply set $a_v' = 0 $ and $b_a' = \infty$, also insuring that $s_v^a \ge 0 $. (\ref{eq:discharging_constraints}) assures that the vehicle charge is enough to cover all path. $B_a(0)$ can be assumed to be 100, i.e. that the batteries are full at the beginning of service. \\
+\subsubsection*{Combination with Dispatching}
+Multiple solutions have already been proposed in literature which solve the dispatching and routing problem in the same work. \\
+In this work, however, in order to combine dispatching and routing into the same formulation, one must adapt some of the conditions specified in previous sections above. More specifically, each equation related to the requests must be changed to accomodate the fact that requests have not been previously assigned. \\
+Accordingly, the \textit{Holistic Routing and Dispatching Problem (HRDR)} can be formulated as 
+
+\begin{align}
+	\text{min}&  \text{
+		(\ref{eq:req_unserved}),
+		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) or (\ref{eq:combined_metrics})
+	}\nonumber\\
+	\text{s.t.} &\nonumber\\
+	&\text{(\ref{eq:cons_quantity_p}),(\ref{eq:cons_quantity_g})}\nonumber\\	
+	&\text{(\ref{eq:req_served}),(\ref{eq:req_served_per_vehicle})}\nonumber\\	
+	&\text{(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_u})}\nonumber\\
+	&\text{(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})}\nonumber\\
+	%&\sum_{u \in \mathcal{V}} V^a_{u, v} - \sum_{w \in \mathcal{V}} V^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus ( \underline{S_a'} \cup \bar{T_a'})\label{eq:flow_conservation_graph2_u} \\
+	&\sum_{u \in \mathcal{N}^+_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} \cdot x_{a,r}= 1 \quad  \bar{t'_r} \in r, \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:must_arrive_dep}	\\
+	&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{u, \underline{s'_r}} \cdot x_{a,r}= 1 \quad  \underline{s'_r} \in r, \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:must_go_start}\\
+	&x_{a,r}\cdot(s_{\underline{s'_r}}^a - s_{\bar{t'_r}}^a) \leq 0 \quad \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:pick_bef_del}\\
+	\nonumber
+	%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
+\end{align}
+(\ref{eq:must_arrive_dep}) guarantees that when a request $r$ is allocated to vehicle $a$, the vehicle must reach the terminal station of the request at least once. Similarly, equation (\ref{eq:must_go_start}) ensures that the vehicle traverses the starting station associated with the assigned request. Equation (\ref{eq:pick_bef_del}) serves the purpose of ensuring that the starting station is visited before the terminal station.
+\subsection{Rebalancing}
+In simpler terms, the rebalancing problem revolves around efficiently redistributing autonomous vehicles (AVs) to optimize their responsiveness to new ride requests while minimizing any existing imbalances in the system. The goal is to fine-tune the positioning of AVs, ensuring they are strategically placed to promptly meet user demands and address any inherent irregularities in the distribution of service requests. This challenge is particularly crucial in ride-sharing  systems and transportation systems alike, where the dynamic nature of user requests and varying demand across different locations can lead to imbalances in the fleet's distribution. Effectively tackling the rebalancing problem enhances the overall efficiency of the system, providing users with quicker response times and a more evenly distributed service, ultimately contributing to a smoother and more reliable autonomous transportation network. 
+\section{Real-time Formulation}
+
+%
+%\begin{align}
+%	\text{minimize} \quad &\sum_{a \in \mathcal{A}} \sum_{(u, v) \in \mathcal{E}} T^a_{ u,v} x^a_{u,v} \label{eq:cost_graph}\\
+%	\text{subject to} &\sum_{u \in \mathcal{V}} x^a_{u, v} - \sum_{w \in \mathcal{V}} x^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus \{\underline{s_a}, \bar{t_a}\} \label{eq:flow_conservation_graph} \\
+%	&\sum_{ u \in \mathcal{V}\setminus \{\underline{s_a}\}} x^a_{ \underline{s_a},u} = 1 \quad \forall a \in \mathcal{A} \\
+%	&\sum_{u \in \mathcal{V}\setminus \{ \bar{t_a}\} } x^a_{u, \bar{t_a}} = 1 \quad \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph}\\
+%	&\sum_{u \in \mathcal{V}\setminus \{ \bar{t'_a}\} } x^a_{u, \bar{t'_a}} = 1 \quad \forall \bar{t'_a} \in R_a, \forall a \in \mathcal{A} 	\\
+%	&\sum_{u \in \mathcal{V}\setminus \{ \underline{s'_a}\} } x^a_{u, \underline{s'_a}} = 1 \quad \forall \underline{s'_a} \in R_a, \forall a \in \mathcal{A} \\
+%	& \sum_{a \in \mathcal{A}}x^a_{u,v} \leq c_{u,v} \quad \forall (u,v) \in \mathcal{E}\\
+%\end{align}
+%
+%
+
+
+%\begin{align}
+%	\text{minimize} & \quad (\text{\ref{eq:travel_time_routing}}, \text{\ref{eq:distance_time_routing}}, \text{\ref{eq:pollution_metric}} \text{ or } \text{\ref{eq:combined_metrics}}) \nonumber \\
+%	\text{subject to} & \nonumber \\
+%	& \sum_{u \in \mathcal{V}} V^a_{u, v} - \sum_{w \in \mathcal{V}} V^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus \{\underline{s_a}, \bar{t_a}\} \label{eq:flow_conservation_graph_u} \\
+%	& \sum_{u \in \mathcal{N}^+_{\underline{s_a}}} V^a_{\underline{s_a}, u} = 1 \quad \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_u} \\
+%	& \sum_{u \in \mathcal{N}^+_{\bar{t_a}}} V^a_{u, \bar{t_a}} = 1 \quad \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u} \\
+%	& \sum_{u \in \mathcal{N}^+_{\underline{t'_a}}} V^a_{u, \bar{t'_a}} = 1 \quad \forall \bar{t'_a} \in \bar{T_a'}, \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_v_u} \\
+%	& \sum_{u \in \mathcal{N}^+_{\underline{s'_a}}} V^a_{u, \underline{s'_a}} = 1 \quad \forall \underline{s'_a} \in \underline{S_a'}, \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_v_u} \\
+%	& \sum_{a \in \mathcal{A}} x_{ar} = 1 \quad \forall r \in \mathcal{R} \label{eq:request_assignment} \\
+%	& \sum_{r \in \mathcal{R}} x_{ar} \leq 1 \quad \forall a \in \mathcal{A} \label{eq:vehicle_assignment_limit} \\
+%	& V^a_{u, v}, x_{ar} \in \{0, 1\} \quad \forall a \in \mathcal{A}, \forall u, v \in \mathcal{V}, \forall r \in \mathcal{R} \nonumber
+%\end{align}
+\section{Simulation}
+\section{TO-DO}
+\begin{itemize}
+	\item Make the battery model in terms of the links. The time is, basically, the velocity of that link over the distance.
+	\item The time must be adapted according to the link travelling time. I.e., each request has a time window. The time from the inbound link must be within the time window.
+	\item Create a simulation using some fake data
+\end{itemize}
+

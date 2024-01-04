@@ -1,0 +1,48 @@
+\usepackage{graphicx} % Required for inserting images
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{setspace}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem} 
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{chngcntr}
+
+\usetikzlibrary{decorations.markings}
+%\usepackage{titlesec}
+%\usepackage[sorting=none]{biblatex}
+
+\counterwithin{figure}{chapter}
+\counterwithin{equation}{chapter}
+\addto\captionsenglish{\renewcommand{\bibname}{Bibliography}}
+
+%\renewcommand\thechapter{\Roman{chapter}}
+
+%\renewcommand\thesection{\arabic{section}}
+\newcommand{\secref}[1]{Section \ref{#1}}
+\newcommand{\chapref}[1]{Chapter \ref{#1}}
+\newcommand{\figref}[1]{Fig \ref{#1}}
+\newcommand{\equaref}[1]{Equation \ref{#1}}
+\newcommand{\citepaperof}[2]{\textit{#2} in \cite{#1}}
+\newcommand{\citepaperofs}[2]{\textit{#2 et al.} in \cite{#1}}
+\newcommand{\algoref}[1]{Algorithm \ref{#1}}
+\newcommand{\tabref}[1]{Table \ref{#1}}
+
+\newcommand{\chapterbreak}{\clearpage}
+
+%\titleformat{\chapter}[display]
+%{\normalfont\huge\bfseries}{\thechapter}{20pt}{\Huge}
+
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{4}
