@@ -1,30 +1,3 @@
 \chapter{Motivation}
 The economic impact of congestion in the United States is substantial, amounting to approximately \$121 billion per year or 1\% of the country's GDP (\cite{schrank2012}). This figure encompasses not only the staggering 5.5 billion hours lost to traffic congestion but also an additional 2.9 billion gallons of fuel burned. Moreover, these estimates overlook the potential costs associated with negative externalities such as vehicular emissions (including greenhouse gases and particulate matter) (\cite{pant2013}), travel-time uncertainty (\cite{carrion2012}), and an elevated risk of accidents (\cite{hennessy1999}).
 
-\begin{enumerate}
-	\item First, Create a simulator using queing theory. Some ideas are
-		\begin{itemize}
-				\item Using poisson process, or a distribution that came out from invented data. 
-				\item Use jackson networks and markov process to simulate roads and vehicles. 
-				\item Describe the differences between graph and queing theory. 
-				\item When modeling the probability for the customer to come, we need to do it based on multiple factory. It must be in function of the hours, the weather, the time period -> Use neural networks. How to train them? 
-		\end{itemize}
-		\item Use the simulation to run the vehicle deplyment solution from the Project Thesis
-		\item Complete the model for the routing problem
-			\begin{itemize}
-			\item Describe differences between static and dynamic
-			\item Describe the dynamic frameowrk with reuse of optimization. 
-			\item Alternative, use the partially dynamic routing problem where you already have a set of requests and other spawn randomly. Here you can use FCFS and NN
-			\item Include charging and comfort optimization
-			\item The traveling time has in function o multiple elements. We have weather, road conditions, real time traffic information (Distributed system that communicates??), battery cost -> Non linear, we want to find a good driving profile that maximises battery performance and, at the same time, improves ride comfort
-					\end{itemize}
-		
-		\item Run it in the simulation
-		\begin{itemize}
-			\item Use different solutions like tabu search and mixed integer optimization
-			\item using the dynamic metrics, evaluate the algorith performances
-			\item evaluate distance based on the heuristic
-		\end{itemize}
-		
-		
-\end{enumerate}

@@ -1,178 +1,308 @@
 \begin{thebibliography}{10}
 
-\bibitem{schrank2012}
-D.~Schrank, B.~Eisele, and T.~Lomax, ``Texas transportation institute 2012
-  urban mobility report,'' tech. rep., Texas Transportation Institute, Texas
-  A\&M University, College Station, TX, 2012.
-
-\bibitem{pant2013}
-P.~Pant and R.~M. Harrison, ``Estimation of the contribution of road traffic
-  emissions to particulate matter concentrations from field measurements: a
-  review,'' {\em Atmospheric Environment}, vol.~77, pp.~78--97, 2013.
-
-\bibitem{carrion2012}
-C.~Carrion and D.~Levinson, ``Value of travel time reliability: a review of
-  current evidence,'' {\em Transportation Research Part A: Policy and
-  Practice}, vol.~46, pp.~720--741, 2012.
-
-\bibitem{hennessy1999}
-D.~A. Hennessy and D.~L. Wiesenthal, ``Traffic congestion, driver stress, and
-  driver aggression,'' {\em Aggressive Behavior}, vol.~25, pp.~409--423, 1999.
-
-\bibitem{8883370}
-F.~Fehn, F.~Noack, and F.~Busch, ``Modeling of mobility on-demand fleet
-  operations based on dynamic electricity pricing,'' in {\em 2019 6th
-  International Conference on Models and Technologies for Intelligent
-  Transportation Systems (MT-ITS)}, pp.~1--6, 2019.
-
-\bibitem{MONTOYA201787}
-A.~Montoya, C.~Guéret, J.~E. Mendoza, and J.~G. Villegas, ``The electric
-  vehicle routing problem with nonlinear charging function,'' {\em
-  Transportation Research Part B: Methodological}, vol.~103, pp.~87--110, 2017.
-\newblock Green Urban Transportation.
-
-\bibitem{froger2022electric}
-A.~Froger, O.~Jabali, J.~E. Mendoza, and G.~Laporte, ``The electric vehicle
-  routing problem with capacitated charging stations,'' {\em Transportation
-  Science}, vol.~56, no.~2, pp.~460--482, 2022.
-
-\bibitem{kancharla2020electric}
-S.~R. Kancharla and G.~Ramadurai, ``Electric vehicle routing problem with
-  non-linear charging and load-dependent discharging,'' {\em Expert Systems
-  With Applications}, vol.~160, p.~113714, 2020.
-
-\bibitem{9945248}
-Z.-H. Nie, Q.~Yang, E.~Zhang, D.~Liu, and J.~Zhang, ``Ant colony optimization
-  for electric vehicle routing problem with capacity and charging time
-  constraints,'' in {\em 2022 IEEE International Conference on Systems, Man,
-  and Cybernetics (SMC)}, pp.~480--485, 2022.
-
-\bibitem{electronics9081277}
-K.~Han, T.~W. Nguyen, and K.~Nam, ``Battery energy management of autonomous
-  electric vehicles using computationally inexpensive model predictive
-  control,'' {\em Electronics}, vol.~9, no.~8, 2020.
-
-\bibitem{8115230}
-J.~J.~Q. Yu and A.~Y.~S. Lam, ``Autonomous vehicle logistic system: Joint
-  routing and charging strategy,'' {\em IEEE Transactions on Intelligent
-  Transportation Systems}, vol.~19, no.~7, pp.~2175--2187, 2018.
-
-\bibitem{lee2020model}
-C.~Lee, ``An exact algorithm for the electric-vehicle routing problem with
-  nonlinear charging time,'' {\em Journal of the Operational Research Society},
-  vol.~72, pp.~1--24, 03 2020.
-
 \bibitem{VASCO2016118}
-``The dynamic vehicle allocation problem with application in trucking companies
-  in brazil,'' {\em Computers and Operations Research}, vol.~76, pp.~118--133,
-  2016.
+The dynamic vehicle allocation problem with application in trucking companies
+  in brazil.
+\newblock {\em Computers and Operations Research}, 76:118--133, 2016.
 
-\bibitem{holzi}
-A.~Holzapfel, H.~Kuhn, and M.~G. Sternbeck, ``Product allocation to different
-  types of distribution center in retail logistics networks,'' {\em European
-  Journal of Operational Research}, vol.~264, no.~3, pp.~948--966, 2018.
-
-\bibitem{LEVIN2017373}
-M.~W. Levin, K.~M. Kockelman, S.~D. Boyles, and T.~Li, ``A general framework
-  for modeling shared autonomous vehicles with dynamic network-loading and
-  dynamic ride-sharing application,'' {\em Computers, Environment and Urban
-  Systems}, vol.~64, pp.~373--383, 2017.
+\bibitem{7579135}
+Ahmed Abdulaal, Mehmet~H. Cintuglu, Shihab Asfour, and Osama~A. Mohammed.
+\newblock Solving the multivariant ev routing problem incorporating v2g and g2v
+  options.
+\newblock {\em IEEE Transactions on Transportation Electrification},
+  3(1):238--248, 2017.
 
 \bibitem{nn_mora}
-J.~Alonso-Mora, S.~Samaranayake, A.~Wallar, E.~Frazzoli, and D.~Rus,
-  ``On-demand high-capacity ride-sharing via dynamic trip-vehicle assignment,''
-  {\em Proceedings of the National Academy of Sciences}, vol.~114, no.~3,
-  pp.~462--467, 2017.
+Javier Alonso-Mora, Samitha Samaranayake, Alex Wallar, Emilio Frazzoli, and
+  Daniela Rus.
+\newblock On-demand high-capacity ride-sharing via dynamic trip-vehicle
+  assignment.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  114(3):462--467, 2017.
 
-\bibitem{8693516}
-J.~J.~Q. Yu, W.~Yu, and J.~Gu, ``Online vehicle routing with neural
-  combinatorial optimization and deep reinforcement learning,'' {\em IEEE
-  Transactions on Intelligent Transportation Systems}, vol.~20, no.~10,
-  pp.~3806--3817, 2019.
+\bibitem{9202791}
+Bahman Askari, Tai Le~Quy, and Eirini Ntoutsi.
+\newblock Taxi demand prediction using an lstm-based deep sequence model and
+  points of interest.
+\newblock In {\em 2020 IEEE 44th Annual Computers, Software, and Applications
+  Conference (COMPSAC)}, pages 1719--1724, 2020.
+
+\bibitem{project_thesis}
+Luca Brodo.
+\newblock Autonomous mobility-on-demand: A novel framework to study amod in
+  smart cities.
+\newblock Paper not yet submitted for publication, 2023.
+
+\bibitem{Campo1987RobustMP}
+Peter~J. Campo and Manfred Morari.
+\newblock Robust model predictive control.
+\newblock {\em 1987 American Control Conference}, pages 1021--1026, 1987.
+
+\bibitem{carrion2012}
+Carlos Carrion and David Levinson.
+\newblock Value of travel time reliability: a review of current evidence.
+\newblock {\em Transportation Research Part A: Policy and Practice},
+  46:720--741, 2012.
+
+\bibitem{8938759}
+Andrea Carron, Francesco Seccamonte, Claudio Ruch, Emilio Frazzoli, and
+  Melanie~N. Zeilinger.
+\newblock Scalable model predictive control for autonomous mobility-on-demand
+  systems.
+\newblock {\em IEEE Transactions on Control Systems Technology},
+  29(2):635--644, 2021.
+
+\bibitem{8569427}
+Kai~Fung Chu, Albert~Y.S. Lam, and Victor~O.K. Li.
+\newblock Travel demand prediction using deep multi-scale convolutional lstm
+  network.
+\newblock In {\em 2018 21st International Conference on Intelligent
+  Transportation Systems (ITSC)}, pages 1402--1407, 2018.
+
+\bibitem{Donovan2014}
+B.~Donovan and D.~B. Work.
+\newblock New york city taxi trip data (2010-2013).
+\newblock \url{http://dx.doi.org/10.13012/J8PN93H8}, 2014.
+
+\bibitem{8883370}
+Fabian Fehn, Florian Noack, and Fritz Busch.
+\newblock Modeling of mobility on-demand fleet operations based on dynamic
+  electricity pricing.
+\newblock In {\em 2019 6th International Conference on Models and Technologies
+  for Intelligent Transportation Systems (MT-ITS)}, pages 1--6, 2019.
+
+\bibitem{froger2022electric}
+Aur{\'e}lien Froger, Ola Jabali, Jorge~E. Mendoza, and Gilbert Laporte.
+\newblock The electric vehicle routing problem with capacitated charging
+  stations.
+\newblock {\em Transportation Science}, 56(2):460--482, 2022.
+
+\bibitem{dlr-nemo-bili}
+{German Aerospace Center (DLR)}.
+\newblock {Nemo Bili - Mobility from the First to the Last Mile}, Year of
+  access.
+\newblock Accessed on: 04.01.2024.
+
+\bibitem{electronics9081277}
+Kyoungseok Han, Tam~W. Nguyen, and Kanghyun Nam.
+\newblock Battery energy management of autonomous electric vehicles using
+  computationally inexpensive model predictive control.
+\newblock {\em Electronics}, 9(8), 2020.
+
+\bibitem{hennessy1999}
+Deborah~A. Hennessy and Donald~L. Wiesenthal.
+\newblock Traffic congestion, driver stress, and driver aggression.
+\newblock {\em Aggressive Behavior}, 25:409--423, 1999.
+
+\bibitem{holzi}
+Andreas Holzapfel, Heinrich Kuhn, and Michael~G. Sternbeck.
+\newblock Product allocation to different types of distribution center in
+  retail logistics networks.
+\newblock {\em European Journal of Operational Research}, 264(3):948--966,
+  2018.
+
+\bibitem{hyland2018dynamic}
+M.~Hyland and H.~S. Mahmassani.
+\newblock Dynamic autonomous vehicle fleet operations: optimization-based
+  strategies to assign avs to immediate traveler demand requests.
+\newblock {\em Transportation Research Part C: Emerging Technologies},
+  92:278--297, 2018.
+
+\bibitem{inbook_twvrp}
+Brian Kallehauge, Jesper Larsen, Oli Madsen, and Marius Solomon.
+\newblock {\em Vehicle Routing Problem with Time Windows}, pages 67--98.
+\newblock 03 2006.
+
+\bibitem{kancharla2020electric}
+S.~R. Kancharla and G.~Ramadurai.
+\newblock Electric vehicle routing problem with non-linear charging and
+  load-dependent discharging.
+\newblock {\em Expert Systems With Applications}, 160:113714, 2020.
+
+\bibitem{LANGSON2004125}
+W.~Langson, I.~Chryssochoos, S.V. Raković, and D.Q. Mayne.
+\newblock Robust model predictive control using tubes.
+\newblock {\em Automatica}, 40(1):125--133, 2004.
+
+\bibitem{LaporteG2009}
+G.~Laporte.
+\newblock Fifty years of vehicle routing.
+\newblock {\em Transportation Science}, 43:408–416, 2009.
+
+\bibitem{lee2020model}
+Chungmok Lee.
+\newblock An exact algorithm for the electric-vehicle routing problem with
+  nonlinear charging time.
+\newblock {\em Journal of the Operational Research Society}, 72:1--24, 03 2020.
+
+\bibitem{LEVIN2017373}
+Michael~W. Levin, Kara~M. Kockelman, Stephen~D. Boyles, and Tianxin Li.
+\newblock A general framework for modeling shared autonomous vehicles with
+  dynamic network-loading and dynamic ride-sharing application.
+\newblock {\em Computers, Environment and Urban Systems}, 64:373--383, 2017.
+
+\bibitem{lindsey1999congestion}
+C~Robin Lindsey and Erik~T Verhoef.
+\newblock Congestion modelling.
+\newblock Technical report, Tinbergen Institute Discussion Paper, 1999.
+
+\bibitem{LIU2020101342}
+Haining Liu, Ijaz~Haider Naqvi, Fajia Li, Chengliang Liu, Neda Shafiei, Yulong
+  Li, and Michael Pecht.
+\newblock An analytical model for the cc-cv charge of li-ion batteries with
+  application to degradation analysis.
+\newblock {\em Journal of Energy Storage}, 29:101342, 2020.
+
+\bibitem{MONTOYA201787}
+Alejandro Montoya, Christelle Guéret, Jorge~E. Mendoza, and Juan~G. Villegas.
+\newblock The electric vehicle routing problem with nonlinear charging
+  function.
+\newblock {\em Transportation Research Part B: Methodological}, 103:87--110,
+  2017.
+\newblock Green Urban Transportation.
+
+\bibitem{neuburger1971}
+Heinz Neuburger.
+\newblock The economics of heavily congested roads.
+\newblock {\em Transportation Research}, 5(4):283--293, 1971.
+
+\bibitem{9945248}
+Zi-Hao Nie, Qiang Yang, En~Zhang, Dong Liu, and Jun Zhang.
+\newblock Ant colony optimization for electric vehicle routing problem with
+  capacity and charging time constraints.
+\newblock In {\em 2022 IEEE International Conference on Systems, Man, and
+  Cybernetics (SMC)}, pages 480--485, 2022.
+
+\bibitem{BPR1964}
+Bureau of~Public~Roads.
+\newblock Traffic assignment manual.
+\newblock Technical report, U.S. Dept. of Commerce, Urban Planning Division,
+  1964.
+
+\bibitem{pant2013}
+P.~Pant and R.~M. Harrison.
+\newblock Estimation of the contribution of road traffic emissions to
+  particulate matter concentrations from field measurements: a review.
+\newblock {\em Atmospheric Environment}, 77:78--97, 2013.
+
+\bibitem{pavone2012robotic}
+Marco Pavone, Stephen~L Smith, Emilio Frazzoli, and Daniela Rus.
+\newblock Robotic load balancing for mobility-on-demand systems.
+\newblock {\em The International Journal of Robotics Research}, 31(7):839--854,
+  2012.
+
+\bibitem{rawlings2020model}
+James~B. Rawlings, David~Q. Mayne, and Moritz~M. Diehl.
+\newblock {\em Model Predictive Control: Theory, Computation, and Design}.
+\newblock Nob Hill Pub., 2020.
+
+\bibitem{congestion_vrp_phd_graph}
+Federico Rossi, Rick g, and Marco Pavone.
+\newblock Autonomous vehicle routing in congested road networks.
+\newblock {\em CoRR}, abs/1603.00939, 2016.
+
+\bibitem{Salaza2019Cong}
+Mauro Salazar, Matthew Tsao, Izabel Aguiar, Maximilian Schiffer, and Marco
+  Pavone.
+\newblock A congestion-aware routing scheme for autonomous mobility-on-demand
+  systems.
+\newblock pages 3040--3046, 06 2019.
+
+\bibitem{schrank2012}
+David Schrank, Bill Eisele, and Tim Lomax.
+\newblock Texas transportation institute 2012 urban mobility report.
+\newblock Technical report, Texas Transportation Institute, Texas A\&M
+  University, College Station, TX, 2012.
+
+\bibitem{6580187}
+Stephen~L. Smith, Marco Pavone, Mac Schwager, Emilio Frazzoli, and Daniela Rus.
+\newblock Rebalancing the rebalancers: optimally routing vehicles and drivers
+  in mobility-on-demand systems.
+\newblock In {\em 2013 American Control Conference}, pages 2362--2367, 2013.
+
+\bibitem{TothPVigoD2014}
+P.~Toth and D.~Vigo.
+\newblock {\em Vehicle Routing: Problems, Methods, and Applications}.
+\newblock Society for Industrial and Applied Mathematics, Philadelphia, 2014.
 
 \bibitem{doi:10.1137/1.9780898718515}
-P.~Toth and D.~Vigo, {\em The Vehicle Routing Problem}.
+Paolo Toth and Daniele Vigo.
+\newblock {\em The Vehicle Routing Problem}.
 \newblock Society for Industrial and Applied Mathematics, 2002.
 
+\bibitem{verhoef1999time}
+Erik~T Verhoef.
+\newblock Time, speeds, flows and densities in static models of road traffic
+  congestion and congestion pricing.
+\newblock {\em Regional Science and Urban Economics}, 29(3):341--369, 1999.
+
+\bibitem{8593743}
+Alex Wallar, Menno Van Der~Zee, Javier Alonso-Mora, and Daniela Rus.
+\newblock Vehicle rebalancing for mobility-on-demand systems with ride-sharing.
+\newblock In {\em 2018 IEEE/RSJ International Conference on Intelligent Robots
+  and Systems (IROS)}, pages 4539--4546, 2018.
+
+\bibitem{9294258}
+Salomón Wollenstein-Betech, Arian Houshmand, Mauro Salazar, Marco Pavone,
+  Christos~G. Cassandras, and Ioannis~Ch. Paschalidis.
+\newblock Congestion-aware routing and rebalancing of autonomous
+  mobility-on-demand systems in mixed traffic.
+\newblock In {\em 2020 IEEE 23rd International Conference on Intelligent
+  Transportation Systems (ITSC)}, pages 1--7, 2020.
+
+\bibitem{9304517}
+Salomón Wollenstein-Betech, Ioannis~Ch. Paschalidis, and Christos~G.
+  Cassandras.
+\newblock Joint pricing and rebalancing of autonomous mobility-on-demand
+  systems.
+\newblock In {\em 2020 59th IEEE Conference on Decision and Control (CDC)},
+  pages 2573--2578, 2020.
+
+\bibitem{8115230}
+James J.~Q. Yu and Albert Y.~S. Lam.
+\newblock Autonomous vehicle logistic system: Joint routing and charging
+  strategy.
+\newblock {\em IEEE Transactions on Intelligent Transportation Systems},
+  19(7):2175--2187, 2018.
+
+\bibitem{8693516}
+James J.~Q. Yu, Wen Yu, and Jiatao Gu.
+\newblock Online vehicle routing with neural combinatorial optimization and
+  deep reinforcement learning.
+\newblock {\em IEEE Transactions on Intelligent Transportation Systems},
+  20(10):3806--3817, 2019.
+
 \bibitem{amod_review}
-G.~Zardini, N.~Lanzetti, M.~Pavone, and E.~Frazzoli, ``Analysis and control of
-  autonomous mobility-on-demand systems,'' {\em Annual Review of Control,
-  Robotics, and Autonomous Systems}, vol.~5, no.~1, pp.~633--658, 2022.
+Gioele Zardini, Nicolas Lanzetti, Marco Pavone, and Emilio Frazzoli.
+\newblock Analysis and control of autonomous mobility-on-demand systems.
+\newblock {\em Annual Review of Control, Robotics, and Autonomous Systems},
+  5(1):633--658, 2022.
+
+\bibitem{8917521}
+Jannik Zgraggen, Matthew Tsao, Mauro Salazar, Maximilian Schiffer, and Marco
+  Pavone.
+\newblock A model predictive control scheme for intermodal autonomous
+  mobility-on-demand.
+\newblock In {\em 2019 IEEE Intelligent Transportation Systems Conference
+  (ITSC)}, pages 1953--1960, 2019.
 
 \bibitem{zhang2016}
-R.~Zhang, {\em Title of the Thesis}.
+Rick Zhang.
+\newblock {\em MODELS AND LARGE-SCALE COORDINATION ALGORITHMS FOR AUTONOMOUS
+  MOBILITY-ON-DEMAND}.
 \newblock Ph.d. thesis, Stanford University, Department of Aeronautics and
   Astronautics, 2016.
 \newblock Submitted to the Department of Aeronautics and Astronautics.
 
-\bibitem{dlr-nemo-bili}
-{German Aerospace Center (DLR)}, ``{Nemo Bili - Mobility from the First to the
-  Last Mile},'' Year of access.
-\newblock Accessed on: 04.01.2024.
+\bibitem{queue_theory}
+Rick Zhang and Marco Pavone.
+\newblock A queueing-network approach to the analysis and control of
+  mobility-on-demand systems.
+\newblock {\em Proceedings of the American Control Conference}, 2015, 09 2014.
 
-\bibitem{9294258}
-S.~Wollenstein-Betech, A.~Houshmand, M.~Salazar, M.~Pavone, C.~G. Cassandras,
-  and I.~C. Paschalidis, ``Congestion-aware routing and rebalancing of
-  autonomous mobility-on-demand systems in mixed traffic,'' in {\em 2020 IEEE
-  23rd International Conference on Intelligent Transportation Systems (ITSC)},
-  pp.~1--7, 2020.
-
-\bibitem{pavone2012robotic}
-M.~Pavone, S.~L. Smith, E.~Frazzoli, and D.~Rus, ``Robotic load balancing for
-  mobility-on-demand systems,'' {\em The International Journal of Robotics
-  Research}, vol.~31, no.~7, pp.~839--854, 2012.
-
-\bibitem{project_thesis}
-L.~Brodo, ``Autonomous mobility-on-demand: A novel framework to study amod in
-  smart cities.'' Paper not yet submitted for publication, 2023.
-
-\bibitem{congestion_vrp_phd_graph}
-F.~Rossi, R.~Zhang, and M.~Pavone, ``Autonomous vehicle routing in congested
-  road networks,'' {\em CoRR}, vol.~abs/1603.00939, 2016.
-
-\bibitem{lindsey1999congestion}
-C.~R. Lindsey and E.~T. Verhoef, ``Congestion modelling,'' tech. rep.,
-  Tinbergen Institute Discussion Paper, 1999.
-
-\bibitem{verhoef1999time}
-E.~T. Verhoef, ``Time, speeds, flows and densities in static models of road
-  traffic congestion and congestion pricing,'' {\em Regional Science and Urban
-  Economics}, vol.~29, no.~3, pp.~341--369, 1999.
-
-\bibitem{LIU2020101342}
-H.~Liu, I.~H. Naqvi, F.~Li, C.~Liu, N.~Shafiei, Y.~Li, and M.~Pecht, ``An
-  analytical model for the cc-cv charge of li-ion batteries with application to
-  degradation analysis,'' {\em Journal of Energy Storage}, vol.~29, p.~101342,
-  2020.
-
-\bibitem{neuburger1971}
-H.~Neuburger, ``The economics of heavily congested roads,'' {\em Transportation
-  Research}, vol.~5, no.~4, pp.~283--293, 1971.
-
-\bibitem{hyland2018dynamic}
-M.~Hyland and H.~S. Mahmassani, ``Dynamic autonomous vehicle fleet operations:
-  optimization-based strategies to assign avs to immediate traveler demand
-  requests,'' {\em Transportation Research Part C: Emerging Technologies},
-  vol.~92, pp.~278--297, 2018.
-
-\bibitem{TothPVigoD2014}
-P.~Toth and D.~Vigo, {\em Vehicle Routing: Problems, Methods, and
-  Applications}.
-\newblock Philadelphia: Society for Industrial and Applied Mathematics, 2014.
-
-\bibitem{LaporteG2009}
-G.~Laporte, ``Fifty years of vehicle routing,'' {\em Transportation Science},
-  vol.~43, p.~408–416, 2009.
-
-\bibitem{inbook_twvrp}
-B.~Kallehauge, J.~Larsen, O.~Madsen, and M.~Solomon, {\em Vehicle Routing
-  Problem with Time Windows}, pp.~67--98.
-\newblock 03 2006.
-
-\bibitem{7579135}
-A.~Abdulaal, M.~H. Cintuglu, S.~Asfour, and O.~A. Mohammed, ``Solving the
-  multivariant ev routing problem incorporating v2g and g2v options,'' {\em
-  IEEE Transactions on Transportation Electrification}, vol.~3, no.~1,
-  pp.~238--248, 2017.
+\bibitem{voronoi_part}
+Pengbo Zhu, Isik Sirmatel, Giancarlo Trecate, and Nikolas Geroliminis.
+\newblock Idle-vehicle rebalancing coverage control for ride-sourcing systems.
+\newblock pages 1970--1975, 07 2022.
 
 \end{thebibliography}

@@ -1,1 +1,213 @@
 \chapter{Preliminaries}
+This chapter provides essential background information and definitions that form the foundation for the subsequent discussions in the document. Firsty, in \secref{sec:general_definitions}, a plethora of useful general defitions are provided in order to facilitate the subsequent sections and, as a resul, the rest of the document as well. 
+\ref{sec:mpc_theory} introduces the concept of Model Predictive Control (MPC) as an advanced control strategy for dynamic systems, particularly focusing on the linear case. The linear MPC problem is formulated with a finite prediction horizon, system dynamics, and constraints on state and control variables. Additionally, the stability of MPC systems is briefly discussed, emphasizing the importance of demonstrating recursive feasibility and establishing stability in the sense of Lyapunov. 
+
+\section{General Definitions}\label{sec:general_definitions}
+\begin{definition}{Positive Semidefinite}
+	A positive semidefinite matrix is a concept in linear algebra and matrix theory. A symmetric matrix \(A\) is said to be positive semidefinite if, for any non-zero column vector \(x\), the following inequality holds:
+	\begin{equation}
+		x^T Ax \geq 0
+	\end{equation}
+	Here, \(x^T\) represents the transpose of the vector \(x\), and \(x^T Ax\) is the quadratic form associated with the matrix \(A\). Another way to express positive semidefiniteness is in terms of eigenvalues. A symmetric matrix \(A\) is positive semidefinite if and only if all of its eigenvalues are non-negative.\\
+	Mathematically, $A \succeq 0 $ indicates positive semidefiniteness.
+\end{definition}\\
+
+
+
+\begin{definition}{Positive Definite}
+	A positive definite matrix is a more specific case of a positive semidefinite matrix. A symmetric matrix \(A\) is said to be positive definite if, for any non-zero column vector \(x\), the following inequality holds:
+	\begin{equation}
+		x^T Ax > 0
+	\end{equation}
+	Here, \(x^T\) represents the transpose of the vector \(x\), and \(x^T Ax\) is the quadratic form associated with the matrix \(A\). Alternatively, positive definiteness in terms of eigenvalues is expressed as follows: A symmetric matrix \(A\) is positive definite if and only if all of its eigenvalues are strictly positive.
+	In mathematical notation, \(A \succ 0\) indicates positive definiteness.
+\end{definition}\\
+
+
+
+\begin{definition}{Half-Space}
+	A half-space in \(n\)-dimensional space is defined by a linear inequality. The general form of a half-space is given by:
+	\begin{equation}
+		H = \{x \in \mathbb{R}^n \mid a_1x_1 + a_2x_2 + \ldots + a_nx_n \leq b\}
+	\end{equation}
+	Alternatively, in vector form:
+	\begin{equation}
+		H = \{x \in \mathbb{R}^n \mid a^Tx \leq b\}
+	\end{equation}
+	Here, \(a_1, a_2, \ldots, a_n\) are real constants, and \(b\) is a real constant. The vector \((a_1, a_2, \ldots, a_n)\) is the normal vector to the hyperplane defining the boundary of the half-space. The inequality \(a_1x_1 + a_2x_2 + \ldots + a_nx_n \leq b\) represents the side of the hyperplane where the half-space lies.
+	Geometrically, a half-space is one of the two regions divided by a hyperplane. If the inequality is strict (\(<\) instead of \(\leq\)), the half-space does not include points on the hyperplane itself. If the inequality is non-strict (\(\leq\)), the half-space includes points on the hyperplane. \\
+	In two dimensions (\(n = 2\)), a half-space is a region divided by a straight line. In three dimensions (\(n = 3\)), it is a region divided by a plane, and so on. The intersection of multiple half-spaces forms a polyhedral region.
+\end{definition}\\
+
+
+
+\begin{definition}{Polyhedral Region}
+	A polyhedral region is a geometric object in three-dimensional space that is defined as the intersection of a finite number of half-spaces. 
+	Formally, a polyhedral region \(P\) in three-dimensional space can be expressed as:
+	\[ P = \{ \mathbf{x} \in \mathbb{R}^3 \mid \mathbf{a}_i \cdot \mathbf{x} \leq b_i, \quad i = 1, 2, \ldots, n \} \]
+	where \(\mathbf{x}\) is a three-dimensional vector representing a point in space, \(\mathbf{a}_i\) are vectors normal to the defining planes, and \(b_i\) are constants determining the position of these planes. The inequalities \(\mathbf{a}_i \cdot \mathbf{x} \leq b_i\) specify that the point \(\mathbf{x}\) lies on or inside the half-space defined by the corresponding plane.
+\end{definition}\\
+
+\begin{definition}{Recursive feasibility}
+	The MPC problem is deemed recursively feasible if, for all feasible initial states, assurance of feasibility is maintained at every state along the closed-loop trajectory.
+\end{definition}\\
+
+\begin{definition}{Positively Invariant Set}
+	A set $\Omega$ is said to be a positively invariant set for a system $x(k+1) = f_\kappa (x(k))$, if
+	\begin{equation*}
+		x(k)\in \Omega \implies x(k+1) \in \Omega \quad \quad \forall k \in \mathbb{N}
+	\end{equation*}
+\end{definition}\\
+
+
+
+\begin{definition}{Comparision Functions}\\
+	For $\mathbb{R}_0^+ [0,\infty)$, the following comparison functions exist
+	\begin{equation}
+		\mathcal{K} := \left\{
+		\begin{aligned}
+			\alpha : \mathbb{R}_0^+ \rightarrow \mathbb{R}_0^+\Bigg|\alpha \text{ is continuous}\text{ and strictly increasing with }\alpha(0) = 0
+		\end{aligned}
+		\right\}
+	\end{equation}\\
+	\begin{equation}
+		\mathcal{K}_\infty := \left\{
+		\begin{aligned}
+			\alpha : \mathbb{R}_0^+ \rightarrow \mathbb{R}_0^+\Bigg|\alpha \in \mathcal{K} \text{ and unbounded}
+		\end{aligned}
+		\right\}
+	\end{equation}\\
+	\begin{equation}
+		\mathcal{K}\mathcal{L}:= \left\{
+		\begin{aligned}
+			&\beta \text{ continous}\\
+			\beta :  \mathbb{R}_0^+\times\mathbb{R}_0^+ \rightarrow \mathbb{R}_0^+\Bigg|&\beta(\cdot, t) \in \mathcal{K} \quad \forall t \in  \mathbb{R}_0^+\\
+			&\beta(r,\cdot) \text{ is strictly decreasing to 0 }\forall r\in  \mathbb{R}_0^+ 
+		\end{aligned}
+		\right\}
+	\end{equation}\\
+\end{definition}
+
+\begin{definition}{Lyapunov Function}\\
+	Let $Y \subseteq X$ be a forward invariant set and $x^* \in X$. A function $V : Y \rightarrow \mathbb{R}^+$ is called a Lyapunov function for $x^+ = g(x)$ if the following two conditions hold for all $x \in Y$:
+	
+	\begin{enumerate}
+		\item There exist $\alpha_1, \alpha_2 \in \mathcal{K}_\infty$ such that
+		\[
+		\alpha_1(\|x - x^*\|) \leq V(x) \leq \alpha_2(\|x - x^*\|).
+		\]
+		
+		\item There exists $\alpha_V \in \mathcal{K}$ such that
+		\[
+		V(x^+) \leq V(x) - \alpha_V(\|x - x^*\|).
+		\]
+	\end{enumerate}
+\end{definition}
+
+
+
+\begin{definition}{Lyapunov Function}
+	Let $\mathcal{X}$ be a positively invariant set for a system $x(k+1) = f_\kappa (x(k))$ containing a neighbour of the origin in its interior. A function $V : \mathcal{X} \rightarrow R_+$ is called a Lyapunov function in $\mathcal{X}$ if for all $x \in \mathcal{X}$:
+	\begin{align*}
+		&V(x) > 0 \quad \forall x \neq 0\\
+		&V(x) = 0 \quad\\
+		&V(x(k+1)) - V(x(k)) \leq -\alpha(x) \quad\\
+	\end{align*}
+	
+	
+\end{definition}
+
+
+
+
+\section{Model Predictive Control}\label{sec:mpc_theory}
+
+Model Predictive Control (MPC) is an advanced control strategy used for dynamic systems. In the case of a linear time-invariant system, the mathematical description of MPC involves optimizing a cost function over a finite prediction horizon while subject to system dynamics and constraints. \\
+For the purpose of this work, we will only consider the linear case of the MPC. For more details, please refer to \cite{rawlings2020model}. \\
+Consider a linear system described by the following state-space equations:
+\begin{align}
+	&x_{k+1} = Ax_k + Bu_k \nonumber \\
+	 &y_k = Cx_k \label{eq:linear_system}
+\end{align}
+where:
+\begin{itemize}
+	\item $x_k$ is the state vector at time $k$
+	\item $u_k$ is the control input (or control variable) at time $k$
+	\item $y_k$ is the output at time $k$
+	\item $A$, $B$, and $C$ are matrices that define the system dynamics.
+\end{itemize}
+The objective is to minimize a cost function $J$ over a finite prediction horizon \(N\). The cost function is typically defined as the sum of a quadratic performance index over the prediction horizon. \\
+The choice of cost function is critical and highly depends on the final objective. For example, in case the objective is to track a reference signal, a typical cost function assumes the form described in \equaref{eq:cost_f_1}. 
+\begin{equation}
+	J = \sum_{i=0}^{N-1} \left[ (y_{k+i} - r_{k+i})^T Q (y_{k+i} - r_{k+i}) + u_{k+i}^T R u_{k+i} \right] 
+	\label{eq:cost_f_1}
+\end{equation} 
+where
+\begin{itemize}
+	\item \(r_{k+i}\) is the reference trajectory at time \(k+i\)
+	\item  $Q \succeq 0$ is the weighting matrix for the state error
+	\item $R \succ 0$ is the weighting matrix for the control input
+\end{itemize}
+Alternatively, another typical cost function has the followin form, 
+
+\begin{equation}
+	J = x^T_{N}Px_{N} + \sum_{i=0}^{N-1} x^T_{i}Qx_{i} + u^T_{i}Ru_{i}
+	\label{eq:cost_f_2}
+\end{equation} 
+where
+\begin{itemize}
+	\item $x_i$ is the state vector at time $i$
+	\item $u_i$ is the control variable at time $i$
+	\item  $Q \succeq 0$ is the weighting matrix for the state error
+	\item  $P \succeq 0$ is the weighting matrix indicating the terminal cost
+	\item $R \succ 0$ is the weighting matrix for the control input.
+\end{itemize}
+
+In \equaref{eq:cost_f_2}, the term $x^T_{N}Px_{N}$ is used to mitigate the fact that the MPC is minimizing over a limted time-horizon by ensuring that the system converges to a desired state by the end of the prediction horizon. While the infinite horizon formulation, i.e. $N = \infty$ and $P=0$, possesses nice properties, such as its robustness and the perfect tradeoff between short- and long-term benefits of actions, it can not be computed in practice. Intuitively, since MPC is dealing with optimization problems under constraints, an infinite horizon will bring to having an infinte amount of variables. This is therefore the motivation behind why the horizon is usually shortened to $N$ steps and the terminal cost is introduced. \\
+The Linear MPC problem, therefore, is formulated as follows. \\
+\begin{equation}
+	\begin{aligned}
+		J^* = \text{\textbf{min} }&x^T_{N}Px_{N} + \sum_{i=0}^{N-1} x^T_{i}Qx_{i} + u^T_{i}Ru_{i}\\
+		\text{\textbf{s.t.}	}&x_{k+i+1} = Ax_{k+i} + Bu_{k+i} \quad \text{for } i = 0, 1, \ldots, N-1 \\
+		 &x_{k+i} \in \mathcal{X}, u_{k+i} \in \mathcal{U} \quad \text{for } i = 0, 1, \ldots, N-1\\
+		 &x_{k+N} \in \mathcal{X}_f\\
+		 &x_{k} = x(k)
+	\end{aligned}
+\end{equation}
+where $J^*$ is the global minimum of $J$ and $\mathcal{X}, \mathcal{X}_f,\mathcal{U}$ are polyhedral regions. These are used to indicate the constraints over the state and control variables, which have the following form:
+\begin{align*}
+	x_{\text{min}} &\leq x_{k+i} \leq x_{\text{max}} \quad \text{for } i = 0, 1, \ldots, N \\
+	x_{\text{min}|f} &\leq x_{k+i} \leq x_{\text{max}|f} \quad \text{for } i = 0, 1, \ldots, N \\
+	u_{\text{min}} &\leq u_{k+i} \leq u_{\text{max}} \quad \text{for } i = 0, 1, \ldots, N-1 
+\end{align*}
+Furthermore, the optimization problem is subject to system dynamics:
+\begin{align*}
+	x_{k+i+1} &= Ax_{k+i} + Bu_{k+i} \quad \text{for } i = 0, 1, \ldots, N-1 \\
+\end{align*}
+
+The solution to this optimization problem provides the optimal control sequence \(u_k^*, u_{k+1}^*, \ldots, u_{k+N-1}^*\). The first element of this sequence, \(u_k^*\), is then applied to the system, and the optimization problem is solved again at the next time step.
+\subsection{Stability of MPC systems}\label{sec:stable_mpc_systems}
+While there exist multiple ways to prove stability of MPC systems, this section will only focus on the one which is mostly relevant for this work, namely proving stability by leveraging the characteristics of the terminal set. More specifically, by defining $\mathcal{X}_f$ as convex set which includes the origin ($x(N) = 0$), one can prove stability by insuring certain properties to be satisfied. These properties assume the cost function to have the following form. 
+\begin{equation}
+	J(x) = min_{x, u} V_f(X(N)) + \sum_{t =0}^{N-1}I(x(t), u(t))
+\end{equation}
+where $I(x(t), u(t))$ is the stage cost and $V_f(X(N))$ is the terminal cost. \\
+Accordingly, these are the properties to satisfy.
+\begin{enumerate}
+	\item The stage cost must be strictly positive and zero at the origin.
+	\item The terminal set is invariant under the local control law $\kappa_f(x)$. Namely 
+	\begin{equation}
+		x(t+1) = Ax + B\kappa_f(x)\in\mathcal{X}_f \quad \forall x\in \mathcal{X}_f
+	\end{equation}
+	given that $X_f \subseteq X$ and $\kappa_f(x) \in \mathcal{U}$
+	 
+	\item Establish stability by illustrating that the terminal cost function serves as a Lyapunov function in $\mathcal{X}_f$. 
+	\begin{equation}
+		V_f(x(t+1)) - V_f(x) \leq -I(x, \kappa_f)\quad \forall x \in \mathcal{X}_f
+	\end{equation}
+\end{enumerate}
+
+
+
+
+

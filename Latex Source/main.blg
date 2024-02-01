@@ -1,7 +1,7 @@
 This is BibTeX, Version 0.99d (TeX Live 2023)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
-The style file: ieeetr.bst
+The style file: plain.bst
 Database file #1: src/bib.bib
 "{" immediately follows a field part---line 235 of file src/bib.bib
  :  doi = \url
@@ -9,48 +9,51 @@ Database file #1: src/bib.bib
 I'm skipping whatever remains of this entry
 Warning--entry type for "dlr-nemo-bili" isn't style-file defined
 --line 414 of file src/bib.bib
+Warning--to sort, need author or key in VASCO2016118
 Warning--empty author in VASCO2016118
-Warning--can't use both author and editor fields in doi:10.1137/1.9780898718515
 Warning--empty publisher in inbook_twvrp
-You've used 34 entries,
-            1876 wiz_defined-function locations,
-            687 strings with 9879 characters,
-and the built_in function-call counts, 9526 in all, are:
-= -- 975
-> -- 342
-< -- 0
-+ -- 128
-- -- 94
-* -- 648
-:= -- 1320
-add.period$ -- 41
-call.type$ -- 34
-change.case$ -- 33
+Warning--empty booktitle in Salaza2019Cong
+Warning--can't use both author and editor fields in doi:10.1137/1.9780898718515
+Warning--empty booktitle in voronoi_part
+You've used 49 entries,
+            2118 wiz_defined-function locations,
+            791 strings with 13352 characters,
+and the built_in function-call counts, 17866 in all, are:
+= -- 1734
+> -- 862
+< -- 13
++ -- 350
+- -- 290
+* -- 1248
+:= -- 2904
+add.period$ -- 148
+call.type$ -- 49
+change.case$ -- 291
 chr.to.int$ -- 0
-cite$ -- 37
-duplicate$ -- 504
-empty$ -- 876
-format.name$ -- 94
-if$ -- 2376
+cite$ -- 55
+duplicate$ -- 673
+empty$ -- 1371
+format.name$ -- 290
+if$ -- 3802
 int.to.chr$ -- 0
-int.to.str$ -- 34
-missing$ -- 32
-newline$ -- 112
-num.names$ -- 33
-pop$ -- 89
+int.to.str$ -- 49
+missing$ -- 46
+newline$ -- 249
+num.names$ -- 96
+pop$ -- 291
 preamble$ -- 1
-purify$ -- 0
+purify$ -- 243
 quote$ -- 0
-skip$ -- 376
+skip$ -- 522
 stack$ -- 0
-substring$ -- 640
-swap$ -- 235
-text.length$ -- 0
+substring$ -- 1161
+swap$ -- 180
+text.length$ -- 13
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 0
-warning$ -- 3
-while$ -- 88
-width$ -- 36
-write$ -- 345
+type$ -- 188
+warning$ -- 6
+while$ -- 153
+width$ -- 51
+write$ -- 537
 (There was 1 error message)
