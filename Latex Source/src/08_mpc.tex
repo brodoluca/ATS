@@ -1,4 +1,5 @@
 \chapter{Model Predictive Control of AToD}\label{ch:mpc}
+This chapter proposes a solution for the dispatcing, routing and rebalancing problems for AToD systems in a different flavour, namely by designing a Model Predictive Control (MPC) to regulate the system. In \secref{sec:linear_discrete_time_model}, a novel model for the system is developed which, contrary to the previous one, is not graph based. Subsequentally, \secref{sec:prob_formulat_mpc} defines the MPC problem and a thorough discussion on the terminal set and on the terminal cost, which are essential to prove stability. In order to achieve this goal, the feasability of the terminal and of the states set are demonstrated. Finally, in \secref{sec:use_case_mpc}, a simulation is proposed to evluate the overall performance of the system. 
 \section{Linear-Discrete Time Model}\label{sec:linear_discrete_time_model}
 The model derived in this section is partially inspired from \cite{zhang2016}. \\
 Consider a transportation network be composed of $|\mathcal{V}|$ stations scattered around a space $\Omega$ and $|\mathcal{A}|$ multi-occupancy, goods-carrying vehicles working within the same space $\Omega$. Within this context, customers are assumed to requests rides only from the abovementioned stations. Similarly, goods can be carried out only from one station to another. With this assumption, stations and customers can be considered synonims within this section. \\
@@ -175,7 +176,7 @@ Similarly to \secref{sec:vc_model}, the model must take into account that statio
 where $C_i$ indicates the number of parking spots available at $i$. \\
 This is a crucial 
 
-\section{Problem Formulation}
+\section{Problem Formulation}\label{sec:prob_formulat_mpc}
 The MPC for the AToD problem is formulated as follows. \\
 Given $x(t) \in \mathcal{X}$, determine the controls $u(t), \dots, u(t+N)$ according to the following optimization problem.
 \begin{equation}
@@ -355,7 +356,9 @@ Within the definition of $\mathcal{X}_f$, (\ref{eq:cost_function_time}) is a Lya
 
 
 %In (\ref{eq:final_x_f}), the condition for $x_{ij}^a$ and $T^a_{ij}$ have been relaxed. While  $x_{ij}^a\in\{0\}^{|\mathcal{V}||\mathcal{A}|} $ and $T^a_{ij}\in \{0\}^{|\mathcal{V}||\mathcal{A}|}$ are also viable conditions, these ultimately limit the final set too
-\subsubsection*{Proof of feasibility}
+
+\subsection{Proof of Stability}
+
 For the rest of this section, the notation will be eased as follows. 
 \begin{align*}
 	x &= x(t)\\
@@ -363,7 +366,9 @@ For the rest of this section, the notation will be eased as follows.
 	x^+ &= x(t+1)
 \end{align*}\\
 
-In order to prove recursive feasibility of $\mathcal{X}$, it is imperative to demonstrate the positive invariance of the state set $\mathcal{X}$. \\
+In order to prove stability of (\ref{eq:mpc_atod}), it is imperative to first demonstrate the feasibility of the state sets $\mathcal{X}$ adn $\mathcal{X}_f$. \\
+
+
 \begin{proposition}{(Feasibility of $\mathcal{X}$)}\label{pro:feas_x}
 	Let $x \in \mathcal{X}$ and $u \in \mathcal{U}(t)$, then $x_+ \in \mathcal{X}$
 \end{proposition}\\
@@ -406,6 +411,7 @@ Condition (\ref{eq:replace_vehicle}) is always respected, assuming there is no n
 
 %%%%%%%%%%%%WIP
 
+\subsection*{Model stability}
 
 
 \begin{proposition}{(Stability of \ref{eq:mpc_atod})}
@@ -454,3 +460,4 @@ Condition (\ref{eq:replace_vehicle}) is always respected, assuming there is no n
 %	\item ------The time horizon should be as much as the longest road. This is because, if I am looking this far in the future, then I have time to move all the cars from one link to another and therefore respect the conditions. -----\\
 %\end{itemize}
 %
+\section{Use Case/Simulation / Evaluation}\label{sec:use_case_mpc}
