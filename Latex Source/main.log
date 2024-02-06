@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/MacPorts 2022.62882_3) (preloaded format=pdflatex 2023.6.26)  1 FEB 2024 23:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/MacPorts 2022.62882_3) (preloaded format=pdflatex 2023.6.26)  6 FEB 2024 22:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -789,16 +789,29 @@ Package: chngcntr 2018/04/09 v1.1a change counter resetting
 Package chngcntr Info: \counterwithout already defined.
 (chngcntr)             Quitting chngcntr on input line 21.
 )
+(/opt/local/share/texmf-texlive/tex/latex/tikz-cd/tikz-cd.sty
+Package: tikz-cd 2021/05/04 v1.0 Commutative diagrams with TikZ
+
+(/opt/local/share/texmf-texlive/tex/generic/tikz-cd/tikzlibrarycd.code.tex
+(/opt/local/share/texmf-texlive/tex/generic/pgf/frontendlayer/tikz/libraries/ti
+kzlibrarymatrix.code.tex
+File: tikzlibrarymatrix.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/opt/local/share/texmf-texlive/tex/generic/pgf/frontendlayer/tikz/libraries/ti
+kzlibraryquotes.code.tex
+File: tikzlibraryquotes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)))
 (/opt/local/share/texmf-texlive/tex/generic/pgf/frontendlayer/tikz/libraries/ti
 kzlibrarydecorations.markings.code.tex
 (/opt/local/share/texmf-texlive/tex/generic/pgf/libraries/decorations/pgflibrar
 ydecorations.markings.code.tex))
 \c@definition=\count327
 \c@proposition=\count328
+\c@example=\count329
 )
 (/opt/local/share/texmf-texlive/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count329
+\l__color_backend_stack_int=\count330
 \l__pdf_internal_box=\box67
 )
 (./main.aux)
@@ -825,16 +838,16 @@ LaTeX Font Info:    ... okay on input line 4.
 
 (/opt/local/share/texmf-texlive/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count330
+\scratchcounter=\count331
 \scratchdimen=\dimen289
 \scratchbox=\box68
-\nofMPsegments=\count331
-\nofMParguments=\count332
+\nofMPsegments=\count332
+\nofMParguments=\count333
 \everyMPshowfont=\toks44
-\MPscratchCnt=\count333
+\MPscratchCnt=\count334
 \MPscratchDim=\dimen290
-\MPnumerator=\count334
-\makeMPintoPDFobject=\count335
+\MPnumerator=\count335
+\makeMPintoPDFobject=\count336
 \everyMPtoPDFconversion=\toks45
 ) (/opt/local/share/texmf-texlive/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -856,7 +869,7 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (/opt/local/share/texmf-texlive/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count336
+\c@section@level=\count337
 )
 LaTeX Info: Redefining \ref on input line 4.
 LaTeX Info: Redefining \pageref on input line 4.
@@ -875,7 +888,7 @@ your preamble.
  on input line 4.
 
 (./src/01_title.tex
-<assets/img/01_title/FH_Dortmund-logo.svg.png, id=75, 2569.6pt x 925.4575pt>
+<assets/img/01_title/FH_Dortmund-logo.svg.png, id=87, 2569.6pt x 925.4575pt>
 File: assets/img/01_title/FH_Dortmund-logo.svg.png Graphic file (type png)
 <use assets/img/01_title/FH_Dortmund-logo.svg.png>
 Package pdftex.def Info: assets/img/01_title/FH_Dortmund-logo.svg.png  used on 
@@ -973,18 +986,43 @@ Underfull \hbox (badness 10000) in paragraph at lines 88--90
  []
 
 [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 166--168
+Underfull \hbox (badness 10000) in paragraph at lines 167--169
 
  []
 
-[12]) (./src/05_related_work.tex [13]
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 213--216
+
+ []
+
+[13] [14]
+Underfull \hbox (badness 10000) in paragraph at lines 277--281
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 304--306
+
+ []
+
+[15] [16]
+Underfull \hbox (badness 10000) in paragraph at lines 370--373
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 375--378
+
+ []
+
+[17]) (./src/05_related_work.tex [18]
 Chapter 3.
 
 Underfull \hbox (badness 10000) in paragraph at lines 6--8
 
  []
 
-[14
+[19
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 17--19
@@ -996,7 +1034,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 22--23
 
  []
 
-[15]
+[20]
 Overfull \hbox (2.296pt too wide) in paragraph at lines 32--34
 []\OT1/cmr/m/it/10 Wollenstein-Betech et al. \OT1/cmr/m/n/10 in [[]] pro-pose a
  so-lu-tion to the routing-rebalancing
@@ -1007,12 +1045,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 32--34
 
  []
 
-[16] [17] [18]) (./src/07_graph_based.tex [19]
+[21] [22] [23] [24]) (./src/07_graph_based.tex [25]
 Chapter 4.
-[20
+[26
 
-] [21] [22]
-<assets/img/07_graph_based/R_theta_combinations.png, id=363, 722.7pt x 578.16pt
+] [27] [28]
+<assets/img/07_graph_based/R_theta_combinations.png, id=456, 722.7pt x 578.16pt
 >
 File: assets/img/07_graph_based/R_theta_combinations.png Graphic file (type png
 )
@@ -1025,7 +1063,7 @@ Overfull \hbox (10.65944pt too wide) in paragraph at lines 31--34
  [][] 
  []
 
-[23 <./assets/img/07_graph_based/R_theta_combinations.png>]
+[29 <./assets/img/07_graph_based/R_theta_combinations.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 71--73
 
  []
@@ -1035,13 +1073,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 76--94
 
  []
 
-[24]
+[30]
 Underfull \hbox (badness 10000) in paragraph at lines 95--97
 
  []
 
-[25] [26]
-<assets/img/07_graph_based/car.png, id=408, 963.6pt x 963.6pt>
+[31] [32]
+<assets/img/07_graph_based/car.png, id=500, 963.6pt x 963.6pt>
 File: assets/img/07_graph_based/car.png Graphic file (type png)
 <use assets/img/07_graph_based/car.png>
 Package pdftex.def Info: assets/img/07_graph_based/car.png  used on input line 
@@ -1062,7 +1100,7 @@ File: assets/img/07_graph_based/car.png Graphic file (type png)
 Package pdftex.def Info: assets/img/07_graph_based/car.png  used on input line 
 160.
 (pdftex.def)             Requested size: 14.22636pt x 14.21811pt.
- [27 <./assets/img/07_graph_based/car.png>] [28]
+ [33 <./assets/img/07_graph_based/car.png>] [34]
 Underfull \hbox (badness 10000) in paragraph at lines 213--216
 
  []
@@ -1072,108 +1110,131 @@ Underfull \hbox (badness 10000) in paragraph at lines 234--237
 
  []
 
-[29] [30] [31]
-Underfull \hbox (badness 10000) in paragraph at lines 291--293
+[35] [36]
+Underfull \hbox (badness 10000) in paragraph at lines 285--288
 
  []
 
-[32]
-Underfull \hbox (badness 10000) in paragraph at lines 332--333
+[37]
+Underfull \hbox (badness 10000) in paragraph at lines 304--306
 
  []
 
-[33]
-Underfull \hbox (badness 10000) in paragraph at lines 348--351
+[38]
+Underfull \hbox (badness 10000) in paragraph at lines 346--347
+
+ []
+
+[39]
+Underfull \hbox (badness 10000) in paragraph at lines 363--366
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 382--383
+Underfull \hbox (badness 10000) in paragraph at lines 397--398
 
  []
 
-[34] [35] [36]
-Overfull \hbox (13.79787pt too wide) in paragraph at lines 440--442
+[40] [41] [42]
+Overfull \hbox (13.79787pt too wide) in paragraph at lines 455--457
 \OT1/cmr/m/n/10 The fi-nal \OT1/cmr/m/it/10 Con-strained Congestion-Free Rout-i
 ng and Re-bal-anc-ing Prob-lem (CCRRP)
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 440--442
+Underfull \hbox (badness 10000) in paragraph at lines 455--457
 
  []
 
-[37]) (./src/08_mpc.tex [38]
+[43]
+<assets/img/07_graph_based/new_york_vanilla_info.png, id=779, 541.5432pt x 1127
+.412pt>
+File: assets/img/07_graph_based/new_york_vanilla_info.png Graphic file (type pn
+g)
+<use assets/img/07_graph_based/new_york_vanilla_info.png>
+Package pdftex.def Info: assets/img/07_graph_based/new_york_vanilla_info.png  u
+sed on input line 511.
+(pdftex.def)             Requested size: 120.7521pt x 251.38597pt.
+<assets/img/07_graph_based/new_york_vanilla_no_info.png, id=780, 527.0892pt x 1
+112.958pt>
+File: assets/img/07_graph_based/new_york_vanilla_no_info.png Graphic file (type
+ png)
+<use assets/img/07_graph_based/new_york_vanilla_no_info.png>
+Package pdftex.def Info: assets/img/07_graph_based/new_york_vanilla_no_info.png
+  used on input line 518.
+(pdftex.def)             Requested size: 120.7521pt x 254.95601pt.
+ [44]) (./src/08_mpc.tex [45 <./assets/img/07_graph_based/new_york_vanilla_info
+.png> <./assets/img/07_graph_based/new_york_vanilla_no_info.png>] [46]
 Chapter 5.
 
 Underfull \hbox (badness 10000) in paragraph at lines 4--9
 
  []
 
-[39
+[47
 
-] [40]
+] [48]
 Underfull \hbox (badness 10000) in paragraph at lines 84--87
 
  []
 
-[41] [42]
+[49] [50]
 Underfull \hbox (badness 10000) in paragraph at lines 158--160
 
  []
 
-[43] [44] [45] [46]
-Underfull \hbox (badness 10000) in paragraph at lines 281--284
+[51] [52] [53] [54] [55]
+Underfull \hbox (badness 10000) in paragraph at lines 290--293
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 285--287
-
- []
-
-[47]
-Underfull \hbox (badness 10000) in paragraph at lines 290--292
+Underfull \hbox (badness 10000) in paragraph at lines 294--296
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 367--368
+Underfull \hbox (badness 10000) in paragraph at lines 299--301
+
+ []
+
+[56]
+Underfull \hbox (badness 10000) in paragraph at lines 376--377
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 369--370
+Underfull \hbox (badness 10000) in paragraph at lines 378--379
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 372--375
+Underfull \hbox (badness 10000) in paragraph at lines 381--384
 
  []
 
-[48]
-Underfull \hbox (badness 10000) in paragraph at lines 385--387
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 388--391
+[57]
+Underfull \hbox (badness 10000) in paragraph at lines 394--396
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--397
-
- []
-
-[49]
-Underfull \hbox (badness 10000) in paragraph at lines 419--421
+Underfull \hbox (badness 10000) in paragraph at lines 397--400
 
  []
 
 
-Overfull \hbox (26.30748pt too wide) in paragraph at lines 433--435
+Underfull \hbox (badness 10000) in paragraph at lines 401--406
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 428--430
+
+ []
+
+[58]
+Overfull \hbox (26.30748pt too wide) in paragraph at lines 442--444
 \OT1/cmr/m/n/10 where $[](\OML/cmm/m/it/10 k\OT1/cmr/m/n/10 )$ is the can-di-da
 te func-tion and cal-cu-lated at $[] = \OMS/cmsy/m/n/10 f\OML/cmm/m/it/10 u[]; 
 u[]; [] ; ^^T[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]\OT1/cmr/m/n/10 )\OMS/cmsy/
@@ -1181,13 +1242,18 @@ m/n/10 g$\OT1/cmr/m/n/10 .
  []
 
 
-Overfull \hbox (71.52646pt too wide) detected at line 442
+Overfull \hbox (71.52646pt too wide) detected at line 451
 []
  []
 
-[50]) [51]
+) (./src/09_gts.tex [59]
 Chapter 6.
-(./src/10_conclusion.tex [52
+
+Underfull \hbox (badness 10000) in paragraph at lines 8--12
+
+ []
+
+) (./src/10_conclusion.tex [60
 
 ]
 Chapter 7.
@@ -1196,22 +1262,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
  []
 
-) [53
 
-] (./main.bbl [54
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
 
-] [55] [56] [57]) [58] (./main.aux)
+ []
+
+) [61
+
+] (./main.bbl [62
+
+] [63] [64] [65] [66]) [67] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 86E4AB062E6F1DD5B657D72680B042AD;2926.
+(rerunfilecheck)             Checksum: 67625ADD87B1D5999FAC64142FF50749;3409.
  ) 
 Here is how much of TeX's memory you used:
- 35333 strings out of 479382
- 829170 string characters out of 5869398
- 1243956 words of memory out of 5000000
- 52520 multiletter control sequences out of 15000+600000
+ 36353 strings out of 479382
+ 860311 string characters out of 5869398
+ 1266582 words of memory out of 5000000
+ 53472 multiletter control sequences out of 15000+600000
  476061 words of font info for 53 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 89i,20n,92p,2952b,2269s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,20n,92p,2952b,2364s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/opt/local/share/texmf-texlive/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</o
 pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/local/s
@@ -1230,10 +1301,10 @@ local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/local
 /share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></opt/local/shar
 e/texmf-texlive/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/local/shar
 e/texmf-texlive/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on main.pdf (59 pages, 600009 bytes).
+Output written on main.pdf (68 pages, 4114904 bytes).
 PDF statistics:
- 1280 PDF objects out of 1440 (max. 8388607)
- 859 compressed objects within 9 object streams
- 268 named destinations out of 1000 (max. 500000)
- 164 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1190 PDF objects out of 1200 (max. 8388607)
+ 970 compressed objects within 10 object streams
+ 317 named destinations out of 1000 (max. 500000)
+ 198 words of extra memory for PDF output out of 10000 (max. 10000000)
 

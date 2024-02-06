@@ -106,12 +106,13 @@ This chapter provides essential background information and definitions that form
 
 
 
-\begin{definition}{Lyapunov Function}
+\begin{definition}{Lyapunov Function}. \\
 	Let $\mathcal{X}$ be a positively invariant set for a system $x(k+1) = f_\kappa (x(k))$ containing a neighbour of the origin in its interior. A function $V : \mathcal{X} \rightarrow R_+$ is called a Lyapunov function in $\mathcal{X}$ if for all $x \in \mathcal{X}$:
 	\begin{align*}
 		&V(x) > 0 \quad \forall x \neq 0\\
 		&V(x) = 0 \quad\\
 		&V(x(k+1)) - V(x(k)) \leq -\alpha(x) \quad\\
+		%&V(x(k+1)) - V(x(k)) +\alpha(x)\leq 0 \quad\\
 	\end{align*}
 	
 	
@@ -208,6 +209,175 @@ Accordingly, these are the properties to satisfy.
 \end{enumerate}
 
 
+\section{Graph Transformation Theory}
+Graph Transformation Theory (GTT),or graph rewriting, is a mathematical framework used to model and analyze the transformation of graphs. Graphs in this context represent structures composed of nodes and edges, and the transformations involve changing the structure of these graphs.\\
+This section focuses on the fundamentals of this discipline and for more information, the reader is invited to consult the following resources: \cite{HECKEL2006187}, \cite{handbook_of_gg}, \cite{essential_on_graph_theory}, \cite{2123-19534} and \cite{gtt_se}. The notions for this section have been collected while studying the aforenamed resources. \\
+In order to introduce GTT, some concepts of category theory are necessary. \\
 
+\begin{definition}{Category}\\
+A category $\mathcal{C}$ consists of the following data:
+\begin{enumerate}
+	\item Objects : A group of mathematical objects, denoted as $\text{Obj}(\mathcal{C})$
+	\item Morphisms (Arrows/Maps): For every pair of objects \(A\) and \(B\), there is a set of morphisms denoted as \(\text{Hom}_{\mathcal{C}}(A, B)\). If \(f \in \text{Hom}_{\mathcal{C}}(A, B)\), we write \(f: A \to B\). Morphisms must satisfy two properties:
+	\begin{itemize}
+		\item  Associativity: For every triple of objects \(A, B, C\) and morphisms \(f: A \to B\), \(g: B \to C\), and \(h: C \to D\), the composition \((h \circ g) \circ f\) is the same as \(h \circ (g \circ f)\).
+		\item Identity : For every object \(A\), there exists an identity morphism \(1_A: A \to A\) such that \(f \circ 1_A = f\) and \(1_B \circ f = f\) for any morphism \(f: A \to B\).
+	\end{itemize}
+	\item Composition: For each pair of morphisms \(f: A \to B\) and \(g: B \to C\), there exists a composite morphism \(g \circ f: A \to C\) in \(\text{Hom}_{\mathcal{C}}(A, C)\). Composition must be associative, i.e., \((h \circ g) \circ f = h \circ (g \circ f)\).
+\end{enumerate}
+\end{definition}
+
+
+
+
+\begin{example}{Category of graphs}
+	A graph can be represented as the category having
+	\begin{enumerate}
+		\item Objects : tuple $G = (\mathcal{V},\mathcal{E},s,t)$ where
+		\begin{itemize}
+			\item $\mathcal{V}$ is the set of nodes
+			\item $\mathcal{E}$ is the set of edges connecting the nodes
+			\item $s, t : \mathcal{E}\rightarrow\mathcal{V}$ are the source (target) of the edges, referred to as source (target) function
+		\end{itemize}
+		\item Morphisms: $f : G \rightarrow H$ must respect source and target functions, ie:
+		\begin{align*}
+			\forall e \in \mathcal{E}.f(s(e)) &= s(f(e))\\
+			\forall e \in \mathcal{E}.f(t(e)) &= t(f(e))\\
+		\end{align*}
+	\end{enumerate}
+\end{example}
+
+
+\begin{definition}{Product in a Category}\\
+	Let $\mathcal{C}$ be a category. Let $X_1$ and $X_2$ be objects of $\mathcal{C}$. A product of $X_1$ and $X_2$ is an object $X$, typically denoted $X_1 \times X_2$, equipped with a pair of morphisms $\pi_1: X \to X_1$ and $\pi_2: X \to X_2$ satisfying the following universal property:
+	
+	For every object $Y$ and every pair of morphisms $f_1: Y \to X_1$ and $f_2: Y \to X_2$, there exists a unique morphism $f: Y \to X_1 \times X_2$ such that the following diagram commutes:
+	
+	\begin{center}
+		\begin{tikzcd}
+			& Y \arrow[ld, "f_1"'] \arrow[rd, "f_2"] \arrow[d, "f", dashed] & \\
+			X_1 & X_1 \times X_2 \arrow[l, "\pi_1"'] \arrow[r, "\pi_2"] & X_2
+		\end{tikzcd}
+	\end{center}
+\end{definition}
+
+
+\begin{definition}{Coproduct in a Category}\\
+Let $\mathcal{C}$ be a category. Consider objects $X_1$ and $X_2$ in $\mathcal{C}$. A coproduct of $X_1$ and $X_2$ is an object $X$, often denoted as $X_1 \sqcup X_2$, equipped with a pair of morphisms $i_1: X_1 \to X_1 \sqcup X_2$ and $i_2: X_2 \to X_1 \sqcup X_2$ satisfying the following universal property:
+
+For every object $Y$ and every pair of morphisms $f_1: X_1 \to Y$ and $f_2: X_2 \to Y$, there exists a unique morphism $f: X_1 \sqcup X_2 \to Y$ making the following diagram commute:
+
+\[
+\begin{tikzcd}
+	X_1 \arrow[r, "i_1"] \arrow[rd, "f_1"'] & X_1 \sqcup X_2 \arrow[d, "f", dashed] & X_2 \arrow[l, "i_2"'] \arrow[ld, "f_2"] \\
+	& Y &
+\end{tikzcd}
+\]
+
+This means that any other morphism $X_1 \sqcup X_2 \to Y$ that respects $i_1$ and $i_2$ factors uniquely through the coproduct $X_1 \sqcup X_2$.
+In other words, the coproduct of $X_1$ and $X_2$ is an object $X_1 \sqcup X_2$ along with morphisms $i_1$ and $i_2$ such that, for any other object $Y$ and morphisms $f_1$ and $f_2$, there exists a unique morphism $f$ making the diagram commute. The coproduct captures the idea of combining objects $X_1$ and $X_2$ in a way that respects morphisms to another object $Y$.
+\end{definition}
+\\ 
+
+\begin{definition}{Pushout}\\
+Given a category with three objects \(A\), \(B\), and \(C\), and two morphisms (arrows) \(f: A \to B\) and \(g: A \to C\), the pushout of \(f\) and \(g\) is an object \(P\) along with two morphisms \(i_B: B \to P\) and \(i_C: C \to P\) such that the following diagram 
+\begin{center}
+	\begin{tikzcd}
+		A \arrow[r, "f"] \arrow[d, "g"'] & B \arrow[d, "i_B"] \\
+		C \arrow[r, "i_C"'] & P
+	\end{tikzcd}
+\end{center}
+commutes and such that $(P, i_1, i_2)$ is universal. That is, for any other such triple $(Q, j_1, j_2)$ for which the following diagram commutes, there must exist a unique u : P → Q also making the diagram commute:
+\begin{center}
+	\begin{tikzcd}
+		A \arrow[r, "f"] \arrow[d, "g"'] & B \arrow[d, "i_B"] \arrow[rdd, "j_2", bend left]\\
+		C \arrow[r, "i_C"'] \arrow[rrd, "j_1", bend right] & P\arrow[rd, "u", dashed]\\
+		&&Q
+	\end{tikzcd}
+\end{center}
+In simpler terms, the pushout is a construction in category theory that combines two morphisms (arrows) \(f: A \to B\) and \(g: A \to C\) in a way that respects the existing structure of the category.
+
+Given two objects \(B\) and \(C\) with morphisms \(f\) and \(g\) from a common object \(A\), the pushout \(P\) is another object, along with two morphisms \(i_B: B \to P\) and \(i_C: C \to P\). These morphisms create a commutative diagram, meaning that following any path from \(A\) to \(P\) results in the same composition, regardless of the route taken.
+
+Moreover, the pushout has a universal property, stating that for any other object \(Q\) with morphisms \(j_1\) and \(j_2\) forming a similar commutative diagram, there exists a unique morphism \(u: P \to Q\) making the entire diagram commute.
+
+In simpler terms, the pushout captures a way of amalgamating information from \(B\) and \(C\) in a manner that is compatible with the given morphisms, and it does so in a universal way that any alternative attempt to amalgamate would factor uniquely through the pushout.
+\end{definition}\\
+
+\begin{definition}{The Double Pushout Approach (DPO)}\\
+	In the DPO, productions have the following form:
+	\begin{center}
+		\begin{tikzcd}
+			p:L&K  \arrow[l, "l"'] \arrow[r, "r"] & R
+		\end{tikzcd}
+	\end{center}
+	where:
+	\begin{itemize}
+	\item $L$ (Left-hand side (LHS)) is a graph representing the initial pattern or structure to be recognized in the larger graph. This is the part of the graph that the production rule aims to match and replace.
+	\item $K$ (Interface graph) represents the region where the left-hand side $L$ is embedded in the larger graph.
+	\item $R$ (Right-hand side (RHS)) is a graph representing the replacement or transformation that will be applied to the matched portion of the graph. After the application of the production rule, the matched portion of the graph (given by \(L\) and \(K\)) will be replaced by the structure defined in \(R\).
+	\item \(l: K \rightarrow L\) is a morphism representing the embedding of the interface graph \(K\) into the left-hand side \(L\).
+	\item \(r: K \rightarrow R\) is a morphism representing the embedding of the interface graph \(K\) into the right-hand side \(R\).
+	\end{itemize}
+
+	The morphisms are usually injective, indicating that each element in the interface graph \(K\) has a unique counterpart in \(L\) and \(R\), respectively.
+	The overall interpretation of \(p: L \leftarrow K \rightarrow R\) is that when the left-hand side \(L\) and its context \(K\) are found in a larger graph, they can be replaced by the right-hand side \(R\) according to the specified morphisms \(l\) and \(r\).  \\
+	This production is applied as follows.
+	\begin{center}
+		\begin{tikzcd}
+			L\arrow[d, "m"]&K  \arrow[l, "l"'] \arrow[r, "r"] \arrow[d, "d"] & R\arrow[d, "m'"] \\
+			G&D  \arrow[l, "l'"'] \arrow[r, "r'"] & H
+		\end{tikzcd}
+	\end{center}
+	
+	So, when this production rule is applied to \(G\), the subgraph \(D\) matching the left-hand side \(L\) is replaced by the right-hand side \(R\), resulting in the transformed graph \(H\). The morphisms \(m\), \(d\), and \(m'\) ensure that the embedding and replacement are consistent with the larger graphs. The commutativity of the diagram ensures that the rewriting process is well-defined and respects the structure of the graphs involved.
+	
+	\begin{enumerate}
+		\item Matching and Interface: The interface graph $K$ is matched within the original graph $G$ using the matching morphism $d: K \to D$. This identifies where the LHS $L$ is located in $G$.
+		
+		\item LHS Embedding: The LHS $L$ is embedded into the original graph $G$ using the embedding morphism $m: L \to G$. This creates a graph that includes the LHS structure.
+		
+		\item Application of Production Rule: The LHS $L$ is then replaced by the RHS $R$, respecting the embedding morphisms $l$ and $r$. This transformation is performed within the identified context given by the interface graph.
+		
+		\item Resulting Graph: The resulting graph $H$ is obtained after the replacement. The context graph $D$ is embedded into $H$ using $r': D \to H$, and the RHS $R$ is included in $H$ using $m': R \to H$.
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	Let's define a graph that represents a simple directed network:
+	\begin{equation}
+		G = \{ \text{Nodes: } A, B, C, D; \text{ Edges: } (A \rightarrow B), (B \rightarrow C), (C \rightarrow D) \}
+	\end{equation}
+	Let's define a DPO production rule to replace a chain of three nodes with a new node. The production rule is as follows:
+	\begin{equation}
+		p: L \leftarrow K \rightarrow R
+	\end{equation}
+	Where:
+	\begin{itemize}
+		\item\(L\) (LHS): Three consecutive nodes forming a chain - \(A \rightarrow B \rightarrow C\).
+		\item\(K\) (Interface graph): The interface graph is the same chain of nodes - \(A \rightarrow B \rightarrow C\).
+		\item\(R\) (RHS): A single node - \(X\).
+		\item\(l: K \rightarrow L\) is the identity morphism since \(L\) and \(K\) are the same chain.
+		\item\(r: K \rightarrow R\) maps the chain of nodes to the single replacement node.
+	\end{itemize}
+
+	The production rule essentially says that if a chain of three nodes is found in a graph, it can be replaced with a single node. The interface graph \(K\) ensures that the replacement occurs in the correct context.
+	
+	\begin{align*}
+		\text{Initial Graph:} & \quad G = \{A \rightarrow B \rightarrow C \rightarrow D\} \\
+		\text{Production Rule:} & \quad p:  \underset{L}{\underbrace{A \rightarrow B \rightarrow C}}\rightarrow\underset{K}{\underbrace{A \rightarrow B \rightarrow C}} \rightarrow \underset{R}{\underbrace{X}} \\
+		\text{Resulting Graph:} & \quad H =  \{X \rightarrow D\}
+	\end{align*}
+	After applying the production rule, the chain \(A \rightarrow B \rightarrow C\) has been replaced by a single node \(X\), resulting in the transformed graph \(H\). 
+\end{example}\\
+
+
+\begin{definition}{Dangling Condition \\}
+	Let \(G = (\mathcal{V}, \mathcal{E})\) be a graph with vertices $\mathcal{V}$ and edges $\mathcal{E}$. The dangling condition imposes that, for each edge \(e_i = (v_s, v_t) \in \mathcal{E}\), if \(e_i\) is not deleted, then both its source node \(v_s\) and target node \(v_t\) should be preserved. This condition is an essential condition in the DPO framework.
+\end{definition}\\
+
+\begin{definition}{Identification Condition \\}
+	Let \(G = (\mathcal{V}_G, \mathcal{E}_G)\) be a graph and \(H = (\mathcal{V}_H, \mathcal{E}_H)\) be a host graph. Suppose there exists a morphism \(f: \mathcal{V}_G \rightarrow \mathcal{V}_H\) and \(g: \mathcal{E}_G \rightarrow \mathcal{E}_H\) such that two nodes or edges in \(G\), denoted as \(v_{1}, v_{2} \in \mathcal{V}_G\) or \(e_{1}, e_{2} \in \mathcal{E}_G\), are matched into a single node or edge in \(H\) (i.e., \(f(v_{1}) = f(v_{2})\) or \(g(e_{1}) = g(e_{2})\) via a non-injective morphism), the identification condition imposes that those should be preserved. This condition is an essential condition in the DPO framework.
+\end{definition}
 
 

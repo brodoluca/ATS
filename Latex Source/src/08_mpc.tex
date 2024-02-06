@@ -157,7 +157,16 @@ Thanks to these formulations, the system can be written as a linear time-depende
 	x(t+1) = Ax(t) + Bu(t)\label{eq:normal_system}
 \end{equation}
 where $x(t) \in \mathcal{X}$, $u(t) \in \mathcal{U}(t)$ and $A$ and $B$ are the matrix associated to the coefficients of (\ref{eq:position_propagation}), (\ref{eq:stationed_propagation_ind}) and (\ref{eq:demand_time}). \\
-
+\subsection{Objectives}
+Clearly, the main objective is to serve all the outstanding requests. 
+\begin{equation}
+	J_1(x(t)) = \sum_{i,j \in \mathcal{V}}o_{ij}(t)
+\end{equation}
+However, the performance of the system can be optimized if other aspects are considered as well.  \\
+Since the speed of the vehicles, according to the model, is determined by the number of vehicles on the street, limiting it will improve performance. Vehicles serving requests are responsible for the main objective and their number is directly proportional to the number of outstanding requests. On the other hand, rebalancing vehicles, while help reducing the  number of requests, they also contribute to congestions. Therefore, by optimizing the time they spend on the street, the speed of the transporting vehicles is optimized as a result. 
+\begin{equation}
+	J_2(x(t)) = \sum_{i,j \in \mathcal{V}}T_{ij}^aw^a_{ij}(t)
+\end{equation}
 
 \subsection{Model Evaluation}
 Some comments are in order. Requests are treated considering customers and goods as single entities. More specifically, if a group consisting of three customers reach a station, this is treated as three individual requests, therefore $p_{ij}(t) = 3$. While this simplifies the model description and reflects the requirements for goods delivery, it would create an inconvenient scenario for traveling customers. As a matter of fact, it is not hard to envision situations where a group of travelers would like to travel together. However, it is out of the scope of this work to treat this scenario. One might also argue that this simplification effectively treats the model as if vehicles where single-occupancy and it is true in terms of intuition, this addition allows to reduce the number of variables by a constant factor, i.e. the sum of all vehicles' capacity. \\
@@ -271,10 +280,10 @@ It is trivial to demonstrate that $\mathcal{\mathcal{U}}_{\kappa_f}(t) \subseteq
 A remark is required. \equaref{eq:no_more_than_request_f} and \equaref{eq:replace_vehicle} indeed allow vehicles to be replaced and, therefore, potentially take care of the requests. However, in addition to the assumption made for \equaref{eq:no_more_than_request_f}, the state of the system will remain in $\mathcal{X}_f$ only as long as the requests are made within a time interval corresponding to the time required to travel  from the furthest station to the starting station. In other words, this is a very particular case of extrogenous requests. Therefore, for the rest of this section, the external arriving requests will be considered as zero, i.e. $o^p_{ij}(t) =  o^g_{ij}(t) = 0$, therefore treating the system as undisturbed.\\
 This assumption also allows to derive an appropriate cost function for the system. As indicated in \secref{sec:stable_mpc_systems}, the candidate terminal cost must be a Lyapunov function (see \secref{sec:general_definitions} for more details).  \\
 Within the assumptions made, one candidate for the terminal cost function can be found by observing the vehicles that are still driving around the system. \\
-Intuitively, one can consider the time that the vehicles will spend on the road. At first glance, according to the definition found in \equaref{eq:required_time}, this would be difficult to prove to be Lyapunov. As a matter of fact, the speed of the vehicles depends on the amount of vehicles on the road, which would mean the function is not guaranteed to strictly decrease. In this situation, however, since we are dealing with an undisturbed system near its equilibrium, new vehicles will not be put it motion. In other words, at time $t$, if there are $\sum_{i \in \mathcal{V}}\sum_{j \in \mathcal{V}}V_{ij}(t)$ vehicles in the whole system, this number will only decrease as the system progresses, since eventually vehicles will become stationed. As a consequence, the speed of the vehicles will also improve and, therefore, the time will decrese. \\
+Intuitively, one can consider the time that the vehicles will spend on the road. At first glance, according to the definition found in \equaref{eq:required_time}, this would be difficult to prove to be Lyapunov. As a matter of fact, the speed of the vehicles depends on the amount of vehicles on the road, which would mean the function is not guaranteed to strictly decrease. In this situation, however, since we are dealing with an undisturbed system near its equilibrium, new vehicles will not be put it motion. In other words, at time $t$, if there are $\sum_{i,j \in \mathcal{V}}V_{ij}(t)$ vehicles in the whole system, this number will only decrease as the system progresses, since eventually vehicles will become stationed. As a consequence, the speed of the vehicles will also improve and, therefore, the time will decrese. \\
 Therefore, the final const function $J(x) : \mathcal{X}_f \rightarrow R_+$ can be constructed in the following way. 
 \begin{equation}
-	J_f(x(N)):= \sum_{i \in \mathcal{V}}\sum_{j \in \mathcal{V}}\sum_{a \in\mathcal{A}}T_{ij}^a
+	J_f(x(N)):= \sum_{i,j \in \mathcal{V}}\sum_{a \in\mathcal{A}}T_{ij}^a
 	\label{eq:cost_function_time}
 \end{equation}
 
@@ -286,7 +295,7 @@ Within the definition of $\mathcal{X}_f$, (\ref{eq:cost_function_time}) is a Lya
 \begin{enumerate}
 	\item The function must be strictly positive, except at zero, i.e.
 	\begin{equation*}
-		\sum_{i \in \mathcal{V}}\sum_{j \in \mathcal{V}}\sum_{a \in\mathcal{A}}T_{ij}^a >0
+		\sum_{i,j \in \mathcal{V}}\sum_{a \in\mathcal{A}}T_{ij}^a >0
 	\end{equation*}
 	This is indeed true by definition of $T_{ij}^a$. More specifically, when the system is not at zero, then there are vehicles moving ($\sum_{i \in \mathcal{V}}\sum_{j \in \mathcal{V}}\sum_{a \in\mathcal{A}}w_{ij}^a >0$). Then, at least one vehicle is moving. As a result, $x_{ij}^a >0$ and consequently $T_{ij}^a>0$. \\
 	\item Secondly, the function must be assume the value of zero at equilibrium. ln other words, given any point $x_{\mathcal{E}}\in\mathcal{E}$

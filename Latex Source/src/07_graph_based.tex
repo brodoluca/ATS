@@ -259,6 +259,13 @@ It is not uncommon to also find in literature cost functions which are developed
 Before formulating the routing problem formally, a small consideration must be made. For convenience, the set of nodes recheable from node $u$ by traversing a single edge $\mathcal{N}^+_u$, i.e. the ingoing neighbours of $u$, and $\mathcal{N}^-_u$ as the set of outgoing neighbours of $u$.\\ Additionally, in order to ease the notation, the set containin all the initial stations of each request $r \in R_a$ will be indicated as $\underline{S_a'}$. Likewise,  $\bar{T_a'}$ will be the set of terminal stations of each request $r \in R_a$. \\
 On a basic level, i.e. without constraints, one can formulate the \textit{Unconstrained Routing Problem (URP)} as follows. Given a transportation network $\mathcal{G}$, a set of vehicles $\mathcal{A}$ and a set of requests $\mathcal{R}$, defined within the description in section \secref{sec:vc_model}, solve:
 
+
+
+
+
+
+
+
 \begin{align}
 	\text{min}&  \text{
 	(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) or (\ref{eq:combined_metrics})
@@ -269,21 +276,27 @@ On a basic level, i.e. without constraints, one can formulate the \textit{Uncons
 &\sum_{u \in \mathcal{N}^-_{\bar{t_a}} } V^a_{u, \bar{t_a}} = 1 \quad \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u}\\
 %&\sum_{u \in \mathcal{V}} V^a_{u, v} - \sum_{w \in \mathcal{V}} V^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus ( \underline{S_a'} \cup \bar{T_a'})\label{eq:flow_conservation_graph2_u} \\
 &\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} = 1 \quad \forall r \in \bar{R_a}, \forall a \in \mathcal{A} 	\label{eq:flow_cons_arrival_graph_v_u}\\
-&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_a},u} = 1 \quad \forall r \in \bar{R_a}, \forall a \in \mathcal{A}\label{eq:flow_cons_departure_graph_v_u} \\
-	\nonumber%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
+&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_a},u} = 1 \quad \forall r \in \bar{R_a}, \forall a \in \mathcal{A}\label{eq:flow_cons_departure_graph_v_u}\\
+%&{p^a_u - p^a_v + P_a \cdot V_{u,v} \leq P_{a} - \sum_{r\in\mathcal{R}}P'_r, \quad \forall u, v \in \mathcal{V}, v \neq u, v \neq \underline{s}_a}\label{eq:no_sub_tour_g}\\
+%&{g^a_u - g^a_v + G_a \cdot V_{u,v} \leq G_{a} - \sum_{r\in\mathcal{R}}G'_r, \quad \forall u, v \in \mathcal{V}, v \neq u, v \neq \underline{s}_a}\label{eq:no_sub_tour_p}\\
+%&g^a_u \leq P_a;\quad p^a_u \leq P_a,   \quad\forall a \in \mathcal{A}\label{eq:final_req}\\
+%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
+\nonumber
 \end{align}
-(\ref{eq:flow_conservation_graph_u}) insures that for all edges which do not lead to a source or destination, if $a$ reaches $v$ from a road, an incoming flow will lead to an outgoing one. In other words, they guarantee connections between roads. (\ref{eq:flow_cons_arrival_graph_u}) -  (\ref{eq:flow_cons_departure_graph_u}) insure that each universal source and destination is reached ones. Similarly, (\ref{eq:flow_cons_arrival_graph_u}) -  (\ref{eq:flow_cons_departure_graph_v_u}) achieves the same result, but for each requests.  It should be mentioned that to guarantee that those special nodes are reached at most once one can simply change from equalities to inequalites, like for e.g. $\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} \ge 1$.\\
- %Finally, (\ref{eq:s_before_t}) insures that source nodes are reached before the destinations. \\
+(\ref{eq:flow_conservation_graph_u}) insures that for all edges which do not lead to a source or destination, if $a$ reaches $v$ from a road, an incoming flow will lead to an outgoing one. In other words, they guarantee connections between roads. (\ref{eq:flow_cons_arrival_graph_u}) -  (\ref{eq:flow_cons_departure_graph_u}) insure that each universal source and destination is reached ones. Similarly, (\ref{eq:flow_cons_arrival_graph_v_u}) -  (\ref{eq:flow_cons_departure_graph_v_u}) achieves the same result, but for each requests.  It should be mentioned that to guarantee that those special nodes are reached at most once one can simply change from equalities to inequalites, like for e.g. $\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} \ge 1$.\\
+%Finally, (\ref{eq:no_sub_tour_g})-(\ref{eq:final_req}) assure that no sub-tour are presentes. This is inspired from the Miller-Tucker-Zemli formulation and utilizes two continuous decision variables $p^a, g^a \in \mathbb{R}_{\ge0}$ representing the cumulative load of the vehicle $a$. 
+
+%Finally, (\ref{eq:s_before_t}) insures that source nodes are reached before the destinations. \\
 In order to find the minimum number of vehicles required, one can use the method described \citepaperof{project_thesis}{Brodo}. 
 \subsubsection*{Constrained Version}
 While it could bring some interesting insights, the URP does not contain the necessary information to provide efficient routing for the scenario considered in this work. The goal is to identify the best possible path that \textup{(i)} satisfies all the requests and \textup{ii} is congestion free. The \textit{Congestion-Free Routing Problem (CRR)} is formally defined as follows.\\ Given a transportation network $\mathcal{G}$, a set of vehicles $\mathcal{A}$ and a set of requests $\mathcal{R}$, defined within the description in section \secref{sec:vc_model}, solve:
 
 \begin{align}
-	\text{min}&  \text{
-		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) or (\ref{eq:combined_metrics})
-	}\nonumber\\
+	\text{min}&  
+		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) \text{ or } (\ref{eq:combined_metrics})
+	\nonumber\\
 	\text{s.t.} &\nonumber\\
-	&\text{(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_v_u})}\nonumber\\
+	&(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_v_u})\nonumber\\
 	&\sum_{a \in \mathcal{A}}V^a_{u,v} \leq c_{u,v} \quad \forall (u,v) \in \mathcal{E} \label{eq:cong_free}\\
 	&V^a_{u,v}\cdot(s_{u}^a + T_{u,v}^a - s_{v}^a) \leq 0 \quad \forall (u,v) \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:relations_node_time}\\
 	&a'_v \leq s_{v}^a \leq b'_v \quad \forall v \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:time_window_constraint}\\
@@ -296,15 +309,16 @@ In this work, however, in order to combine dispatching and routing into the same
 Accordingly, the \textit{Naive Routing and Dispatching Problem (NRDR)} can be formulated as 
 
 \begin{align}
-	\text{min}&  \text{
+	\text{min}&  
 		(\ref{eq:req_unserved}),
-		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) or (\ref{eq:combined_metrics})
-	}\nonumber\\
+		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) \text{ or } (\ref{eq:combined_metrics})
+	\nonumber\\
 	\text{s.t.} &\nonumber\\
-	&\text{(\ref{eq:cons_quantity_p}),(\ref{eq:cons_quantity_g})}\nonumber\\	
-	&\text{(\ref{eq:req_served}),(\ref{eq:req_served_per_vehicle})}\nonumber\\	
-	&\text{(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_u})}\nonumber\\
-	&\text{(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})}\nonumber\\
+	&(\ref{eq:cons_quantity_p}),(\ref{eq:cons_quantity_g})\nonumber\\	
+	&(\ref{eq:req_served}),(\ref{eq:req_served_per_vehicle})\nonumber\\	
+	&(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_u})\nonumber\\
+	&(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})\nonumber\\
+	%&(\ref{eq:no_sub_tour_g})-(\ref{eq:final_req})\nonumber\\
 	%&\sum_{u \in \mathcal{V}} V^a_{u, v} - \sum_{w \in \mathcal{V}} V^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus ( \underline{S_a'} \cup \bar{T_a'})\label{eq:flow_conservation_graph2_u} \\
 	&\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} = x_{a,r} \quad  \bar{t'_r} \in r, \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:must_arrive_dep}	\\
 	&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_r}, u} = x_{a,r} \quad  \underline{s'_r} \in r, \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:must_go_start}\\
@@ -331,12 +345,13 @@ Alternatively, one can argue that the CRR can be reformulate to solve the dispat
 
  and given a transportation network $\mathcal{G}$, a set of vehicles $\mathcal{A}$ and a set of requests $\mathcal{R}$, defined within the description in section \secref{sec:vc_model}, solve:\\
 \begin{align}
-	\text{min}&  \text{
+	\text{min}&  
 		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}), (\ref{eq:pollution_metric}) or (\ref{eq:combined_metrics})
-	}\nonumber\\
+	\nonumber\\
 	\text{s.t.} &\nonumber\\
-	&\text{(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_u})}\nonumber\\
-	&\text{(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})}\nonumber\\
+	&(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_u})\nonumber\\
+	&(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})\nonumber\\
+	%&(\ref{eq:no_sub_tour_g})-(\ref{eq:final_req})\nonumber\\
 	&\sum_{ a \in \mathcal{A} }
 	\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } \alpha_a \cdot V^a_{ \underline{s'_r}, u} \ge \alpha'_r \quad \forall r \in \mathcal{R}, \forall \alpha \in \{G, P\}	\label{eq:leaving_from_starting_req}\\
 	&\sum_{ a \in \mathcal{A} }\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_r}, u} =\lambda_r\quad \forall r \in \mathcal{R}	\label{eq:each_request_ones}\\
@@ -344,7 +359,7 @@ Alternatively, one can argue that the CRR can be reformulate to solve the dispat
 	%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
 \end{align}
 (\ref{eq:leaving_from_starting_req}) insures that request can be served by the vehicle according to its capacity. (\ref{eq:each_request_ones}) guarantees each request is served $\lambda_r$ times and (\ref{eq:first_start}) insures that each vehicle reaches the terminal station of each request. 
-\subsection{Rebalancing}
+\subsection{Rebalancing}\label{sec:rebal}
 In simpler terms, the rebalancing problem revolves around efficiently redistributing autonomous vehicles (AVs) to optimize their responsiveness to new ride requests while minimizing any existing imbalances in the system. The goal is to fine-tune the positioning of AVs, ensuring they are strategically placed to promptly meet user demands and address any inherent irregularities in the distribution of service requests. This challenge is particularly crucial in ride-sharing  systems and transportation systems alike, where the dynamic nature of user requests and varying demand across different locations can lead to imbalances in the fleet's distribution. Effectively tackling the rebalancing problem enhances the overall efficiency of the system, providing users with quicker response times and a more evenly distributed service, ultimately contributing to a smoother and more reliable autonomous transportation network. \\
 The formulation of the rebalancing problem is partially inspired from the works of \citepaperofs{congestion_vrp_phd_graph}{Zhang} and \citepaperofs{8593743}{Wallar}.  \\
 The model previosuly described allows to reason on the rebalancing model in a novel manner when compared to the literature reviewed in \chapref{ch:related_work}. More specifically one could deal with the rebalancing by leveraging the request arrival rate $\lambda_r$ and the fact that vehicles are assumed to have a starting and terminal station, $\underline{s_a}$ and $\bar{t_a}$ respectively. \\
@@ -441,13 +456,14 @@ The final \textit{Constrained Congestion-Free Routing and Rebalancing Problem (C
 Given a transportation network $\mathcal{G}$, a set of vehicles $\mathcal{A}$, a set of total requests $\mathcal{R}$ and the sets of requests per region $\mathcal{R}'$ (\equaref{eq:req_per_reg}), solve: \\
 
 \begin{align}
-	\text{min}&  \text{
-		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}) or (\ref{eq:pollution_metric})
-	}\nonumber\\
+	\text{min}&  
+		(\ref{eq:travel_time_routing}), (\ref{eq:distance_time_routing}) \text{ or } (\ref{eq:pollution_metric})
+	\nonumber\\
 	\text{s.t.} &\nonumber\\
-	&\text{(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_arrival_graph_u})}\nonumber\\
-	&\text{(\ref{eq:leaving_from_starting_req})-(\ref{eq:first_start})	}\nonumber\\
-	&\text{(\ref{eq:relations_node_time})-(\ref{eq:discharging_constraints})}\nonumber\\
+	&(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_arrival_graph_u})\nonumber\\
+	&(\ref{eq:leaving_from_starting_req})-(\ref{eq:first_start})	\nonumber\\
+	&(\ref{eq:relations_node_time})-(\ref{eq:discharging_constraints})\nonumber\\
+	%&(\ref{eq:no_sub_tour_g})-(\ref{eq:final_req})\nonumber\\
 	&\sum_{\bar{t} \in \mathcal{V}_c}\sum_{ u \in \mathcal{N}^-_{\bar{t}} }V^a_{u, \bar{t}} = 1 \quad \forall a \in \mathcal{A},  \label{eq:each_vehicle_end2}\\
 	&\sum_{a \in \mathcal{A}}\sum_{u \in \mathcal{N}^-_{\bar{t}} } V^a_{u, \bar{t}} \leq z_{\bar{t}} \quad \forall \bar{t} \in \mathcal{V}_c \label{eq:capacity_depot_respected2}\\
 	&\sum_{a \in \mathcal{A}}\sum_{u \in \mathcal{N}^-_{\bar{t}} } G_a \cdot V^a_{u, \bar{t}} \ge \sum_{r \in \mathcal{R'}_{\bar{t}}} G'_r \quad \forall \bar{t} \in \mathcal{V}_c \label{eq:goods_cap2}\\
@@ -485,8 +501,30 @@ Furthermore, due to its vehicle-centric approach, this formulation offers signif
 %	& \sum_{r \in \mathcal{R}} x_{ar} \leq 1 \quad \forall a \in \mathcal{A} \label{eq:vehicle_assignment_limit} \\
 %	& V^a_{u, v}, x_{ar} \in \{0, 1\} \quad \forall a \in \mathcal{A}, \forall u, v \in \mathcal{V}, \forall r \in \mathcal{R} \nonumber
 %\end{align}
-\section{Use Case/ Simulation / Evaluation}
-\cite{Donovan2014}
+\section{Use Case}
+The main purpose of this use case is to demonstrate the applicability of the model in the real world and the feasibility of the solutions presented in \secref{sec:prob_form}. This use case is based on real-world data extracted from taxi rides in manhattan in 2016 (\cite{Donovan2014}). \\
+The data has been prepared in the following way. Since the data retrieved is based on the whole New York City, in order to decrease the complexity, some filters have been applied to only target the Manhattan area. More specifically, the pick-up and drop-off points which were outside of Manhattan have been filtered out. Subsequentially, these pick-up and drop-off points have been clustered in 50 locations each. Finally, these locations have been mapped to the real Manhattan road network and the shortest path between five neighbours nodes has been traced in order to create a simplified road network, which can be seen in \figref{fig:nyc_rn}. 
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}[b]{0.35\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/img/07_graph_based/new_york_vanilla_info.png}
+		\caption{}
+		\label{fig:nyc_rn_info}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.35\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/img/07_graph_based/new_york_vanilla_no_info.png}
+		\caption{}
+		\label{fig:nyc_rn_roads}
+	\end{subfigure}
+	\caption[Simplified Road Network of Manhattan]{Simplified Road Network of Manhattan. In \ref{fig:nyc_rn_info}, red points are used to indicate pick-up stations, while blue delineates drop-off points and green is used to pin-point the fictitious depots. These are obtained by the historical data. Furthermore, pick-up points can also be used as drop-off, and viceversa.  }
+	\label{fig:nyc_rn}
+\end{figure}
+
+As a consequence, the complexity of Manhattan's road network has been significantly reduced. Within the context of this project, and specifically in this section, this simplification is deemed acceptable since only proof of concepts are being considered. Furthermore, employing a more intricate representation of the road network would not significantly enhance the objectives at hand. This streamlined approach not only facilitates clearer demonstration of concepts but also expedites the analysis process, enabling a more focused examination of essential elements. Thus, for the current scope of this work, the simplified representation remains suitable and pragmatic.\\
+According to the discussion in \secref{sec:rebal}, the area has been divided in multiple areas as well. This can be observed in \figref{fig:nyc_rn_info}. Although the division in areas it's not explicitely stated, five green-highlited nodes can be observed. These nodes represent depots and have been created to fulfill the same purpose of \secref{sec:rebal}. 
 %\section{TO-DO}
 %\begin{itemize}
 %	\item Make the battery model in terms of the links. The time is, basically, the velocity of that link over the distance.
@@ -496,4 +534,3 @@ Furthermore, due to its vehicle-centric approach, this formulation offers signif
 %\begin{itemize}
 %	\item maybe use  a kalman filter to estimate requests per time
 %\end{itemize}
-

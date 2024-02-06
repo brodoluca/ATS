@@ -27,6 +27,12 @@ Bahman Askari, Tai Le~Quy, and Eirini Ntoutsi.
 \newblock In {\em 2020 IEEE 44th Annual Computers, Software, and Applications
   Conference (COMPSAC)}, pages 1719--1724, 2020.
 
+\bibitem{beck2002VRPGTS}
+J.~Beck, Patrick Prosser, and E.~Selensky.
+\newblock Graph transformations for the vehicle routing and job shop scheduling
+  problems.
+\newblock volume 2502, pages 60--74, 10 2002.
+
 \bibitem{project_thesis}
 Luca Brodo.
 \newblock Autonomous mobility-on-demand: A novel framework to study amod in
@@ -59,6 +65,12 @@ Kai~Fung Chu, Albert~Y.S. Lam, and Victor~O.K. Li.
 \newblock In {\em 2018 21st International Conference on Intelligent
   Transportation Systems (ITSC)}, pages 1402--1407, 2018.
 
+\bibitem{Lara2005ModellingAA}
+Juan de~Lara, Hans Vangheluwe, and Pieter~J. Mosterman.
+\newblock Modelling and analysis of traffic networks based on graph
+  transformation.
+\newblock 2005.
+
 \bibitem{Donovan2014}
 B.~Donovan and D.~B. Work.
 \newblock New york city taxi trip data (2010-2013).
@@ -77,17 +89,46 @@ Aur{\'e}lien Froger, Ola Jabali, Jorge~E. Mendoza, and Gilbert Laporte.
   stations.
 \newblock {\em Transportation Science}, 56(2):460--482, 2022.
 
+\bibitem{furst2022automation}
+M.~Fürst, J.~Götz, M.~Otto, et~al.
+\newblock Automation of gearbox design.
+\newblock {\em Forsch Ingenieurwes}, 86:409--420, 2022.
+
 \bibitem{dlr-nemo-bili}
 {German Aerospace Center (DLR)}.
 \newblock {Nemo Bili - Mobility from the First to the Last Mile}, Year of
   access.
 \newblock Accessed on: 04.01.2024.
 
+\bibitem{gross2016a}
+J~Gross and S~Rudolph.
+\newblock Geometry and simulation modeling in design languages.
+\newblock {\em Aerospace Science and Technology}, 54:183--191, 2016.
+
+\bibitem{gross2016b}
+J~Gross and S~Rudolph.
+\newblock Modeling graph-based satellite design languages.
+\newblock {\em Aerospace Science and Technology}, 49:63--72, 2016.
+
+\bibitem{gross2016c}
+J~Gross and S~Rudolph.
+\newblock Rule-based spacecraft design space exploration and sensitivity
+  analysis.
+\newblock {\em Aerospace Science and Technology}, 59:162--171, 2016.
+
 \bibitem{electronics9081277}
 Kyoungseok Han, Tam~W. Nguyen, and Kanghyun Nam.
 \newblock Battery energy management of autonomous electric vehicles using
   computationally inexpensive model predictive control.
 \newblock {\em Electronics}, 9(8), 2020.
+
+\bibitem{HECKEL2006187}
+Reiko Heckel.
+\newblock Graph transformation in a nutshell.
+\newblock {\em Electronic Notes in Theoretical Computer Science},
+  148(1):187--198, 2006.
+\newblock Proceedings of the School of SegraVis Research Training Network on
+  Foundations of Visual Modelling Techniques (FoVMT 2004).
 
 \bibitem{hennessy1999}
 Deborah~A. Hennessy and Donald~L. Wiesenthal.
@@ -118,6 +159,11 @@ S.~R. Kancharla and G.~Ramadurai.
 \newblock Electric vehicle routing problem with non-linear charging and
   load-dependent discharging.
 \newblock {\em Expert Systems With Applications}, 160:113714, 2020.
+
+\bibitem{essential_on_graph_theory}
+Hans-Joerg Kreowski, Renate Klempien-Hinrichs, and Sabine Kuske.
+\newblock Some essentials of graph transformation.
+\newblock {\em Studies in Computational Intelligence}, 25, 01 2006.
 
 \bibitem{LANGSON2004125}
 W.~Langson, I.~Chryssochoos, S.V. Raković, and D.Q. Mayne.
@@ -191,15 +237,31 @@ Marco Pavone, Stephen~L Smith, Emilio Frazzoli, and Daniela Rus.
 \newblock {\em The International Journal of Robotics Research}, 31(7):839--854,
   2012.
 
+\bibitem{2123-19534}
+Mark~P.H. Raadsen, Michiel~C.J. Bliemer, and Michael~G.H. Bell.
+\newblock Introducing pattern graph rewriting in novel spatial aggregation
+  procedures for a class of traffic assignment models.
+\newblock 2016-12-01.
+
 \bibitem{rawlings2020model}
 James~B. Rawlings, David~Q. Mayne, and Moritz~M. Diehl.
 \newblock {\em Model Predictive Control: Theory, Computation, and Design}.
 \newblock Nob Hill Pub., 2020.
 
+\bibitem{gtt_se}
+Gabriele~Taentzer Reiko~Heckel.
+\newblock Graph transformation for software engineers.
+\newblock 01 2020.
+
 \bibitem{congestion_vrp_phd_graph}
 Federico Rossi, Rick g, and Marco Pavone.
 \newblock Autonomous vehicle routing in congested road networks.
 \newblock {\em CoRR}, abs/1603.00939, 2016.
+
+\bibitem{handbook_of_gg}
+Grzegorz Rozenberg.
+\newblock Handbook of graph grammars and computing by graph transformation.
+\newblock 01 1997.
 
 \bibitem{Salaza2019Cong}
 Mauro Salazar, Matthew Tsao, Izabel Aguiar, Maximilian Schiffer, and Marco
@@ -235,6 +297,13 @@ Erik~T Verhoef.
 \newblock Time, speeds, flows and densities in static models of road traffic
   congestion and congestion pricing.
 \newblock {\em Regional Science and Urban Economics}, 29(3):341--369, 1999.
+
+\bibitem{voss2023graph}
+C~Voss, F~Petzold, and S~Rudolph.
+\newblock Graph transformation in engineering design: an overview of the last
+  decade.
+\newblock {\em Artificial Intelligence for Engineering Design, Analysis and
+  Manufacturing}, 37(e5):1--17, 2023.
 
 \bibitem{8593743}
 Alex Wallar, Menno Van Der~Zee, Javier Alonso-Mora, and Daniela Rus.
@@ -299,6 +368,12 @@ Rick Zhang and Marco Pavone.
 \newblock A queueing-network approach to the analysis and control of
   mobility-on-demand systems.
 \newblock {\em Proceedings of the American Control Conference}, 2015, 09 2014.
+
+\bibitem{zhao2020robogrammar}
+Allan Zhao, Jie Xu, Mina Konaković~Luković, Josephine Hughes, Andrew
+  Speilberg, Daniela Rus, and Wojciech Matusik.
+\newblock Robogrammar: Graph grammar for terrain-optimized robot design.
+\newblock {\em ACM Transactions on Graphics (TOG)}, 39(6):1--16, 2020.
 
 \bibitem{voronoi_part}
 Pengbo Zhu, Isik Sirmatel, Giancarlo Trecate, and Nikolas Geroliminis.

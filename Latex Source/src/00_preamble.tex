@@ -20,6 +20,7 @@
 \usepackage{pgfplots}
 \usepackage{chngcntr}
 %\usepackage{bbm}
+\usepackage{tikz-cd}
 
 \usetikzlibrary{decorations.markings}
 %\usepackage{titlesec}
@@ -50,7 +51,7 @@
 \setcounter{tocdepth}{1}
 
 
-\newcounter{definition}[section]
+\newcounter{definition}[chapter]
 \renewcommand{\thedefinition}{\thesection.\arabic{definition}}
 \newenvironment{definition}[1][]{%
 	\refstepcounter{definition}%
@@ -59,7 +60,7 @@
 }{\upshape}
 
 
-\newcounter{proposition}[section]
+\newcounter{proposition}[chapter]
 \renewcommand{\thedefinition}{\thesection.\arabic{proposition}}
 \newenvironment{proposition}[1][]{%
 	\refstepcounter{proposition}%
@@ -68,3 +69,10 @@
 }{\upshape}
 
 
+\newcounter{example}[chapter]
+\renewcommand{\thedefinition}{\thesection.\arabic{example}}
+\newenvironment{example}[1][]{%
+	\refstepcounter{example}%
+	\textbf{Example \arabic{example}#1: }%
+	%\itshape
+}{\itshape}
