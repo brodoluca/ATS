@@ -200,9 +200,10 @@ Accordingly, using \equaref{eq:cons_quantity_p}, \ref{eq:cons_quantity_g}  and  
 	\sum_{a \in \mathcal{A}} x_{a,r} \leq \lambda_r \quad \forall r \in \mathcal{R}\\
 	\label{eq:req_served}
 \end{equation}
-Furthermore, one must ensure that each request is assigned only to $\lambda_r$ vehicles. This is insured by \equaref{eq:req_served_per_vehicle}. 
+Furthermore, one must ensure that each request is assigned at most to one vehicle. This is expressed by \equaref{eq:req_served_per_vehicle}. 
 \begin{equation}
-	\sum_{r \in \mathcal{R}} x_{a,r} = \lambda_r \quad \forall a \in \mathcal{A}\\
+	% \lambda_r
+	\sum_{r \in \mathcal{R}} x_{a,r} \leq 1\quad \forall a \in \mathcal{A}\\
 	\label{eq:req_served_per_vehicle}
 \end{equation}
 The above mentioned equations are based upon the work developed by \citepaperofs{hyland2018dynamic}{Hyland}. \\
@@ -316,17 +317,20 @@ Accordingly, the \textit{Naive Routing and Dispatching Problem (NRDR)} can be fo
 	\text{s.t.} &\nonumber\\
 	&(\ref{eq:cons_quantity_p}),(\ref{eq:cons_quantity_g})\nonumber\\	
 	&(\ref{eq:req_served}),(\ref{eq:req_served_per_vehicle})\nonumber\\	
-	&(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_u})\nonumber\\
+	&(\ref{eq:flow_conservation_graph_u})\nonumber\\%-(\ref{eq:flow_cons_departure_graph_u})\nonumber\\
 	&(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})\nonumber\\
-	%&(\ref{eq:no_sub_tour_g})-(\ref{eq:final_req})\nonumber\\
-	%&\sum_{u \in \mathcal{V}} V^a_{u, v} - \sum_{w \in \mathcal{V}} V^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus ( \underline{S_a'} \cup \bar{T_a'})\label{eq:flow_conservation_graph2_u} \\
-	&\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} = x_{a,r} \quad  \bar{t'_r} \in r, \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:must_arrive_dep}	\\
-	&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_r}, u} = x_{a,r} \quad  \underline{s'_r} \in r, \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:must_go_start}\\
-	&x_{a,r}\cdot(s_{\underline{s'_r}}^a - s_{\bar{t'_r}}^a) \leq 0 \quad \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:pick_bef_del}\\
+	&\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} = x_{a,r} \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_u_d}\\
+	&\sum_{u \in \mathcal{N}^-_{\bar{t_a}} } V^a_{u, \bar{t_a}} = x_{a,r} \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u_d}\\
+	&\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} = x_{a,r} \quad  \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:must_arrive_dep}	\\
+	&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_r}, u} = x_{a,r} \quad   \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:must_go_start}\\
+	%&x_{a,r}\cdot(s_{\underline{s'_r}}^a - s_{\bar{t'_r}}^a) \leq 0 \quad \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:pick_bef_del}\\
 	\nonumber
 	%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
 \end{align}
-(\ref{eq:must_arrive_dep}) guarantees that when a request $r$ is allocated to vehicle $a$, the vehicle must reach the terminal station of the request at least once. Similarly, equation (\ref{eq:must_go_start}) ensures that the vehicle traverses the starting station associated with the assigned request. Equation (\ref{eq:pick_bef_del}) serves the purpose of ensuring that the starting station is visited before the terminal station.\\
+Constraints (\ref{eq:flow_cons_arrival_graph_u_d}) and (\ref{eq:flow_cons_departure_graph_u_d}) impose that a vehicle must leave the starting depot and the final depot, respectively, only if they are assigned to a request. 
+Similarly, (\ref{eq:must_arrive_dep}) guarantees that, when a request $r$ is allocated to vehicle $a$, the vehicle must reach the terminal station of the request at least once. Moreover, equation (\ref{eq:must_go_start}) ensures that the vehicle traverses the starting station associated with the assigned request. \\
+These requirements, furtermore, with this formulation, also ensure that a vehicle can only move from one node to the other only if they left the starting depot as well. \\ 
+%Equation (\ref{eq:pick_bef_del}) serves the purpose of ensuring that the starting station is visited before the terminal station.\\
 Alternatively, one can argue that the CRR can be reformulate to solve the dispatching in a differently. Let 
 
 \begin{equation*}
