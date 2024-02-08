@@ -17,8 +17,8 @@
 \contentsline {subsection}{\numberline {4.2.1}Dispatching}{33}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Routing}{35}{subsection.4.2.2}%
 \contentsline {subsection}{\numberline {4.2.3}Rebalancing}{40}{subsection.4.2.3}%
-\contentsline {subsection}{\numberline {4.2.4}Constrained Congestion-Free Routing and Rebalancing Problem}{43}{subsection.4.2.4}%
-\contentsline {section}{\numberline {4.3}Use Case}{44}{section.4.3}%
+\contentsline {subsection}{\numberline {4.2.4}Constrained Congestion-Free Routing and Rebalancing Problem}{44}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Use Case}{45}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Model Predictive Control of AToD}{47}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Linear-Discrete Time Model}{47}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Objectives}{51}{subsection.5.1.1}%

@@ -278,14 +278,17 @@ On a basic level, i.e. without constraints, one can formulate the \textit{Uncons
 %&\sum_{u \in \mathcal{V}} V^a_{u, v} - \sum_{w \in \mathcal{V}} V^a_{v, w} = 0 \quad \forall a \in \mathcal{A}, v \in \mathcal{V} \setminus ( \underline{S_a'} \cup \bar{T_a'})\label{eq:flow_conservation_graph2_u} \\
 &\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} = 1 \quad \forall r \in \bar{R_a}, \forall a \in \mathcal{A} 	\label{eq:flow_cons_arrival_graph_v_u}\\
 &\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_a},u} = 1 \quad \forall r \in \bar{R_a}, \forall a \in \mathcal{A}\label{eq:flow_cons_departure_graph_v_u}\\
-%&{p^a_u - p^a_v + P_a \cdot V_{u,v} \leq P_{a} - \sum_{r\in\mathcal{R}}P'_r, \quad \forall u, v \in \mathcal{V}, v \neq u, v \neq \underline{s}_a}\label{eq:no_sub_tour_g}\\
-%&{g^a_u - g^a_v + G_a \cdot V_{u,v} \leq G_{a} - \sum_{r\in\mathcal{R}}G'_r, \quad \forall u, v \in \mathcal{V}, v \neq u, v \neq \underline{s}_a}\label{eq:no_sub_tour_p}\\
-%&g^a_u \leq P_a;\quad p^a_u \leq P_a,   \quad\forall a \in \mathcal{A}\label{eq:final_req}\\
+&{p^a_u - p^a_v + P_a \cdot V_{u,v} \leq P_{a} - \sum_{r\in\mathcal{R}}P'_r, \quad \forall u, v \in \mathcal{V}, v \neq u, v \neq \underline{s}_a}\label{eq:no_sub_tour_g}\\
+&{g^a_u - g^a_v + G_a \cdot V_{u,v} \leq G_{a} - \sum_{r\in\mathcal{R}}G'_r, \quad \forall u, v \in \mathcal{V}, v \neq u, v \neq \underline{s}_a}\label{eq:no_sub_tour_p}\\
+&g^a_u \leq P_a;\quad p^a_u \leq P_a,   \quad\forall a \in \mathcal{A}\label{eq:final_req}\\
 %& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
 \nonumber
 \end{align}
+
+
+
 (\ref{eq:flow_conservation_graph_u}) insures that for all edges which do not lead to a source or destination, if $a$ reaches $v$ from a road, an incoming flow will lead to an outgoing one. In other words, they guarantee connections between roads. (\ref{eq:flow_cons_arrival_graph_u}) -  (\ref{eq:flow_cons_departure_graph_u}) insure that each universal source and destination is reached ones. Similarly, (\ref{eq:flow_cons_arrival_graph_v_u}) -  (\ref{eq:flow_cons_departure_graph_v_u}) achieves the same result, but for each requests.  It should be mentioned that to guarantee that those special nodes are reached at most once one can simply change from equalities to inequalites, like for e.g. $\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} \ge 1$.\\
-%Finally, (\ref{eq:no_sub_tour_g})-(\ref{eq:final_req}) assure that no sub-tour are presentes. This is inspired from the Miller-Tucker-Zemli formulation and utilizes two continuous decision variables $p^a, g^a \in \mathbb{R}_{\ge0}$ representing the cumulative load of the vehicle $a$. 
+Finally, (\ref{eq:no_sub_tour_g})-(\ref{eq:final_req}) assure that no sub-tour are presentes. This is inspired from the Miller-Tucker-Zemli formulation and utilizes two continuous decision variables $p^a, g^a \in \mathbb{R}_{\ge0}$ representing the cumulative load of the vehicle $a$. 
 
 %Finally, (\ref{eq:s_before_t}) insures that source nodes are reached before the destinations. \\
 In order to find the minimum number of vehicles required, one can use the method described \citepaperof{project_thesis}{Brodo}. 
@@ -299,11 +302,14 @@ While it could bring some interesting insights, the URP does not contain the nec
 	\text{s.t.} &\nonumber\\
 	&(\ref{eq:flow_conservation_graph_u})-(\ref{eq:flow_cons_departure_graph_v_u})\nonumber\\
 	&\sum_{a \in \mathcal{A}}V^a_{u,v} \leq c_{u,v} \quad \forall (u,v) \in \mathcal{E} \label{eq:cong_free}\\
-	&V^a_{u,v}\cdot(s_{u}^a + T_{u,v}^a - s_{v}^a) \leq 0 \quad \forall (u,v) \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:relations_node_time}\\
+	&s_{u}^a + T_{u,v}^a - M*(1-V^a_{u,v}) \leq s_{v}^a  \quad \forall (u,v) \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:relations_node_time}\\
+	%&V^a_{u,v}\cdot(s_{u}^a + T_{u,v}^a - s_{v}^a) \leq 0 \quad \forall (u,v) \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:relations_node_time}\\
 	&a'_v \leq s_{v}^a \leq b'_v \quad \forall v \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:time_window_constraint}\\
-	&\sum_{(u,v) \in \mathcal{E}}e^a_{u,v}\cdot V^a_{u,v} \leq B_a(0)\quad \forall a \in \mathcal{A} \label{eq:discharging_constraints}
+	&\sum_{(u,v) \in \mathcal{E}}e^a_{u,v}\cdot V^a_{u,v} \leq B_a(0)\quad \forall a \in \mathcal{A} \label{eq:discharging_constraints}\\
+	&M= \underset{(u,v) \in \mathcal{E}}{\text{max}}\{b_u + T_{u,v}-a_u\}\nonumber
 \end{align} 
-(\ref{eq:cong_free}) insures the number of vehicles in the link $(u,v)$ do not exceed the capacity of that link. (\ref{eq:relations_node_time}) establishes the relationship between the service time of each node, implying that the service time of a predecessor must be lower than the successor.  (\ref{eq:time_window_constraint}) establish the time window constraints, indicating that it must be within the interval of the request. For nodes which are not associated with a termination node of a  request, one will simply set $a_v' = 0 $ and $b_a' = \infty$, also insuring that $s_v^a \ge 0 $. (\ref{eq:discharging_constraints}) assures that the vehicle charge is enough to cover all path. $B_a(0)$ can be assumed to be 100, i.e. that the batteries are full at the beginning of service. \\
+(\ref{eq:cong_free}) insures the number of vehicles in the link $(u,v)$ do not exceed the capacity of that link. (\ref{eq:relations_node_time}) establishes the relationship between the service time of each node, implying that the service time of a predecessor must be lower than the successor. (\ref{eq:time_window_constraint}) establish the time window constraints, indicating that it must be within the interval of the request. For nodes which are not associated with a termination node of a  request, one will simply set $a_v' = 0 $ and $b_a' = \infty$, also insuring that $s_v^a \ge 0 $. (\ref{eq:discharging_constraints}) assures that the vehicle charge is enough to cover all path. $B_a(0)$ can be assumed to be 100, i.e. that the batteries are full at the beginning of service. \\
+In this formulation, the sub-tour elimination constraint is not required at it is already imposed by (\ref{eq:relations_node_time}). \\
 \subsubsection*{Combination with Dispatching}
 Multiple solutions have already been proposed in literature which solve the dispatching and routing problem in the same work. \\
 In this work, however, in order to combine dispatching and routing into the same formulation, one must adapt some of the conditions specified in previous sections above. More specifically, each equation related to the requests must be changed to accomodate the fact that requests have not been previously assigned. \\
@@ -319,19 +325,24 @@ Accordingly, the \textit{Naive Routing and Dispatching Problem (NRDR)} can be fo
 	&(\ref{eq:req_served}),(\ref{eq:req_served_per_vehicle})\nonumber\\	
 	&(\ref{eq:flow_conservation_graph_u})\nonumber\\%-(\ref{eq:flow_cons_departure_graph_u})\nonumber\\
 	&(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})\nonumber\\
-	&\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} = x_{a,r} \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_u_d}\\
-	&\sum_{u \in \mathcal{N}^-_{\bar{t_a}} } V^a_{u, \bar{t_a}} = x_{a,r} \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u_d}\\
+	&\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} = 1 \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_u_d}\\
+	&\sum_{u \in \mathcal{N}^-_{\bar{t_a}} } V^a_{u, \bar{t_a}} = 1 \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u_d}\\
 	&\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} = x_{a,r} \quad  \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:must_arrive_dep}	\\
 	&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_r}, u} = x_{a,r} \quad   \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:must_go_start}\\
 	%&x_{a,r}\cdot(s_{\underline{s'_r}}^a - s_{\bar{t'_r}}^a) \leq 0 \quad \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:pick_bef_del}\\
 	\nonumber
 	%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
 \end{align}
-Constraints (\ref{eq:flow_cons_arrival_graph_u_d}) and (\ref{eq:flow_cons_departure_graph_u_d}) impose that a vehicle must leave the starting depot and the final depot, respectively, only if they are assigned to a request. 
-Similarly, (\ref{eq:must_arrive_dep}) guarantees that, when a request $r$ is allocated to vehicle $a$, the vehicle must reach the terminal station of the request at least once. Moreover, equation (\ref{eq:must_go_start}) ensures that the vehicle traverses the starting station associated with the assigned request. \\
+Constraints (\ref{eq:flow_cons_arrival_graph_u_d}) and (\ref{eq:flow_cons_departure_graph_u_d}) impose that a vehicle must leave the starting depot and reach its final depot, respectively.  (\ref{eq:must_arrive_dep}) guarantees that, when a request $r$ is allocated to vehicle $a$, the vehicle must reach the terminal station of the request at least once. Moreover, equation (\ref{eq:must_go_start}) ensures that the vehicle traverses the starting station associated with the assigned request. \\
 These requirements, furtermore, with this formulation, also ensure that a vehicle can only move from one node to the other only if they left the starting depot as well. \\ 
-%Equation (\ref{eq:pick_bef_del}) serves the purpose of ensuring that the starting station is visited before the terminal station.\\
-Alternatively, one can argue that the CRR can be reformulate to solve the dispatching in a differently. Let 
+As an alternative to (\ref{eq:flow_cons_arrival_graph_u_d}) and (\ref{eq:flow_cons_departure_graph_u_d}), one can also relate the two constraints to the request assignment, which would transform the requirements as following. 
+\begin{align}
+	&\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} = \underset{ r \in \mathcal{R}}{\max}\{x_{a,r}\} \quad  \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_u_d2}\\
+	&\sum_{u \in \mathcal{N}^-_{\bar{t_a}} } V^a_{u, \bar{t_a}} = \underset{ r \in \mathcal{R}}{\max}\{x_{a,r}\}  \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u_d2}
+\end{align}\\
+In other words, a vehicle must leave the starting depot and reach the final depot if a request is assigned to it. \\
+One can argue that the CRR can be reformulate to solve the dispatching in a different way. \\
+Let 
 
 \begin{equation*}
 	x_{a,\underline{s_r} }= 
@@ -507,7 +518,8 @@ Furthermore, due to its vehicle-centric approach, this formulation offers signif
 %\end{align}
 \section{Use Case}
 The main purpose of this use case is to demonstrate the applicability of the model in the real world and the feasibility of the solutions presented in \secref{sec:prob_form}. This use case is based on real-world data extracted from taxi rides in manhattan in 2016 (\cite{Donovan2014}). \\
-The data has been prepared in the following way. Since the data retrieved is based on the whole New York City, in order to decrease the complexity, some filters have been applied to only target the Manhattan area. More specifically, the pick-up and drop-off points which were outside of Manhattan have been filtered out. Subsequentially, these pick-up and drop-off points have been clustered in 50 locations each. Finally, these locations have been mapped to the real Manhattan road network and the shortest path between five neighbours nodes has been traced in order to create a simplified road network, which can be seen in \figref{fig:nyc_rn}. 
+The data has been prepared in the following way. Since the data retrieved is based on the whole New York City, in order to decrease the complexity, some filters have been applied to only target the Manhattan area. More specifically, the pick-up and drop-off points which were outside of Manhattan have been filtered out. Subsequentially, these pick-up and drop-off points have been clustered in 50 locations each. Finally, these locations have been mapped to the real Manhattan road network and the shortest path between five neighbours nodes has been traced in order to create a simplified road network, which can be seen in \figref{fig:nyc_rn}. \\
+As a consequence, the complexity of Manhattan's road network has been significantly reduced. Within the context of this project, and specifically in this section, this simplification is deemed acceptable since only proof of concepts are being considered. Furthermore, employing a more intricate representation of the road network would not significantly enhance the objectives at hand. This streamlined approach not only facilitates clearer demonstration of concepts but also expedites the analysis process, enabling a more focused examination of essential elements. Thus, for the current scope of this work, the simplified representation remains suitable and pragmatic.
 \begin{figure}[t]
 	\centering
 	\begin{subfigure}[b]{0.35\textwidth}
@@ -516,7 +528,7 @@ The data has been prepared in the following way. Since the data retrieved is bas
 		\caption{}
 		\label{fig:nyc_rn_info}
 	\end{subfigure}
-	\hfill
+	%\hfill
 	\begin{subfigure}[b]{0.35\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{assets/img/07_graph_based/new_york_vanilla_no_info.png}
@@ -526,9 +538,24 @@ The data has been prepared in the following way. Since the data retrieved is bas
 	\caption[Simplified Road Network of Manhattan]{Simplified Road Network of Manhattan. In \ref{fig:nyc_rn_info}, red points are used to indicate pick-up stations, while blue delineates drop-off points and green is used to pin-point the fictitious depots. These are obtained by the historical data. Furthermore, pick-up points can also be used as drop-off, and viceversa.  }
 	\label{fig:nyc_rn}
 \end{figure}
+According to the discussion in \secref{sec:rebal}, the area has been divided in multiple areas as well. This can be observed in \figref{fig:nyc_rn_info}. Although the division in areas it's not explicitely stated, five green-highlited nodes can be observed. These nodes represent depots and have been created to fulfill the same purpose of \secref{sec:rebal}. \\
+While information regarding customer demands are relatively easy to obtain, other data must be crafted or estimated. In particular, details about the constraints outlined in \secref{sec:vc_model} can be challenging to gather as they are often specific to certain scenarios or dependent on external factors not captured by the model. For instance, determining the threshold in the congestion model is complex, especially considering it could easily reach thousands in a densely populated city like NYC. Likewise, the time windows of a request is also very specific to the application. For the rest of this work, this information will be derived from the available data and created, if required. For example, the traveling time for each link $T^a_{u,v}$ can be derived with the assumption of a constant speed. Trivially, since the distance is known, the travelling time can be calculated as follows: \\
+\begin{equation}
+	T^a_{u,v} = \dfrac{d_{u,v} }{l_{u,v}}
+\end{equation}
+where $l_{u,v}$ is the speed limit of the link $\langle u,v\rangle$. 
+\begin{itemize}
+	\item Analyse the following metrics
+	\begin{itemize}
+		\item Road usage
+		\item Vehicle Charge at the end
+		\item Vehicle distribution at the end of the shift
+	\end{itemize}
+	
+	
+\end{itemize}
 
-As a consequence, the complexity of Manhattan's road network has been significantly reduced. Within the context of this project, and specifically in this section, this simplification is deemed acceptable since only proof of concepts are being considered. Furthermore, employing a more intricate representation of the road network would not significantly enhance the objectives at hand. This streamlined approach not only facilitates clearer demonstration of concepts but also expedites the analysis process, enabling a more focused examination of essential elements. Thus, for the current scope of this work, the simplified representation remains suitable and pragmatic.\\
-According to the discussion in \secref{sec:rebal}, the area has been divided in multiple areas as well. This can be observed in \figref{fig:nyc_rn_info}. Although the division in areas it's not explicitely stated, five green-highlited nodes can be observed. These nodes represent depots and have been created to fulfill the same purpose of \secref{sec:rebal}. 
+
 %\section{TO-DO}
 %\begin{itemize}
 %	\item Make the battery model in terms of the links. The time is, basically, the velocity of that link over the distance.
