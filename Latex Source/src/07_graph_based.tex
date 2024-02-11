@@ -48,7 +48,7 @@ As it is also widely spread in industry, one can neglet the influence of externa
 \end{equation}
 
 with $b_a = \dfrac{\theta_a Q_a}{R^+_a}$,  $i(t)= \begin{cases} R^+_a \quad \text{if } t \leq  b_a\\
-	R^+_a e^{-(t-b_a)/\tau}\\ \end{cases}$ and $\tau \in \mathbb{R}_{\ge0}$ being the time constant, representing how quickly the current decreases. \\
+	R^+_a e^{-(t-b_a)/\tau}\\ \end{cases}$ and $\tau= \dfrac{C_n}{R^+_a\theta_a}\in \mathbb{R}_{\ge0}$  representing how quickly the current decreases. The value of $C_n$ depends on the charging device considered.   \\
 	An example of the charging profiles from this model can be seen in \figref{fig:charging_profiles}. 
 	 Since $i(t)$ is assumed to be constant at time $t\leq b_a$, i.e. $i(t) = R^+_a$,the first condition is derived as follows. 
 \begin{align*}
@@ -79,20 +79,20 @@ In terms of operational costs, multiple factors should be considered and the ana
 Compared to \cite{project_thesis}, in this work, the model also extends the information associated to the nodes. Nodes will be of two categories namely normal nodes and charging (or depot) stations, whose sets are denoted as $\mathcal{V}_n$, $\mathcal{V}_c$, respectively. We can, therefore, conclude that $\mathcal{V} = \mathcal{V}_n \cup \mathcal{V}_c$. The information associated to the nodes depend from the category each node belongs to. Nodes belonging to $\mathcal{V}_n$ do not possess any specific information, as they are not of high importance for this work. Charging nodes $\mathcal{V}_c$, on the other hand, possess two main characteristics, namely their capacity and their charging ability. Intuitively, the term capacity is used to refer to the number of avilable parking spots, identified as $z_v$. Furthermore, three types of charging ability will be considered, i.e. fast, normal and slow charging, which will be based on the model in \equaref{eq:cc_cv}. The choice of parameters is explained in \tabref{tab:charging_stations}. 
 \begin{table}[th]
 	\centering
-\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|  }
+\begin{tabular}{ |p{2cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
 	\hline
-	Charging station& $R^+$&$\theta$ \\
+	Type&$C_n$  &$\tau$&$\theta_a$&$R^+_a$ \\
 	\hline
-	Slow & 1 &0.6 \\
-	Medium & 1   & 0.8 \\
-	Fast &2 & 0.8 \\
+	Slow & 20 &$33.\bar{3}$&1&0.6  \\
+	Medium &15 &18.17& 1   & 0.8\\
+	Fast & 10 & 6.25&2& 0.8\\
 	\hline
 \end{tabular}
-	\caption[Parameters choice for the Chargin Stations]{Choice of parameters for the charging stations according to the type. For the charging profile, please refer to \figref{fig:charging_profiles}}
+	\caption[Parameters choice for the Chargin Stations]{Choice of parameters for the charging stations according to the type. For the charging profile, please refer to \figref{fig:charging_profiles}. The first column is the costant related to the charging type, the second is the $\tau= \dfrac{C_n}{R^+_a\theta_a}\in \mathbb{R}_{\ge0}$ calculated with the values on the third and fourth column. }
 	\label{tab:charging_stations}	
 \end{table}\\
 
-It would be sensible to limit the domain of the starting and terminal node of each vehicle to the sets of charging and depot nodes, i.e. $\underline{s_a}\in\mathcal{V}_c \cup \mathcal{V}_d \text{ and } \bar{t_a}\in \mathcal{V}_c \cup \mathcal{V}_d$. In other words, this choice implies that each vehicle's destination will either be the depot at the end of the shift, for example, or a charging node, where its battery can be charged to accomodate future requests. \\
+It is a sensible choice to limit the domain of the starting and terminal node of each vehicle to the sets of charging and depot nodes, i.e. $\underline{s_a}\in\mathcal{V}_c \cup \mathcal{V}_d \text{ and } \bar{t_a}\in \mathcal{V}_c \cup \mathcal{V}_d$. In other words, this choice implies that each vehicle's destination will either be the depot at the end of the shift, for example, or a charging node, where its battery can be charged to accomodate future requests. \\
 Requests are modeled as tuples $\langle \underline{s'},\bar{t'}, G', P',\lambda, a', b'\rangle$, where  $\underline{s'} \in \mathcal{V}_n,\bar{t'} \in \mathcal{V}_n$ represent the pickup and delivery point respectively; $G'\in \mathbb{R}_{\ge0}$ ($P'\in \mathbb{R}_{\ge0}$) refers to the amount of goods (people) required to transport,  and $\lambda \in \mathbb{R}_{>0}$ is the rate of requests, in customers per unit time, which, therefore, makes the requests stationary and deterministic. Additionally, requests must be delivered within a time window within $[a',b']$. \\
 
 
@@ -327,8 +327,8 @@ Accordingly, the \textit{Naive Routing and Dispatching Problem (NRDR)} can be fo
 	&(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})\nonumber\\
 	&\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} = 1 \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_u_d}\\
 	&\sum_{u \in \mathcal{N}^-_{\bar{t_a}} } V^a_{u, \bar{t_a}} = 1 \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u_d}\\
-	&\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} = x_{a,r} \quad  \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:must_arrive_dep}	\\
-	&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_r}, u} = x_{a,r} \quad   \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:must_go_start}\\
+	&\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} \ge x_{a,r} \quad  \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:must_arrive_dep}	\\
+	&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_r}, u} \ge x_{a,r} \quad   \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:must_go_start}\\
 	%&x_{a,r}\cdot(s_{\underline{s'_r}}^a - s_{\bar{t'_r}}^a) \leq 0 \quad \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:pick_bef_del}\\
 	\nonumber
 	%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
@@ -517,28 +517,34 @@ Furthermore, due to its vehicle-centric approach, this formulation offers signif
 %	& V^a_{u, v}, x_{ar} \in \{0, 1\} \quad \forall a \in \mathcal{A}, \forall u, v \in \mathcal{V}, \forall r \in \mathcal{R} \nonumber
 %\end{align}
 \section{Use Case}
-The main purpose of this use case is to demonstrate the applicability of the model in the real world and the feasibility of the solutions presented in \secref{sec:prob_form}. This use case is based on real-world data extracted from taxi rides in manhattan in 2016 (\cite{Donovan2014}). \\
-The data has been prepared in the following way. Since the data retrieved is based on the whole New York City, in order to decrease the complexity, some filters have been applied to only target the Manhattan area. More specifically, the pick-up and drop-off points which were outside of Manhattan have been filtered out. Subsequentially, these pick-up and drop-off points have been clustered in 50 locations each. Finally, these locations have been mapped to the real Manhattan road network and the shortest path between five neighbours nodes has been traced in order to create a simplified road network, which can be seen in \figref{fig:nyc_rn}. \\
-As a consequence, the complexity of Manhattan's road network has been significantly reduced. Within the context of this project, and specifically in this section, this simplification is deemed acceptable since only proof of concepts are being considered. Furthermore, employing a more intricate representation of the road network would not significantly enhance the objectives at hand. This streamlined approach not only facilitates clearer demonstration of concepts but also expedites the analysis process, enabling a more focused examination of essential elements. Thus, for the current scope of this work, the simplified representation remains suitable and pragmatic.
-\begin{figure}[t]
+\begin{figure}[tbh]
 	\centering
-	\begin{subfigure}[b]{0.35\textwidth}
+	\begin{subfigure}[b]{0.32\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{assets/img/07_graph_based/new_york_vanilla_info.png}
 		\caption{}
 		\label{fig:nyc_rn_info}
 	\end{subfigure}
-	%\hfill
-	\begin{subfigure}[b]{0.35\textwidth}
+	\begin{subfigure}[b]{0.32\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{assets/img/07_graph_based/new_york_vanilla_no_info.png}
+		\includegraphics[width=\textwidth]{assets/img/07_graph_based/new_york_simplified_info.png}
 		\caption{}
-		\label{fig:nyc_rn_roads}
+		\label{fig:nyc_simplified_info}
 	\end{subfigure}
-	\caption[Simplified Road Network of Manhattan]{Simplified Road Network of Manhattan. In \ref{fig:nyc_rn_info}, red points are used to indicate pick-up stations, while blue delineates drop-off points and green is used to pin-point the fictitious depots. These are obtained by the historical data. Furthermore, pick-up points can also be used as drop-off, and viceversa.  }
+	\begin{subfigure}[b]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/img/07_graph_based/new_york_simplified_roads.png}
+		\caption{}
+		\label{fig:nyc_simplified_roads}
+	\end{subfigure}
+	
+	\caption[Manhattan's Road Network Representation]{Manhattan's Road Network Representation. In \subfigref{fig:nyc_rn_info}, red points are used to indicate pick-up stations, while blue delineates drop-off points and green is used to pin-point the fictitious depots. These are obtained by the historical data. Furthermore, pick-up points can also be used as drop-off, and viceversa. \subfigref{fig:nyc_simplified_info} shows the semplified road network consisitnf of only the most important streets. Finally, \subfigref{fig:nyc_simplified_roads} shows the final version of the road network after the application of the minimum spanning tree algorithm.  }
 	\label{fig:nyc_rn}
 \end{figure}
-According to the discussion in \secref{sec:rebal}, the area has been divided in multiple areas as well. This can be observed in \figref{fig:nyc_rn_info}. Although the division in areas it's not explicitely stated, five green-highlited nodes can be observed. These nodes represent depots and have been created to fulfill the same purpose of \secref{sec:rebal}. \\
+The main purpose of this use case is to demonstrate the applicability of the model in the real world and the feasibility of the solutions presented in \secref{sec:prob_form}. This use case is based on real-world data extracted from taxi rides in manhattan in 2016 (\cite{Donovan2014}). \\
+The data has been prepared in the following way. Since the data retrieved is based on the whole New York City, in order to decrease the complexity, some filters have been applied to only target the Manhattan area. More specifically, the pick-up and drop-off points which were outside of Manhattan have been filtered out. Subsequentially, these pick-up and drop-off points have been clustered in 40 locations. Finally, these locations have been mapped to the real Manhattan road network and the shortest path between five neighbours nodes has been traced in order to create a simplified road network, which can be seen in \figref{fig:nyc_rn}. \\
+As a consequence, the complexity of Manhattan's road network has been significantly reduced. Within the context of this project, and specifically in this section, this simplification is deemed acceptable since only proof of concepts are being considered. Furthermore, employing a more intricate representation of the road network would not significantly enhance the objectives at hand. This streamlined approach not only facilitates clearer demonstration of concepts but also expedites the analysis process, enabling a more focused examination of essential elements. Thus, for the current scope of this work, the simplified representation remains suitable and pragmatic.
+According to the discussion in \secref{sec:rebal}, the region has been divided in multiple areas as well. This can be observed in \figref{fig:nyc_rn_info}. Although the division in areas it's not explicitely stated, five green-highlited nodes can be observed. These nodes represent depots and have been created to fulfill the same purpose of \secref{sec:rebal}.  In order to improve the performance of the simulation, the road network has been simplified by considering only the most important streets in Manhattan, as shown in \figref{fig:nyc_simplified_info} and \figref{fig:nyc_simplified_roads}. This approach optimizes resources while still providing valuable insights into the model performance. \figref{fig:nyc_simplified_roads} specifically has been obtained by first calculating the shortest path, in terms of distance, of the points highligthed in \figref{fig:nyc_rn_info}. Furthermore, the Minimum Spanning Tree (MST) algoritm (\cite{networkx2021}). The MST is used to calculate the smallest possible connected subtree that spans all the vertices in a given graph. In essence, constructing MST involves iteratively selecting edges with the smallest weight while ensuring that no cycles are formed. This process starts with any arbitrary vertex and gradually expands by adding the lightest edge connected to the existing tree until all vertices are encompassed.\\
 While information regarding customer demands are relatively easy to obtain, other data must be crafted or estimated. In particular, details about the constraints outlined in \secref{sec:vc_model} can be challenging to gather as they are often specific to certain scenarios or dependent on external factors not captured by the model. For instance, determining the threshold in the congestion model is complex, especially considering it could easily reach thousands in a densely populated city like NYC. Likewise, the time windows of a request is also very specific to the application. For the rest of this work, this information will be derived from the available data and created, if required. For example, the traveling time for each link $T^a_{u,v}$ can be derived with the assumption of a constant speed. Trivially, since the distance is known, the travelling time can be calculated as follows: \\
 \begin{equation}
 	T^a_{u,v} = \dfrac{d_{u,v} }{l_{u,v}}
@@ -555,7 +561,7 @@ where $l_{u,v}$ is the speed limit of the link $\langle u,v\rangle$.
 	
 \end{itemize}
 
-
+\footnote{The simulation has been carried out using the CBC (\cite{schumacher2022rcbc}) and Gurabi (\cite{gurobi}) solvers used in combination with PuLP (\cite{dunning2011pulp}) on a 2018 Intel i7 MacbookPro.  }
 %\section{TO-DO}
 %\begin{itemize}
 %	\item Make the battery model in terms of the links. The time is, basically, the velocity of that link over the distance.

@@ -20,45 +20,45 @@ Warning--empty journal in handbook_of_gg
 Warning--empty booktitle in Salaza2019Cong
 Warning--can't use both author and editor fields in doi:10.1137/1.9780898718515
 Warning--empty booktitle in voronoi_part
-You've used 62 entries,
+You've used 66 entries,
             2118 wiz_defined-function locations,
-            864 strings with 15434 characters,
-and the built_in function-call counts, 21976 in all, are:
-= -- 2135
-> -- 1073
+            881 strings with 15977 characters,
+and the built_in function-call counts, 22958 in all, are:
+= -- 2225
+> -- 1128
 < -- 15
-+ -- 433
-- -- 360
-* -- 1543
-:= -- 3613
-add.period$ -- 188
-call.type$ -- 62
-change.case$ -- 364
++ -- 455
+- -- 378
+* -- 1595
+:= -- 3786
+add.period$ -- 200
+call.type$ -- 66
+change.case$ -- 384
 chr.to.int$ -- 0
-cite$ -- 73
-duplicate$ -- 819
-empty$ -- 1672
-format.name$ -- 360
-if$ -- 4632
+cite$ -- 77
+duplicate$ -- 852
+empty$ -- 1751
+format.name$ -- 378
+if$ -- 4833
 int.to.chr$ -- 0
-int.to.str$ -- 62
-missing$ -- 58
-newline$ -- 315
-num.names$ -- 122
-pop$ -- 357
+int.to.str$ -- 66
+missing$ -- 59
+newline$ -- 335
+num.names$ -- 130
+pop$ -- 387
 preamble$ -- 1
-purify$ -- 303
+purify$ -- 320
 quote$ -- 0
-skip$ -- 627
+skip$ -- 655
 stack$ -- 0
-substring$ -- 1393
-swap$ -- 198
+substring$ -- 1413
+swap$ -- 203
 text.length$ -- 15
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 240
+type$ -- 256
 warning$ -- 11
-while$ -- 194
-width$ -- 64
-write$ -- 674
+while$ -- 202
+width$ -- 68
+write$ -- 714
 (There was 1 error message)

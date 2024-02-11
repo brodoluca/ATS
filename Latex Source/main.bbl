@@ -76,6 +76,12 @@ B.~Donovan and D.~B. Work.
 \newblock New york city taxi trip data (2010-2013).
 \newblock \url{http://dx.doi.org/10.13012/J8PN93H8}, 2014.
 
+\bibitem{dunning2011pulp}
+Iain Dunning, Stuart Mitchell, and Michael O'Sullivan.
+\newblock Pulp: A linear programming toolkit for python.
+\newblock {\em Department of Engineering Science, The University of Auckland},
+  September 2011.
+
 \bibitem{8883370}
 Fabian Fehn, Florian Noack, and Fritz Busch.
 \newblock Modeling of mobility on-demand fleet operations based on dynamic
@@ -115,6 +121,10 @@ J~Gross and S~Rudolph.
 \newblock Rule-based spacecraft design space exploration and sensitivity
   analysis.
 \newblock {\em Aerospace Science and Technology}, 59:162--171, 2016.
+
+\bibitem{gurobi}
+{Gurobi Optimization, LLC}.
+\newblock {Gurobi Optimizer Reference Manual}, 2023.
 
 \bibitem{electronics9081277}
 Kyoungseok Han, Tam~W. Nguyen, and Kanghyun Nam.
@@ -207,6 +217,12 @@ Alejandro Montoya, Christelle Guéret, Jorge~E. Mendoza, and Juan~G. Villegas.
   2017.
 \newblock Green Urban Transportation.
 
+\bibitem{networkx2021}
+{NetworkX Development Team}.
+\newblock networkx.algorithms.tree.mst.minimum\_spanning\_edges.
+\newblock NetworkX 2.6.2 documentation, 2021.
+\newblock Retrieved 2024-02-11.
+
 \bibitem{neuburger1971}
 Heinz Neuburger.
 \newblock The economics of heavily congested roads.
@@ -275,6 +291,11 @@ David Schrank, Bill Eisele, and Tim Lomax.
 \newblock Texas transportation institute 2012 urban mobility report.
 \newblock Technical report, Texas Transportation Institute, Texas A\&M
   University, College Station, TX, 2012.
+
+\bibitem{schumacher2022rcbc}
+Dirk Schumacher, Jan Ooms, Bakhtiyar Yapparov, and John~O. Hanson.
+\newblock {\em {rcbc: COIN CBC MILP Solver Bindings}}, 2022.
+\newblock R package version 0.1.0.9001.
 
 \bibitem{6580187}
 Stephen~L. Smith, Marco Pavone, Mac Schwager, Emilio Frazzoli, and Daniela Rus.
