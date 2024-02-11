@@ -3,14 +3,8 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: plain.bst
 Database file #1: src/bib.bib
-"{" immediately follows a field part---line 235 of file src/bib.bib
- :  doi = \url
- :            {https://doi.org/10.1016/j.cor.2016.04.022},
-I'm skipping whatever remains of this entry
 Warning--entry type for "dlr-nemo-bili" isn't style-file defined
 --line 414 of file src/bib.bib
-Warning--to sort, need author or key in VASCO2016118
-Warning--empty author in VASCO2016118
 Warning--empty booktitle in beck2002VRPGTS
 Warning--empty booktitle in Lara2005ModellingAA
 Warning--empty publisher in inbook_twvrp
@@ -20,45 +14,45 @@ Warning--empty journal in handbook_of_gg
 Warning--empty booktitle in Salaza2019Cong
 Warning--can't use both author and editor fields in doi:10.1137/1.9780898718515
 Warning--empty booktitle in voronoi_part
-You've used 66 entries,
+You've used 67 entries,
             2118 wiz_defined-function locations,
-            881 strings with 15977 characters,
-and the built_in function-call counts, 22958 in all, are:
-= -- 2225
-> -- 1128
+            887 strings with 16215 characters,
+and the built_in function-call counts, 23247 in all, are:
+= -- 2253
+> -- 1147
 < -- 15
-+ -- 455
-- -- 378
-* -- 1595
-:= -- 3786
-add.period$ -- 200
-call.type$ -- 66
-change.case$ -- 384
++ -- 462
+- -- 384
+* -- 1601
+:= -- 3845
+add.period$ -- 205
+call.type$ -- 67
+change.case$ -- 390
 chr.to.int$ -- 0
-cite$ -- 77
-duplicate$ -- 852
-empty$ -- 1751
-format.name$ -- 378
-if$ -- 4833
+cite$ -- 76
+duplicate$ -- 859
+empty$ -- 1772
+format.name$ -- 384
+if$ -- 4892
 int.to.chr$ -- 0
-int.to.str$ -- 66
+int.to.str$ -- 67
 missing$ -- 59
-newline$ -- 335
-num.names$ -- 130
-pop$ -- 387
+newline$ -- 342
+num.names$ -- 134
+pop$ -- 398
 preamble$ -- 1
-purify$ -- 320
+purify$ -- 325
 quote$ -- 0
-skip$ -- 655
+skip$ -- 661
 stack$ -- 0
-substring$ -- 1413
-swap$ -- 203
+substring$ -- 1418
+swap$ -- 204
 text.length$ -- 15
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 256
-warning$ -- 11
-while$ -- 202
-width$ -- 68
-write$ -- 714
-(There was 1 error message)
+type$ -- 260
+warning$ -- 9
+while$ -- 206
+width$ -- 69
+write$ -- 727
+(There were 10 warnings)

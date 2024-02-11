@@ -549,19 +549,105 @@ While information regarding customer demands are relatively easy to obtain, othe
 \begin{equation}
 	T^a_{u,v} = \dfrac{d_{u,v} }{l_{u,v}}
 \end{equation}
-where $l_{u,v}$ is the speed limit of the link $\langle u,v\rangle$. 
+where $l_{u,v}$ is the speed limit of the link $\langle u,v\rangle$. \\
+Although data on customer mobility is readily accessible, obtaining precise information on goods delivery poses a challenge. This includes details on the specific category of goods being transported and the exact dropoff locations. Multiple might be the reasons for it, such as privacy, commercial sensitivity or due to the highly heterougenous nature of this field. Nevertheless, a potential approach to glean insights into goods delivery could involve leveraging publicly accessible datasets such as the GetFood Historical Data (\cite{getfoodnyc}). Amid the COVID-19 pandemic, initiatives like GetFoodNYC have been instrumental in facilitating emergency home food delivery for residents unable to access food through conventional means. Although the data provided does not contain delivery location, this can be simulated by picking a random location within the road network and the quantity can be estimated by the available data.\\
+The simulations have been carried out using the CBC (\cite{schumacher2022rcbc}) and Gurabi (\cite{gurobi}) solvers used in combination with PuLP (\cite{dunning2011pulp}) on a 2018 Intel i7 MacbookPro. 
+
+\begin{figure}[t]
+	\centering
+		\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/img/07_graph_based/nyc_road_usage.png}
+		\caption{}
+		\label{fig:nyc_road_usage}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				xbar,
+				ytick=data,
+				ytick={1,10,20,30,40},
+				ylabel={Vehicle Id},
+				xlabel={Charge (\%)},
+				bar width=3pt,
+				%yticklabel pos=right,
+				xmajorgrids=true,
+				xticklabel pos=right,xlabel near ticks,
+				grid style=dashed,
+				yticklabel pos=right, ylabel near ticks,
+				minor y tick num=9,
+				ytick style={draw=none},
+				]
+				\addplot coordinates {
+					(96.40179272992049,1)
+					(94.89649535146043,2)
+					(94.33360135023348,3)
+					(90.41910053961556,4)
+					(89.23245976372155,5)
+					(89.1620959397407,6)
+					(91.9661039386619,7)
+					(88.52102127563072,8)
+					(88.39057851690268,9)
+					(87.83262408504747,10)
+					(85.16152711790919,11)
+					(85.78292039341194,12)
+					(86.82803084732097,13)
+					(86.37232542782782,14)
+					(84.66212090585896,15)
+					(86.8216077893955,16)
+					(86.93174672079786,17)
+					(86.0718514488063,18)
+					(82.05741551782936,19)
+					(84.54190526183835,20)
+					(86.9579883628448,21)
+					(88.95263072465707,22)
+					(88.95632720433568,23)
+					(89.72727505023411,24)
+					(87.89324287497183,25)
+					(89.72205766995334,26)
+					(91.06841139591609,27)
+					(92.99588049178772,28)
+					(93.83580167946283,29)
+					(94.00346732723801,30)
+					(93.69881531144985,31)
+					(90.46223889616006,32)
+					(90.71528686407433,33)
+					(87.23929616120468,34)
+					(87.29955925950475,35)
+					(88.8375639554714,36)
+					(87.85363969943707,37)
+					(90.94051744267162,38)
+					(92.92330301589077,39)
+					(95.62956196834227,40)
+				};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{ }
+		\label{fig:my_bar_plot_horizontal}
+	\end{subfigure}
+	\caption[Overview of System's Performance without Congestions]{ 
+	\subfigref{fig:nyc_road_usage} illustrates the utilization of the entire road network during the whole shift. Road usage is determined by aggregating the total number of vehicles traversing each road segment throughout the shift duration.  \subfigref{fig:my_bar_plot_horizontal} displays the average vehicle charge during the shifts.
+	}
+	\label{fig:nyc_analysis_no_congestions}
+\end{figure}
+\subsection{Road Usage Without  Congestions}
+An overview of the system performance can be observed in \figref{fig:nyc_analysis_no_congestions}. 
+
 \begin{itemize}
 	\item Analyse the following metrics
 	\begin{itemize}
 		\item Road usage
 		\item Vehicle Charge at the end
 		\item Vehicle distribution at the end of the shift
+		\item Vehicles travel time
 	\end{itemize}
 	
 	
 \end{itemize}
 
-\footnote{The simulation has been carried out using the CBC (\cite{schumacher2022rcbc}) and Gurabi (\cite{gurobi}) solvers used in combination with PuLP (\cite{dunning2011pulp}) on a 2018 Intel i7 MacbookPro.  }
+
 %\section{TO-DO}
 %\begin{itemize}
 %	\item Make the battery model in terms of the links. The time is, basically, the velocity of that link over the distance.

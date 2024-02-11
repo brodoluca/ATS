@@ -1,10 +1,5 @@
 \begin{thebibliography}{10}
 
-\bibitem{VASCO2016118}
-The dynamic vehicle allocation problem with application in trucking companies
-  in brazil.
-\newblock {\em Computers and Operations Research}, 76:118--133, 2016.
-
 \bibitem{7579135}
 Ahmed Abdulaal, Mehmet~H. Cintuglu, Shihab Asfour, and Osama~A. Mohammed.
 \newblock Solving the multivariant ev routing problem incorporating v2g and g2v
@@ -228,6 +223,13 @@ Heinz Neuburger.
 \newblock The economics of heavily congested roads.
 \newblock {\em Transportation Research}, 5(4):283--293, 1971.
 
+\bibitem{getfoodnyc}
+{New York City Mayor's Office of Food Policy}.
+\newblock {GetFoodNYC} historical data.
+\newblock
+  \url{https://www.nyc.gov/site/foodpolicy/reports-and-data/getfood-historical-data.page}.
+\newblock Accessed: February 12, 2024.
+
 \bibitem{9945248}
 Zi-Hao Nie, Qiang Yang, En~Zhang, Dong Liu, and Jun Zhang.
 \newblock Ant colony optimization for electric vehicle routing problem with
@@ -312,6 +314,12 @@ P.~Toth and D.~Vigo.
 Paolo Toth and Daniele Vigo.
 \newblock {\em The Vehicle Routing Problem}.
 \newblock Society for Industrial and Applied Mathematics, 2002.
+
+\bibitem{VASCO2016118}
+Rejane~Arinos Vasco and Reinaldo Morabito.
+\newblock The dynamic vehicle allocation problem with application in trucking
+  companies in brazil.
+\newblock {\em Computers and Operations Research}, 76:118--133, 2016.
 
 \bibitem{verhoef1999time}
 Erik~T Verhoef.
