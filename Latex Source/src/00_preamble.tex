@@ -21,8 +21,9 @@
 \usepackage{chngcntr}
 %\usepackage{bbm}
 \usepackage{tikz-cd}
-
+\usepackage{multirow}
 \usetikzlibrary{decorations.markings}
+\pgfplotsset{compat=1.17,colormap/viridis}
 %\usepackage{titlesec}
 %\usepackage[sorting=none]{biblatex}
 
@@ -77,3 +78,24 @@
 	\textbf{Example \arabic{example}#1: }%
 	%\itshape
 }{\itshape}
+
+
+\newcounter{algor}[chapter]
+\renewcommand{\thedefinition}{\thesection.\arabic{algor}}
+\newenvironment{algori}[1][]{%
+	\refstepcounter{algor}%
+	\textbf{Algorithm \arabic{algor}#1: }%
+	%\itshape
+}{\itshape}
+
+
+
+
+\definecolor{viridisgreencolor}{RGB}{32, 162, 57} % Viridis green color
+\definecolor{viridisorangecolor}{RGB}{253, 174, 97}
+\definecolor{viridisbluecolor}{RGB}{68, 1, 84}
+\definecolor{viridisyellowcolor}{RGB}{253, 231, 37}
+\definecolor{viridispurplecolor}{RGB}{108, 60, 142}
+\definecolor{viridiscyancolor}{RGB}{1, 133, 113}
+\definecolor{viridismagentacolor}{RGB}{177, 3, 155}
+

@@ -40,7 +40,7 @@ for u, v, d in graph.edges(data=True):
     edge_info[(u, v)] = [
         d["length"]/10,
         d["length"]/500,
-        20
+        50
     ]
 
 # %%
@@ -178,7 +178,7 @@ def initialize_vehicles_naive(depots):
     vehicle_id_counter = 0  # Start assigning IDs from 1
     for i, d in enumerate(depots):
         start_depot_id = d.id
-        end_depot_id =depots[(i + 1) % len(depots)].id  # Ensures start and end depots are different
+        end_depot_id = d.id #depots[(i + 1) % len(depots)].id  # Ensures start and end depots are different
         for _ in range(d.vehicles_now):
             vehicles.append(Vehicle(id=vehicle_id_counter,
                                     pcapacity=5,
@@ -212,6 +212,28 @@ def initialize_vehicles_random(depots):
                                     end_depot=end_depot_id))
             vehicle_id_counter += 1
     return vehicles, n_vehicles
+
+
+
+
+def initialize_vehicles_with_specific_start_end(depots, end_depots = {42432963:42430044,42430044: 6177439750, 6223571524:42432963, 3786901738:42432963, 6177439750:6223571524}):
+    vehicles = []
+    n_vehicles = sum(d.vehicles_now for d in depots)
+    vehicle_id_counter = 0
+    for i, d in enumerate(depots):
+        start_depot_id = d.id
+        end_depot_id = end_depots[start_depot_id]
+        for _ in range(d.vehicles_now):
+            vehicles.append(Vehicle(id=vehicle_id_counter,
+                                    pcapacity=5,
+                                    gcapacity=10,
+                                    R_=1,
+                                    ctype = d.type,
+                                    start_depot=start_depot_id,
+                                    end_depot=end_depot_id))
+            vehicle_id_counter += 1
+    return vehicles, n_vehicles
+
 
 # %%
 depots = initialize_depots(graph, vehicles_amount = [1]*5)
@@ -366,32 +388,7 @@ def create_problem2(graph,depots, vehicles, requests,edge_info=edge_info, name="
 
     return problem, V, x,y
 
-# %%
-problem, V, x, y= create_problem2(graph,depots, vehicles, requests)
-print(problem.numVariables())
-
-# %%
-problem.solve(pulp.GUROBI_CMD(msg=0))
-
-# %%
-objective_value = pulp.value(problem.objective)
-objective_value
-
-# %%
-for a in vehicles:
-    for r in requests:
-        if pulp.value(x[a.id,r.id]) >0:
-            print(f"Vehicle {a.id} assigned to {r.id}")
-
-# %%
-for a in vehicles:
-    for u, v in graph.edges():
-        if pulp.value(V[a.id,u, v]) == 1:
-            print(f"Vehicle {a.id} visits {u}-{v}")
-            break
-
-# %%
-def check_road(id, depot_id):
+def check_road(id, depot_id, V):
     raw_road = {}
     lrr = 0
     for u, v in graph.edges():
@@ -576,14 +573,19 @@ def save_info(V,x,requests, graph, vehicles, old_vehicles, old_depots,edges_info
     
 
 # %%
-import copy
-def rec_horizon_problem(df, graph,edges_info, req_per_i = 3, charging_time = 5, iterations = 40):
 
-    folder_path = check_and_create_folder("./results")
-    _, _, requests = get_requests(df)
-    requests, tot = clean_requests(requests)
-    depots = initialize_depots(graph, vehicles_amount = [3,6,8,4,3])
-    vehicles, _ = initialize_vehicles_random(depots)
+def insert_random_end_point(requests, graph):
+    for r in requests:
+        r.end = random.choice([x for x in graph.nodes() if x != r.start])
+    return requests
+
+import copy
+def rec_horizon_problem(df, 
+                        graph, requests, depots, vehicles,edges_info, 
+                        solver,
+                        req_per_i = 3, charging_time = 40, iterations = 30, capacitissimo=0):
+    folder_path = check_and_create_folder("./results_random_depot_correct")
+    
     already_done = 0
     res = -1
     
@@ -591,18 +593,20 @@ def rec_horizon_problem(df, graph,edges_info, req_per_i = 3, charging_time = 5, 
     if not isinstance(req_per_i, list):
         req_per_i = [req_per_i]*iterations
 
-    progress_bar = tqdm(range(iterations),total=iterations)
+    progress_bar = tqdm(range(iterations),total=iterations, position = 0)
 
     for i in progress_bar:
         picked_requests = choose_requests(requests,graph, req_per_i[i], i+already_done)
         if picked_requests==-1:
             print("Available requests are over :)")
             return 
+        picked_requests = insert_random_end_point(picked_requests, graph)
         already_done += len(picked_requests)
         
         problem, V, x, y= create_problem2(graph,depots, vehicles, picked_requests)
+        tqdm.write("Problem Created")
         #res = problem.solve(pulp.PULP_CBC_CMD( msg=0,timeLimit=60))
-        res = problem.solve(pulp.GUROBI_CMD(msg=0))
+        res = problem.solve(solver=solver)
         if res == 1:
             old_depots = [(a.start_depot, a.end_depot)for a in vehicles]
             update_vehicles(vehicles, graph, V, edges_info)
@@ -615,15 +619,35 @@ def rec_horizon_problem(df, graph,edges_info, req_per_i = 3, charging_time = 5, 
 
             #already_done += requests_completed_successfully
         
-        progress_bar.set_description(f"Old iteration {res}")
+        progress_bar.set_description(f"Old iteration {res}, {charging_time}- {capacitissimo}")
         
         
         #print("-----------------------------------------------------")
 
 # %%
-rec_horizon_problem(df, graph, edge_info,req_per_i=50)
+
 
 # %%
 
+_, _, requests = get_requests(df)
+requests, tot = clean_requests(requests)
 
+
+solver= pulp.GUROBI_CMD(msg=1, options=[('Threads', 8)])
+for capacitissimo, charging_time in zip([ 40, 20, 10, 10 ], [ 20,10,20,10]):
+    print(capacitissimo, charging_time)
+    depots = initialize_depots(graph, vehicles_amount = [3,6,8,4,3])
+    vehicles, _ = initialize_vehicles_with_specific_start_end(depots)
+    # Iterate over edges and add distances to the dictionary
+    edge_info = {}
+    for u, v, d in graph.edges(data=True):
+        edge_info[(u, v)] = [
+            d["length"]/10,
+            d["length"]/500,
+            capacitissimo
+        ]
+    rec_horizon_problem(df,
+                         graph, requests, depots, vehicles, edge_info,
+                         solver= solver, 
+                         req_per_i=50, charging_time = charging_time, capacitissimo = capacitissimo)
 

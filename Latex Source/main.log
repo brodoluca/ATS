@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/MacPorts 2022.62882_3) (preloaded format=pdflatex 2023.6.26)  12 FEB 2024 00:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/MacPorts 2022.62882_3) (preloaded format=pdflatex 2023.6.26)  13 FEB 2024 02:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -801,17 +801,25 @@ File: tikzlibrarymatrix.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 kzlibraryquotes.code.tex
 File: tikzlibraryquotes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 )))
+(/opt/local/share/texmf-texlive/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip57
+\multirow@cntb=\count327
+\multirow@dima=\skip58
+\bigstrutjot=\dimen289
+)
 (/opt/local/share/texmf-texlive/tex/generic/pgf/frontendlayer/tikz/libraries/ti
 kzlibrarydecorations.markings.code.tex
 (/opt/local/share/texmf-texlive/tex/generic/pgf/libraries/decorations/pgflibrar
 ydecorations.markings.code.tex))
-\c@definition=\count327
-\c@proposition=\count328
-\c@example=\count329
+\c@definition=\count328
+\c@proposition=\count329
+\c@example=\count330
+\c@algor=\count331
 )
 (/opt/local/share/texmf-texlive/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count330
+\l__color_backend_stack_int=\count332
 \l__pdf_internal_box=\box67
 )
 (./main.aux)
@@ -838,16 +846,16 @@ LaTeX Font Info:    ... okay on input line 4.
 
 (/opt/local/share/texmf-texlive/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count331
-\scratchdimen=\dimen289
+\scratchcounter=\count333
+\scratchdimen=\dimen290
 \scratchbox=\box68
-\nofMPsegments=\count332
-\nofMParguments=\count333
+\nofMPsegments=\count334
+\nofMParguments=\count335
 \everyMPshowfont=\toks44
-\MPscratchCnt=\count334
-\MPscratchDim=\dimen290
-\MPnumerator=\count335
-\makeMPintoPDFobject=\count336
+\MPscratchCnt=\count336
+\MPscratchDim=\dimen291
+\MPnumerator=\count337
+\makeMPintoPDFobject=\count338
 \everyMPtoPDFconversion=\toks45
 ) (/opt/local/share/texmf-texlive/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -869,7 +877,7 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (/opt/local/share/texmf-texlive/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count337
+\c@section@level=\count339
 )
 LaTeX Info: Redefining \ref on input line 4.
 LaTeX Info: Redefining \pageref on input line 4.
@@ -881,14 +889,11 @@ LaTeX Info: Redefining \nameref on input line 4.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
-
-Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
-ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
-your preamble.
- on input line 4.
+Package pgfplots notification 'compat/show suggested version=true': you might b
+enefit from \pgfplotsset{compat=1.18} (current compat level: 1.17).
 
 (./src/01_title.tex
-<assets/img/01_title/FH_Dortmund-logo.svg.png, id=87, 2569.6pt x 925.4575pt>
+<assets/img/01_title/FH_Dortmund-logo.svg.png, id=91, 2569.6pt x 925.4575pt>
 File: assets/img/01_title/FH_Dortmund-logo.svg.png Graphic file (type png)
 <use assets/img/01_title/FH_Dortmund-logo.svg.png>
 Package pdftex.def Info: assets/img/01_title/FH_Dortmund-logo.svg.png  used on 
@@ -1050,7 +1055,7 @@ Chapter 4.
 [26
 
 ] [27] [28]
-<assets/img/07_graph_based/R_theta_combinations.png, id=458, 722.7pt x 578.16pt
+<assets/img/07_graph_based/R_theta_combinations.png, id=480, 722.7pt x 578.16pt
 >
 File: assets/img/07_graph_based/R_theta_combinations.png Graphic file (type png
 )
@@ -1079,7 +1084,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 95--97
  []
 
 [31] [32]
-<assets/img/07_graph_based/car.png, id=502, 963.6pt x 963.6pt>
+<assets/img/07_graph_based/car.png, id=524, 963.6pt x 963.6pt>
 File: assets/img/07_graph_based/car.png Graphic file (type png)
 <use assets/img/07_graph_based/car.png>
 Package pdftex.def Info: assets/img/07_graph_based/car.png  used on input line 
@@ -1101,112 +1106,132 @@ Package pdftex.def Info: assets/img/07_graph_based/car.png  used on input line
 160.
 (pdftex.def)             Requested size: 14.22636pt x 14.21811pt.
  [33 <./assets/img/07_graph_based/car.png>] [34]
-Underfull \hbox (badness 10000) in paragraph at lines 214--217
+Underfull \hbox (badness 10000) in paragraph at lines 216--218
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 235--238
+Underfull \hbox (badness 10000) in paragraph at lines 236--239
 
  []
 
 [35] [36] [37]
-Underfull \hbox (badness 10000) in paragraph at lines 310--313
+Underfull \hbox (badness 10000) in paragraph at lines 312--315
 
  []
 
 [38] [39]
-Underfull \hbox (badness 10000) in paragraph at lines 361--362
+Underfull \hbox (badness 10000) in paragraph at lines 372--373
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 378--381
+Underfull \hbox (badness 10000) in paragraph at lines 389--392
 
  []
 
 [40]
-Underfull \hbox (badness 10000) in paragraph at lines 412--413
+Underfull \hbox (badness 10000) in paragraph at lines 423--424
 
  []
 
-[41] [42]
-Overfull \hbox (13.79787pt too wide) in paragraph at lines 470--472
-\OT1/cmr/m/n/10 The fi-nal \OT1/cmr/m/it/10 Con-strained Congestion-Free Rout-i
-ng and Re-bal-anc-ing Prob-lem (CCRRP)
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 470--472
+[41] [42] [43]
+Underfull \hbox (badness 10000) in paragraph at lines 502--507
 
  []
 
-[43]
-<assets/img/07_graph_based/new_york_vanilla_info.png, id=787, 542.5068pt x 1127
+[44]
+<assets/img/07_graph_based/new_york_vanilla_info.png, id=837, 542.5068pt x 1127
 .412pt>
 File: assets/img/07_graph_based/new_york_vanilla_info.png Graphic file (type pn
 g)
 <use assets/img/07_graph_based/new_york_vanilla_info.png>
 Package pdftex.def Info: assets/img/07_graph_based/new_york_vanilla_info.png  u
-sed on input line 524.
+sed on input line 565.
 (pdftex.def)             Requested size: 110.40253pt x 229.43507pt.
-<assets/img/07_graph_based/new_york_simplified_info.png, id=788, 540.5796pt x 1
+<assets/img/07_graph_based/new_york_simplified_info.png, id=838, 540.5796pt x 1
 127.412pt>
 File: assets/img/07_graph_based/new_york_simplified_info.png Graphic file (type
  png)
 <use assets/img/07_graph_based/new_york_simplified_info.png>
 Package pdftex.def Info: assets/img/07_graph_based/new_york_simplified_info.png
-  used on input line 530.
+  used on input line 571.
 (pdftex.def)             Requested size: 110.40253pt x 230.2436pt.
-<assets/img/07_graph_based/new_york_simplified_roads.png, id=789, 546.1203pt x 
+<assets/img/07_graph_based/new_york_simplified_roads.png, id=839, 546.1203pt x 
 1127.412pt>
 File: assets/img/07_graph_based/new_york_simplified_roads.png Graphic file (typ
 e png)
 <use assets/img/07_graph_based/new_york_simplified_roads.png>
 Package pdftex.def Info: assets/img/07_graph_based/new_york_simplified_roads.pn
-g  used on input line 536.
+g  used on input line 577.
 (pdftex.def)             Requested size: 110.40253pt x 227.904pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 544--549
+Underfull \hbox (badness 10000) in paragraph at lines 585--590
 
  []
 
-[44] [45 <./assets/img/07_graph_based/new_york_vanilla_info.png> <./assets/img/
+[45] [46 <./assets/img/07_graph_based/new_york_vanilla_info.png> <./assets/img/
 07_graph_based/new_york_simplified_info.png> <./assets/img/07_graph_based/new_y
-ork_simplified_roads.png>] [46]
-<assets/img/07_graph_based/nyc_road_usage.png, id=836, 790.3929pt x 1153.4292pt
+ork_simplified_roads.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 604--607
+
+ []
+
+[47]
+Overfull \hbox (7.27571pt too wide) in paragraph at lines 645--663
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<assets/img/07_graph_based/nyc_road_usage.png, id=896, 790.3929pt x 1153.4292pt
 >
 File: assets/img/07_graph_based/nyc_road_usage.png Graphic file (type png)
 <use assets/img/07_graph_based/nyc_road_usage.png>
 Package pdftex.def Info: assets/img/07_graph_based/nyc_road_usage.png  used on 
-input line 560.
-(pdftex.def)             Requested size: 172.5pt x 251.73122pt.
+input line 673.
+(pdftex.def)             Requested size: 120.7521pt x 176.2101pt.
 
-Overfull \hbox (78.96477pt too wide) in paragraph at lines 626--627
+Overfull \hbox (57.88106pt too wide) in paragraph at lines 724--725
  [][] 
  []
 
-[47 <./assets/img/07_graph_based/nyc_road_usage.png>]) (./src/08_mpc.tex
-[48]
+[48] [49]
+<assets/img/07_graph_based/nyc_road_usage_cong.png, id=923, 790.3929pt x 1153.4
+292pt>
+File: assets/img/07_graph_based/nyc_road_usage_cong.png Graphic file (type png)
+
+<use assets/img/07_graph_based/nyc_road_usage_cong.png>
+Package pdftex.def Info: assets/img/07_graph_based/nyc_road_usage_cong.png  use
+d on input line 749.
+(pdftex.def)             Requested size: 120.7521pt x 176.2101pt.
+
+Overfull \hbox (55.10326pt too wide) in paragraph at lines 800--801
+ [][] 
+ []
+
+) (./src/08_mpc.tex [50 <./assets/img/07_graph_based/nyc_road_usage.png>]
+[51 <./assets/img/07_graph_based/nyc_road_usage_cong.png>]
 Chapter 5.
 
 Underfull \hbox (badness 10000) in paragraph at lines 4--9
 
  []
 
-[49
+[52
 
-] [50]
+] [53]
 Underfull \hbox (badness 10000) in paragraph at lines 84--87
 
  []
 
-[51] [52]
+[54] [55]
 Underfull \hbox (badness 10000) in paragraph at lines 158--160
 
  []
 
-[53] [54] [55] [56] [57]
+[56] [57] [58] [59] [60]
 Underfull \hbox (badness 10000) in paragraph at lines 290--293
 
  []
@@ -1221,7 +1246,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 299--301
 
  []
 
-[58]
+[61]
 Underfull \hbox (badness 10000) in paragraph at lines 376--377
 
  []
@@ -1236,7 +1261,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 381--384
 
  []
 
-[59]
+[62]
 Underfull \hbox (badness 10000) in paragraph at lines 394--396
 
  []
@@ -1256,7 +1281,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 428--430
 
  []
 
-[60]
+[63]
 Overfull \hbox (26.30748pt too wide) in paragraph at lines 442--444
 \OT1/cmr/m/n/10 where $[](\OML/cmm/m/it/10 k\OT1/cmr/m/n/10 )$ is the can-di-da
 te func-tion and cal-cu-lated at $[] = \OMS/cmsy/m/n/10 f\OML/cmm/m/it/10 u[]; 
@@ -1269,14 +1294,14 @@ Overfull \hbox (71.52646pt too wide) detected at line 451
 []
  []
 
-) (./src/09_gts.tex [61]
+) (./src/09_gts.tex [64]
 Chapter 6.
 
 Underfull \hbox (badness 10000) in paragraph at lines 8--12
 
  []
 
-) (./src/10_conclusion.tex [62
+) (./src/10_conclusion.tex [65
 
 ]
 Chapter 7.
@@ -1290,50 +1315,90 @@ Underfull \hbox (badness 10000) in paragraph at lines 5--6
 
  []
 
-) [63
+) [66
 
-] (./main.bbl [64
+] (./main.bbl [67
 
-] [65]
+] [68]
 Overfull \hbox (54.46075pt too wide) in paragraph at lines 216--220
 []\OT1/cmr/m/n/10 NetworkX De-vel-op-ment Team.  net-workx.algorithms.tree.mst.
 minimum[]spanning[]edges.
  []
 
-[66] [67] [68]) [69] (./main.aux)
+[69] [70] [71]) (./src/A1_Appendix.tex [72]
+Appendix A.
+<assets/img/appendix_a/nyc_road_usage_simu2.png, id=1178, 790.3929pt x 1153.429
+2pt>
+File: assets/img/appendix_a/nyc_road_usage_simu2.png Graphic file (type png)
+<use assets/img/appendix_a/nyc_road_usage_simu2.png>
+Package pdftex.def Info: assets/img/appendix_a/nyc_road_usage_simu2.png  used o
+n input line 7.
+(pdftex.def)             Requested size: 120.7521pt x 176.2101pt.
+
+Overfull \hbox (55.10326pt too wide) in paragraph at lines 58--59
+ [][] 
+ []
+
+<assets/img/appendix_a/nyc_road_usage_simu4.png, id=1183, 790.3929pt x 1153.429
+2pt>
+File: assets/img/appendix_a/nyc_road_usage_simu4.png Graphic file (type png)
+<use assets/img/appendix_a/nyc_road_usage_simu4.png>
+Package pdftex.def Info: assets/img/appendix_a/nyc_road_usage_simu4.png  used o
+n input line 74.
+(pdftex.def)             Requested size: 120.7521pt x 176.2101pt.
+
+Overfull \hbox (55.10326pt too wide) in paragraph at lines 125--126
+ [][] 
+ []
+
+) [73
+
+ <./assets/img/appendix_a/nyc_road_usage_simu2.png>] [74 <./assets/img/appendix
+_a/nyc_road_usage_simu4.png>] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 67625ADD87B1D5999FAC64142FF50749;3409.
+(rerunfilecheck)             Checksum: FC8BC92D1D26B19ECADA197F249BEA1D;3774.
  ) 
 Here is how much of TeX's memory you used:
- 36451 strings out of 479382
- 862848 string characters out of 5869398
- 1267395 words of memory out of 5000000
- 53552 multiletter control sequences out of 15000+600000
- 476061 words of font info for 53 fonts, out of 8000000 for 9000
+ 36665 strings out of 479382
+ 867367 string characters out of 5869398
+ 1280556 words of memory out of 5000000
+ 53725 multiletter control sequences out of 15000+600000
+ 479782 words of font info for 67 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 89i,20n,92p,2952b,2459s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/opt/local/share/texmf-texlive/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</o
-pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></opt/lo
-cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/local/s
-hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/local/share/
-texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/local/share/texmf
--texlive/fonts/type1/public/amsfonts/cm/cmmi5.pfb></opt/local/share/texmf-texli
-ve/fonts/type1/public/amsfonts/cm/cmmi7.pfb></opt/local/share/texmf-texlive/fon
-ts/type1/public/amsfonts/cm/cmr10.pfb></opt/local/share/texmf-texlive/fonts/typ
-e1/public/amsfonts/cm/cmr12.pfb></opt/local/share/texmf-texlive/fonts/type1/pub
-lic/amsfonts/cm/cmr5.pfb></opt/local/share/texmf-texlive/fonts/type1/public/ams
-fonts/cm/cmr7.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/c
-m/cmr9.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy1
-0.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy5.pfb>
-</opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/
-local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/local
-/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></opt/local/shar
-e/texmf-texlive/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/local/shar
-e/texmf-texlive/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on main.pdf (70 pages, 4679564 bytes).
+ 89i,20n,92p,2952b,2461s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
+, replaced by a fixed one
+
+{/opt/local/share/texmf-texlive/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</opt
+/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></opt/loca
+l/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/local/sha
+re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/local/share/te
+xmf-texlive/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></opt/local/share/tex
+mf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/local/share/texmf-te
+xlive/fonts/type1/public/amsfonts/cm/cmmi5.pfb></opt/local/share/texmf-texlive/
+fonts/type1/public/amsfonts/cm/cmmi7.pfb></opt/local/share/texmf-texlive/fonts/
+type1/public/amsfonts/cm/cmr10.pfb></opt/local/share/texmf-texlive/fonts/type1/
+public/amsfonts/cm/cmr12.pfb></opt/local/share/texmf-texlive/fonts/type1/public
+/amsfonts/cm/cmr5.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfon
+ts/cm/cmr6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
+mr7.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb
+></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr9.pfb></opt/
+local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/local
+/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy5.pfb></opt/local/share
+/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/local/share/texmf
+-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/local/share/texmf-texl
+ive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></opt/local/share/texmf-texlive/f
+onts/type1/public/amsfonts/symbols/msbm10.pfb></opt/local/share/texmf-texlive/f
+onts/type1/public/cm-super/sfrm1000.pfb>
+Output written on main.pdf (75 pages, 7412805 bytes).
 PDF statistics:
- 1247 PDF objects out of 1440 (max. 8388607)
- 1017 compressed objects within 11 object streams
- 333 named destinations out of 1000 (max. 500000)
- 208 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1365 PDF objects out of 1440 (max. 8388607)
+ 1111 compressed objects within 12 object streams
+ 354 named destinations out of 1000 (max. 500000)
+ 231 words of extra memory for PDF output out of 10000 (max. 10000000)
 

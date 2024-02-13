@@ -7,9 +7,14 @@
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Different Charging Profiles According To The Model}}{29}{figure.caption.14}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Example of a Sensible Request aAignment}}{33}{figure.caption.16}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Simplified Example for the Rebalancing Strategy}}{41}{figure.caption.20}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Manhattan's Road Network Representation}}{45}{figure.caption.22}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Overview of System's Performance without Congestions}}{47}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Manhattan's Road Network Representation}}{46}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Overview of System's Performance without Congestions}}{50}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Overview of System's Performance with Congestions and Less Charging Time}}{51}{figure.caption.27}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces State of Charge of an exemplary Set of Vehicles in Simulation 3\relax }}{51}{figure.caption.28}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Cruising speed in function of traffic density}}{51}{figure.caption.24}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Cruising speed in function of traffic density}}{54}{figure.caption.29}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Overview of System's Performance with Congestion Limits and Less Charging Time}}{73}{figure.caption.32}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Overview of System's Performance with Congestion Limits and Less Charging Time}}{74}{figure.caption.33}%
