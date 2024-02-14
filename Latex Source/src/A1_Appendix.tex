@@ -1,5 +1,13 @@
 \chapter{Additional Information on Congestion-Free Simulation}\label{appendix:additional_info}
 
+
+
+
+
+
+
+
+
 \begin{figure}[th]
 	\centering
 	\begin{subfigure}[b]{0.35\textwidth}
@@ -71,9 +79,9 @@
 	\centering
 	\begin{subfigure}[b]{0.35\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{assets/img/appendix_a/nyc_road_usage_simu4.png}
+		\includegraphics[width=\textwidth]{assets/img/appendix_a/nyc_road_usage_simu5.png}
 		\caption{}
-		\label{app:fig:nyc_road_usage_simu4}
+		\label{app:fig:nyc_road_usage_simu5}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.4\textwidth}
 		\centering
@@ -96,38 +104,136 @@
 				height=6cm
 				]
 				\addplot coordinates{
-					(1,93.27138291372177)
-					(2,100.0)
-					(3,90.78912726438328)
-					(4,94.63488886816818)
-					(5,89.42500626723746)
-					(6,99.66414618819783)
-					(7,99.89679061844821)
-					(8,99.96727833421122)
-					(9,98.30176552168888)
-					(10,99.54836646066505)
-					(11,96.44722524056257)
-					(12,99.23116671701324)
-					(13,98.54691633563728)
-					(14,99.72911169462172)
-					(15,99.73123438245129)
-					(16,99.67615569319422)
-					(17,99.29704775451592)
-					(18,97.43522071175792)
-					(19,98.04548532472887)
-					(20,98.79371095065098)
-					(21,97.99881594873128)
-					(22,94.81483442468704)
-					(23,93.15136530688466)
-					(24,85.55061528376164)
+					(1,83.57186045689065)
+					(2,99.6288804845884)
+					(3,89.99068368847419)
+					(4,92.22928430955479)
+					(5,99.97690718579351)
+					(6,93.45708118375293)
+					(7,82.8937231276273)
+					(8,95.87652694720163)
+					(9,97.00972201065034)
+					(10,100.0)
+					(11,100.0)
+					(12,100.0)
+					(13,100.0)
+					(14,88.85404415297268)
+					(15,100.0)
+					(16,93.23279895120118)
+					(17,100.0)
+					(18,97.81671755783306)
+					(19,98.92678548288295)
+					(20,96.97519567053847)
+					(21,82.11170560198963)
+					(22,89.97414085735168)
+					(23,100.0)
+					(24,100.0)
 				};			
 			\end{axis}
 		\end{tikzpicture}
 		\caption{ }
-		\label{app:fig:charge_vehicle_baseline_cong_simu4}
+		\label{app:fig:charge_vehicle_baseline_cong_simu5}
 	\end{subfigure}
 	\caption[Overview of System's Performance with Congestion Limits and Less Charging Time]{Overview of System's Performance without Congestion Limits and Less Charging Time.
-		\subfigref{app:fig:nyc_road_usage_simu4} illustrates the utilization of the entire road network during the whole shift, while \subfigref{app:fig:charge_vehicle_baseline_cong_simu4} shows averaging charging percentage of the vehicles. 
+		\subfigref{app:fig:nyc_road_usage_simu2} illustrates the utilization of the entire road network during the whole shift, while \subfigref{app:fig:charge_vehicle_baseline_cong_simu2} shows averaging charging percentage of the vehicles. 
 	}
-	\label{app:fig:nyc_analysis_congestions_simu4}
+	\label{app:fig:nyc_analysis_congestions_simu5}
 \end{figure}
+
+
+
+
+
+
+	\begin{figure}
+		\begin{tikzpicture}
+			\begin{axis}[
+				xlabel={Iteration},
+				%ylabel={Charge (\%)},
+				xtick={0,1,2,3,4,5,6,7,8,9},
+				ytick={20,35,50,70,85,100},
+				%legend pos=north west,
+				legend style={at={(1.05,1)},anchor=north west},
+				ymajorgrids=true,
+				grid style=dashed,
+				thick,
+				width=7cm
+				]
+				
+				\addplot[color = viridisbluecolor]
+				coordinates {
+				(0,100.0)
+(1,100.0)
+(2,100.0)
+(3,100.0)
+(4,100.0)
+(5,100.0)
+(6,96.65992436129552)
+(7,100.0)
+(8,100.0)
+(9,85.30054975932255)
+				};
+				\addplot[color = viridisyellowcolor]
+				coordinates {
+				(0,100.0)
+(1,100.0)
+(2,100.0)
+(3,90.0761164440697)
+(4,72.36715758393342)
+(5,82.02357338140166)
+(6,100.0)
+(7,100.0)
+(8,85.5967113765882)
+(9,100.0)
+				};
+				\addplot[color= viridisgreencolor]
+				coordinates {
+				(0,100.0)
+(1,100.0)
+(2,88.32023388997223)
+(3,100.0)
+(4,100.0)
+(5,100.0)
+(6,83.39423880255124)
+(7,91.17426983229112)
+(8,100.0)
+(9,100.0)
+				};
+				
+				\addplot[color= viridisorangecolor]
+				coordinates {
+				(0,100.0)
+(1,100.0)
+(2,100.0)
+(3,100.0)
+(4,100.0)
+(5,100.0)
+(6,100.0)
+(7,100.0)
+(8,100.0)
+(9,100.0)
+				};
+				
+				\addplot[ color = viridispurplecolor]
+				coordinates {
+				(0,100.0)
+(1,100.0)
+(2,100.0)
+(3,100.0)
+(4,100.0)
+(5,100.0)
+(6,100.0)
+(7,39.88363385808256)
+(8,69.88363385808256)
+(9,99.88363385808256)
+				};
+				
+				\legend{1, 3, 7, 14,2}
+				
+
+				
+			\end{axis}
+		\end{tikzpicture}
+		\caption{}
+		\label{fig:ex_soc_vehicles_simu5}
+	\end{figure}

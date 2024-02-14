@@ -29,7 +29,7 @@ for u, v, d in graph.edges(data=True):
     edge_info[(u, v)] = [
         d["length"],
         d["length"] / d["maxspeed"] if not math.isnan(d["maxspeed"]) else d["length"]/l,
-        10
+        50
     ]
 
 # %%
@@ -42,12 +42,6 @@ for u, v, d in graph.edges(data=True):
         d["length"]/500,
         50
     ]
-
-# %%
-
-
-# %%
-edge_info
 
 # %%
 def distance_matrix_from_graph(G):
@@ -161,6 +155,9 @@ def get_requests(dataframe, required_info = ["amount","internal_ids", "id", "pas
     return requests, reqs_obj, reqs_list
 
 # %%
+p, _, requests = get_requests(df[:20])
+
+# %%
 def initialize_depots(graph, vehicles_amount = [20]*5,type = [Charger.FAST]*5 ):
     depots = []
     idx = 0
@@ -178,7 +175,7 @@ def initialize_vehicles_naive(depots):
     vehicle_id_counter = 0  # Start assigning IDs from 1
     for i, d in enumerate(depots):
         start_depot_id = d.id
-        end_depot_id = d.id #depots[(i + 1) % len(depots)].id  # Ensures start and end depots are different
+        end_depot_id =depots[(i + 1) % len(depots)].id  # Ensures start and end depots are different
         for _ in range(d.vehicles_now):
             vehicles.append(Vehicle(id=vehicle_id_counter,
                                     pcapacity=5,
@@ -213,9 +210,7 @@ def initialize_vehicles_random(depots):
             vehicle_id_counter += 1
     return vehicles, n_vehicles
 
-
-
-
+# %%
 def initialize_vehicles_with_specific_start_end(depots, end_depots = {42432963:42430044,42430044: 6177439750, 6223571524:42432963, 3786901738:42432963, 6177439750:6223571524}):
     vehicles = []
     n_vehicles = sum(d.vehicles_now for d in depots)
@@ -237,7 +232,7 @@ def initialize_vehicles_with_specific_start_end(depots, end_depots = {42432963:4
 
 # %%
 depots = initialize_depots(graph, vehicles_amount = [1]*5)
-vehicles, _ = initialize_vehicles_naive(depots)
+#vehicles, _ = initialize_vehicles_naive(depots)
 
 # %%
 depot_ids = [d.id for d in depots]  # Generate the list of depot ids
@@ -268,135 +263,27 @@ def clean_requests(requests):
     return requests, tot
 
 # %%
-_, _, requests = get_requests(df[:1])
-requests, tot = clean_requests(requests)
-
-
-# %%
 edges_to_remove = [(u, v) for u, v in graph.edges() if u == v]
 graph.remove_edges_from(edges_to_remove)
 
 # %%
-import math
-def create_problem2(graph,depots, vehicles, requests,edge_info=edge_info, name="VehicleRoutingProblem", subsets=[]):
-    problem = pulp.LpProblem(name, pulp.LpMaximize)
-    #Routing variable
-    V = {}
-    for a in vehicles:
-        for u in graph.nodes():
-            for v in graph.nodes():
-                if graph.has_edge(u, v):
-                    V[a.id,u, v]= pulp.LpVariable(f"V{a.id}{u}{v}", cat='Binary') 
-    
-    #Request Assigning variable
-    x = {}
-    for a in vehicles:
-        for r in requests:
-            x[a.id,r.id]= pulp.LpVariable(f"x{a.id},{r.id}", cat='Binary') 
-
-    s = {}
-    for a in vehicles:
-        for v in graph.nodes():
-                s[a.id,v]= pulp.LpVariable(f"s{a.id},{v}") 
-
-    y = {}
-    N = len(requests)+200100
-    for a in vehicles:
-            y[a.id]= pulp.LpVariable(f"y{a.id}", cat='Binary') 
-            problem += N*y[a.id]>= (pulp.lpSum(x[a.id, r.id] for r in requests)) 
-
-
-
-    #(4.24)
-    for u,v in graph.edges():
-         problem += pulp.lpSum(V[a.id,u,v] for a in vehicles) <= edge_info[u,v][2]
-
-    #(4.27)
-    for a in vehicles:
-        problem += pulp.lpSum(V[a.id,u,v]*a.R_*edge_info[u,v][1]for u,v in graph.edges() ) <= a.charge
-
-
-    #(4.5)
-    for a in vehicles:
-            problem += pulp.lpSum(x[a.id,r.id]*r.people_ for r in requests) <= a.pcapacity_
-
-    #(4.25)
-    M = 50000000
-    for a in vehicles:
-        for i in graph.nodes():
-                for j in graph.nodes():
-                    if j != a.start_depot and graph.has_edge(i, j):
-                        problem +=s[a.id,i] + edge_info[(i,j)][1] - M*(1 - V[a.id, i, j]) <=s[a.id,j]
-
-
-    #(4.9)
-    for r in requests:
-        problem += pulp.lpSum(x[a.id,r.id] for a in vehicles) <= 1
-    
-    #for a in vehicles:
-    #    problem += pulp.lpSum(x[a.id,r.id] for r in requests) == len(requests)
-
-    (4.16)
-    for a in vehicles:
-        temp_list = list(graph.nodes()).copy()
-        temp_list.remove(a.start_depot)
-        if a.start_depot != a.end_depot:
-            temp_list.remove(a.end_depot)
-        no_end = list(graph.nodes()).copy()
-        no_end.remove(a.end_depot)
-        no_start = list(graph.nodes()).copy()
-        no_start.remove(a.start_depot)
-        
-        for v in temp_list:
-            problem += pulp.lpSum(V[a.id,u, v] for u in no_end if graph.has_edge(u, v)) \
-                    - pulp.lpSum(V[a.id,v, w] for w in no_start if graph.has_edge(v, w)) == 0
-    
-    #(4.32) - (4.33)
-    for a in vehicles:
-        temp_list = list(graph.nodes()).copy()
-        temp_list.remove(a.start_depot)
-        if a.start_depot != a.end_depot:
-            temp_list.remove(a.end_depot)
-        no_end = list(graph.nodes()).copy()
-        no_end.remove(a.end_depot)
-        no_start = list(graph.nodes()).copy()
-        no_start.remove(a.start_depot)
-        if a.start_depot == a.end_depot:
-            continue
-        #problem +=   (pulp.lpSum(V[a.id, v, a.start_depot] for v in no_start if graph.has_edge( v,a.start_depot)) ) == 0
-        #problem +=   (pulp.lpSum(V[a.id, a.end_depot,  v] for v in no_end if graph.has_edge( a.end_depot, v)) ) == 0
-#       
-        problem +=   (pulp.lpSum(V[a.id, v, a.end_depot] for v in no_start if graph.has_edge( v,a.end_depot)) ) == y[a.id]
-        #for r in requests:
-        problem +=   (pulp.lpSum(V[a.id, a.start_depot,  v] for v in no_end if graph.has_edge( a.start_depot, v)) ) ==y[a.id]
-
-
-    #(4.30) - (4.31)
-    for a in vehicles:
-        for r in requests:
-                problem += pulp.lpSum(V[a.id,  v,r.start] for v in graph.nodes() if graph.has_edge( v,r.start)) >= x[a.id, r.id]
-                problem += pulp.lpSum(V[a.id,  v,r.end] for v in graph.nodes() if graph.has_edge( v,r.end)) >= x[a.id, r.id]
-    
-
-             
-    
-    #problem+=pulp.lpSum(x[a.id,r.id] for a in vehicles for r in requests)
-
-    #problem += pulp.lpSum(y[a.id,r.start]  for a in vehicles for r in requests)
-    problem += pulp.lpSum(x[a.id,r.id] for a in vehicles for r in requests)
-    #problem += pulp.lpSum(-V[a.id,u, v]*edge_info[(u,v)][1] for a in vehicles for v in graph.nodes() for u in graph.nodes() if graph.has_edge(u, v))
-
-    return problem, V, x,y
-
-def check_road(id, depot_id, V):
+def check_road(id, depot_id, V,s):
     raw_road = {}
+    times = {}
+    arriving_times = {}
     lrr = 0
     for u, v in graph.edges():
-        if pulp.value(V[id,u, v]) == 1:
+        if pulp.value(V[id,u, v]) >0.5:
             raw_road[u] = v 
+            if s != None:
+                times[u] = pulp.value(s[id,u])
+                arriving_times[v] = pulp.value(s[id,v])
             lrr+=1
     n = depot_id
     final_road = {}
+    if s != None:
+        print(times)
+        print(arriving_times)
     print(lrr,raw_road)
     print( depot_id)
     for i in range(lrr):
@@ -442,7 +329,7 @@ def update_vehicles(vehicles, graph, V, edges_info):
         new_charge = a.charge
         for u,v in graph.edges():
             try:
-                new_charge -= pulp.value(V[a.id,u,v])*a.R_*edges_info[u,v][1]  
+                new_charge -= int(pulp.value(V[a.id,u,v]) > 0.5)*a.R_*edges_info[u,v][1]  
             except:
                 pass
         if new_charge != a.charge:
@@ -512,7 +399,7 @@ def check_and_create_folder(folder_path, name_fold = "simu"):
     return new_folder_path
 
 # %%
-def save_info(V,x,requests, graph, vehicles, old_vehicles, old_depots,edges_info, folder_path, ite,name_road = 'road_info.csv', name_vehicles = 'vehicle_info.csv', name_edge_info = "edge_info.csv", name_request_info = "requests_info.csv"):
+def save_info(V,x,requests, graph, vehicles, old_vehicles, old_depots,edges_info, folder_path, ite, b = None,name_road = 'road_info.csv', name_vehicles = 'vehicle_info.csv', name_edge_info = "edge_info.csv", name_request_info = "requests_info.csv"):
     road_info = {}
     for u, v in graph.edges():
         edge_used = []
@@ -570,84 +457,355 @@ def save_info(V,x,requests, graph, vehicles, old_vehicles, old_depots,edges_info
                                                     r.id for r in requests
                                                 ]).reset_index().rename(columns={'index': 'edge'}).to_csv(os.path.join(folder_path, f"{ite:04d}_{name_request_info}"))
 
+    if b == None:
+        return
+    
+    end_depots_info = {}
+    for a in vehicles:
+        end_depots_info[a.id] = []
+        for d in depots:
+            end_depots_info[a.id] += [pulp.value(b[a.id,d.id])]
+    
+    pd.DataFrame.from_dict(end_depots_info, orient='index', columns=[
+                                                    d.id for d in depots
+                                                ]).reset_index().rename(columns={'index': 'edge'}).to_csv(os.path.join(folder_path, f"{ite:04d}_end_depots_info.csv"))
+
     
 
 # %%
-
 def insert_random_end_point(requests, graph):
     for r in requests:
         r.end = random.choice([x for x in graph.nodes() if x != r.start])
     return requests
-
-import copy
-def rec_horizon_problem(df, 
-                        graph, requests, depots, vehicles,edges_info, 
-                        solver,
-                        req_per_i = 3, charging_time = 40, iterations = 30, capacitissimo=0):
-    folder_path = check_and_create_folder("./results_random_depot_correct")
     
+
+# %%
+import math
+def create_problem_w_rebalancing(graph,depots, vehicles, requests,edge_info=edge_info, name="VehicleRoutingProblem", subsets=[]):
+    problem = pulp.LpProblem(name, pulp.LpMinimize)
+    #Routing variable
+    V = {}
+    for a in vehicles:
+        for u in graph.nodes():
+            for v in graph.nodes():
+                if graph.has_edge(u, v):
+                    V[a.id,u, v]= pulp.LpVariable(f"V{a.id}{u}{v}", cat='Binary') 
+    
+    #Check IF a request is resolved
+    x = {}
+    for a in vehicles:
+        for r in requests:
+            x[a.id,r.id]= pulp.LpVariable(f"x{a.id},{r.id}", cat='Binary') 
+
+    s = {}
+    for a in vehicles:
+        for v in graph.nodes():
+                s[a.id,v]= pulp.LpVariable(f"s{a.id},{v}") 
+
+    y = {}
+    N = len(requests)+200100
+    for a in vehicles:
+            y[a.id]= pulp.LpVariable(f"y{a.id}", cat='Binary') 
+            problem += N*y[a.id]>= (pulp.lpSum(x[a.id, r.id] for r in requests)) 
+    #is a depot assigned to the vehicle
+    b = {}
+    for a in vehicles:
+        for d in depots:
+            b[a.id, d.id]= pulp.LpVariable(f"b{a.id},{d.id}", cat='Binary') 
+
+
+    #for a in vehicles:
+    #    problem+=pulp.lpSum(b[a.id, d.id] for d in depots) == y[a.id]
+        
+
+
+    #(4.24)
+    for u,v in graph.edges():
+         problem += pulp.lpSum(V[a.id,u,v] for a in vehicles) <= edge_info[u,v][2]
+
+    #(4.27)
+    for a in vehicles:
+        problem += pulp.lpSum(V[a.id,u,v]*a.R_*edge_info[u,v][1]for u,v in graph.edges() ) <= a.charge
+
+
+    #(4.5)
+    for a in vehicles:
+            problem += pulp.lpSum(x[a.id,r.id]*r.people_ for r in requests) <= a.pcapacity_
+
+    #(4.25)
+    M = 34
+    for a in vehicles:
+        for i in graph.nodes():
+            for j in graph.nodes():
+                if graph.has_edge(i, j):
+                    problem +=s[a.id,i] + edge_info[(i,j)][1] - M*(1 - V[a.id, i, j]) <=s[a.id,j]
+#
+    
+
+    starts = [r.start for r in requests]
+    ends = [r.end for r in requests]
+    for a in vehicles:
+        for v in graph.nodes():
+            if v in starts: #or v in ends:
+                continue
+            problem += s[a.id,v] >=0
+            problem += s[a.id,v] <= 30
+    
+    for r in starts:
+        problem += s[a.id,r] <=20
+        problem += s[a.id,r] >=10
+    
+
+    #(4.9)
+    for r in requests:
+        problem += pulp.lpSum(x[a.id,r.id] for a in vehicles) == 1
+
+    #(4.16)
+    for a in vehicles:
+        temp_list = list(graph.nodes()).copy()
+        temp_list.remove(a.start_depot)
+        if a.start_depot != a.end_depot:
+            temp_list.remove(a.end_depot)
+        no_end = list(graph.nodes()).copy()
+        no_end.remove(a.end_depot)
+        no_start = list(graph.nodes()).copy()
+        no_start.remove(a.start_depot)
+        
+        for v in temp_list:
+            problem += pulp.lpSum(V[a.id,u, v] for u in  graph.nodes()  if graph.has_edge(u, v)) \
+                    - pulp.lpSum(V[a.id,v, w] for w in  graph.nodes()  if graph.has_edge(v, w)) == 0
+
+
+    d_ids = [d.id for d in depots]
+
+
+    
+    #(4.32) - (4.33)
+    for a in vehicles:
+        temp_list = list(graph.nodes()).copy()
+        temp_list.remove(a.start_depot)
+        if a.start_depot != a.end_depot:
+            temp_list.remove(a.end_depot)
+        no_end = list(graph.nodes()).copy()
+        no_end.remove(a.end_depot)
+        no_start = list(graph.nodes()).copy()
+        no_start.remove(a.start_depot)
+        if a.start_depot == a.end_depot:
+            continue
+        #problem +=   (pulp.lpSum(V[a.id, v, a.start_depot] for v in no_start if graph.has_edge( v,a.start_depot)) ) == 0
+        #problem +=   (pulp.lpSum(V[a.id, a.end_depot,  v] for v in no_end if graph.has_edge( a.end_depot, v)) ) == 0
+#       
+        problem +=   (pulp.lpSum(V[a.id, v, a.end_depot] for v in graph.nodes() if graph.has_edge( v,a.end_depot)) ) == 1#1y[a.id]
+        #for r in requests:
+        #problem +=   (pulp.lpSum(V[a.id, v,a.start_depot] for v in graph.nodes() if graph.has_edge( v,a.start_depot)) ) ==0
+        problem +=   (pulp.lpSum(V[a.id, a.start_depot,  v] for v in graph.nodes() if graph.has_edge( a.start_depot, v)) ) ==1#y[a.id]
+
+
+    #(4.30) - (4.31)
+    #for a in vehicles:
+    #    for r in requests:
+                #problem += pulp.lpSum(V[a.id,  v,r.start] for v in graph.nodes() if graph.has_edge( v,r.start)) >= x[a.id, r.id]
+    #            problem += pulp.lpSum(V[a.id,  v,r.end] for v in graph.nodes() if graph.has_edge( v,r.end)) >= x[a.id, r.id]
+    for r in requests:
+        for a in vehicles:
+            no_end = list(graph.nodes()).copy()
+            no_end.remove(a.end_depot)
+            problem += pulp.lpSum(V[a.id,  v,r.start] for v in graph.nodes() if graph.has_edge( v,r.start) ) >= x[a.id, r.id]
+            #problem += pulp.lpSum(V[a.id,  r.start,v] for v in graph.nodes() if graph.has_edge( r.start,v) ) >= x[a.id, r.id]
+        
+        #for a in vehicles:
+        #    problem += pulp.lpSum(V[a.id,  v,r.start] for v in graph.nodes() if graph.has_edge( v,r.start)) >= x[a.id, r.id]
+             
+    
+    #problem+=pulp.lpSum(x[a.id,r.id] for a in vehicles for r in requests)
+
+    #problem += pulp.lpSum(y[a.id,r.start]  for a in vehicles for r in requests)
+    problem += pulp.lpSum(-x[a.id,r.id] for a in vehicles for r in requests)
+    #problem += pulp.lpSum(V[a.id,u, v]*edge_info[(u,v)][1] for a in vehicles for v in graph.nodes() for u in graph.nodes() if graph.has_edge(u, v))
+
+    return problem, V, x,y,b,s
+
+# %%
+_, _, requests = get_requests(df)
+requests, tot = clean_requests(requests)
+random.shuffle(requests)
+depots = initialize_depots(graph, vehicles_amount = [3,6,8,4,3])
+vehicles, _ = initialize_vehicles_with_specific_start_end(depots)
+
+
+# %%
+def test_problem(graph, vehicles, requests,edge_info=edge_info, name="VehicleRoutingProblem", link_capacity=50):
+    problem = pulp.LpProblem(name, pulp.LpMinimize)
+    #Routing variable
+    V = {}
+    for a in vehicles:
+        for u in graph.nodes():
+            for v in graph.nodes():
+                if graph.has_edge(u, v):
+                    V[a.id,u, v]= pulp.LpVariable(f"V{a.id}{u}{v}", cat='Binary') 
+    
+   
+    x = {}
+    for a in vehicles:
+        for r in requests:
+            x[a.id,r.id]= pulp.LpVariable(f"x{a.id},{r.id}", cat='Binary') 
+    done = []
+    #for r in requests:
+    #    if r in done:
+    #        continue
+    #    for rr in requests:
+    #        if rr in done:
+    #            continue
+    #        if rr == r:
+    #            continue
+    #        if r.end == rr.start and r.start == rr.end:
+    #            done += [r,rr]
+    #            for a in vehicles:
+    #                problem += x[a.id,r.id] + x[a.id,rr.id]==1
+
+    y = {}
+    N = len(requests)+200100
+    for a in vehicles:
+            y[a.id]= pulp.LpVariable(f"y{a.id}", cat='Binary') 
+            problem += N*y[a.id]>= (pulp.lpSum(x[a.id, r.id] for r in requests)) 
+
+    for a in vehicles:
+        for node in graph.nodes():
+            if node != a.start_depot and node != a.end_depot:
+                problem += pulp.lpSum(V[a.id, i, node] for i in graph.nodes() if graph.has_edge(i, node)) == \
+                        pulp.lpSum(V[a.id, node, j] for j in graph.nodes() if graph.has_edge(node, j))
+
+
+    capacity_starts = {r.start:a.pcapacity_ for r in requests}
+
+    #(4.9)
+    for r in requests:
+        problem += pulp.lpSum(x[a.id,r.id] for a in vehicles) <= 1
+
+     #(4.24)
+    for u,v in graph.edges():
+         problem += pulp.lpSum(V[a.id,u,v] for a in vehicles) <= link_capacity
+
+    #(4.27)
+    for a in vehicles:
+        problem += pulp.lpSum(V[a.id,u,v]*a.R_*edge_info[u,v][1]for u,v in graph.edges() ) <= a.charge
+
+
+    #(4.5)
+    for a in vehicles:
+            problem += pulp.lpSum(x[a.id,r.id]*r.people_ for r in requests) <= a.pcapacity_
+
+
+    """Overall Time Spent"""
+    t = {}
+    for a in vehicles:
+        for v in graph.nodes():
+            t[a.id, v] = pulp.LpVariable(f"t{a.id},{v}")
+            problem += t[a.id, v] <= 500#a.pcapacity_ + pulp.lpSum(V[a.id, i, j] for i, j in graph.edges())
+            problem += t[a.id, v] >= 0
+    problem += t[a.id, a.start_depot] == 0
+
+
+    
+    for r in requests:
+        for a in vehicles:
+            problem +=t[a.id, r.end] -  t[a.id, r.start] >= x[a.id,r.id]-1
+    
+
+
+    starts_ends = {r.start:r.end for r in requests}
+    M = len(graph.nodes()) + sum([edge_info[(i,j)][1] for i,j in graph.edges()])
+    for a in vehicles:
+        for i, j in graph.edges():
+            if i == a.start_depot or j == a.start_depot:
+                continue
+            if j in list(starts_ends.keys()) and i == starts_ends[j]:
+                continue
+            d_i = edge_info[(i,j)][1]
+            problem += t[a.id, i] + d_i <= t[a.id, j] + M * (1 - V[a.id, i, j])
+
+
+    for a in vehicles:
+        temp_list = list(graph.nodes()).copy()
+        temp_list.remove(a.start_depot)
+        if a.start_depot != a.end_depot:
+            temp_list.remove(a.end_depot)
+        no_end = list(graph.nodes()).copy()
+        no_end.remove(a.end_depot)
+        no_start = list(graph.nodes()).copy()
+        no_start.remove(a.start_depot)
+        if a.start_depot == a.end_depot:
+            continue
+        problem +=   (pulp.lpSum(V[a.id, v, a.end_depot] for v in graph.nodes() if graph.has_edge( v,a.end_depot)) ) == y[a.id]
+        problem +=   (pulp.lpSum(V[a.id, a.start_depot,  v] for v in graph.nodes() if graph.has_edge( a.start_depot, v)) ) ==y[a.id]
+
+
+    for r in requests:
+        for a in vehicles:
+            no_end = list(graph.nodes()).copy()
+            no_end.remove(a.end_depot)
+            problem += pulp.lpSum(V[a.id,  v,r.start] for v in graph.nodes() if graph.has_edge( v,r.start) ) >= x[a.id,r.id]
+            problem += pulp.lpSum(V[a.id,  r.end,v] for v in graph.nodes() if graph.has_edge( r.end,v) ) >= x[a.id,r.id]
+
+    #problem += pulp.lpSum(V[a.id,u, v]*edge_info[(u,v)][0] for a in vehicles for u,v in graph.edges())
+    problem += pulp.lpSum(-x[a.id,r.id] for a in vehicles for r in requests) #+ pulp.lpSum(V[a.id,u,v]*a.R_*edge_info[u,v][1]for u,v in graph.edges() for a in vehicles ) 
+    #problem += pulp.lpSum(V[a.id,u, v]*edge_info[(u,v)][1] for a in vehicles for v in graph.nodes() for u in graph.nodes() if graph.has_edge(u, v))
+    return problem, V, x,t,None,None
+    
+
+# %%
+import copy
+def rec_horizon_problem(df, graph,requests,vehicles,edges_info, solver, link_capacity=50, req_per_i = 3, charging_time = 20, iterations = 1, test = True):
+    if not test:
+        folder_path = check_and_create_folder("./dio_per_favore")
     already_done = 0
     res = -1
-    
-    
     if not isinstance(req_per_i, list):
         req_per_i = [req_per_i]*iterations
 
-    progress_bar = tqdm(range(iterations),total=iterations, position = 0)
+    progress_bar = tqdm(range(iterations),total=iterations)
 
     for i in progress_bar:
         picked_requests = choose_requests(requests,graph, req_per_i[i], i+already_done)
         if picked_requests==-1:
             print("Available requests are over :)")
             return 
-        picked_requests = insert_random_end_point(picked_requests, graph)
         already_done += len(picked_requests)
         
-        problem, V, x, y= create_problem2(graph,depots, vehicles, picked_requests)
-        tqdm.write("Problem Created")
+        problem, V, x, t, b,s= test_problem(graph, edge_info=edge_info,vehicles = vehicles, requests=picked_requests, link_capacity=link_capacity)
         #res = problem.solve(pulp.PULP_CBC_CMD( msg=0,timeLimit=60))
-        res = problem.solve(solver=solver)
+        
+        res = problem.solve(solver)
         if res == 1:
             old_depots = [(a.start_depot, a.end_depot)for a in vehicles]
+
+
             update_vehicles(vehicles, graph, V, edges_info)
             old_vehicles = copy.deepcopy(vehicles)
             #print()
             update_depots(depots, vehicles, charging_time)
-            save_info(V,x, picked_requests,graph, vehicles,old_vehicles, old_depots, edges_info, folder_path, ite= i+1)
+            if not test:
+                save_info(V,x, picked_requests,graph, vehicles,old_vehicles, old_depots, edges_info, folder_path, ite= i+1, b = b)
             #print()
-
-
-            #already_done += requests_completed_successfully
+            
+                        
         
-        progress_bar.set_description(f"Old iteration {res}, {charging_time}- {capacitissimo}")
+        progress_bar.set_description(f"Old iteration {res}")
         
         
         #print("-----------------------------------------------------")
 
 # %%
+iterations = 10
+req_per_i = 10
+solver = pulp.GUROBI_CMD(msg=1, timeLimit=600)
 
+# %%
+#for link_capacity, charging_time in zip([ 50, 40, 20, 10], [ 60, 40,40,30]):
+for link_capacity, charging_time in zip([ 5,5], [ 10,30]):
+    rec_horizon_problem(df, graph,requests,vehicles,edge_info, solver = solver,link_capacity=link_capacity, req_per_i = req_per_i, charging_time = charging_time, iterations = iterations, test = False)
 
 # %%
 
-_, _, requests = get_requests(df)
-requests, tot = clean_requests(requests)
 
-
-solver= pulp.GUROBI_CMD(msg=1, options=[('Threads', 8)])
-for capacitissimo, charging_time in zip([ 40, 20, 10, 10 ], [ 20,10,20,10]):
-    print(capacitissimo, charging_time)
-    depots = initialize_depots(graph, vehicles_amount = [3,6,8,4,3])
-    vehicles, _ = initialize_vehicles_with_specific_start_end(depots)
-    # Iterate over edges and add distances to the dictionary
-    edge_info = {}
-    for u, v, d in graph.edges(data=True):
-        edge_info[(u, v)] = [
-            d["length"]/10,
-            d["length"]/500,
-            capacitissimo
-        ]
-    rec_horizon_problem(df,
-                         graph, requests, depots, vehicles, edge_info,
-                         solver= solver, 
-                         req_per_i=50, charging_time = charging_time, capacitissimo = capacitissimo)
 

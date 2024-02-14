@@ -6,7 +6,8 @@
 \input{src/01_title}
 \input{src/02_abstract}
 \input{src/03_declaration}
-
+%\frontmatter
+\pagenumbering{roman}
 \doublespacing
 \tableofcontents
 \newpage
@@ -15,6 +16,8 @@
 \newpage
 \singlespacing
 
+%\mainmatter
+\pagenumbering{arabic} 
 \input{src/04_motivation}
 \input{src/06_preliminaries}
 \input{src/05_related_work}
@@ -23,10 +26,15 @@
 \input{src/09_gts}
 \input{src/10_conclusion}
 \newpage
+\pagenumbering{roman}
 \bibliographystyle{plain}
 \bibliography{src/bib} 
 
+
+\newpage
 \appendix
+\pagenumbering{arabic} 
+\setcounter{chapter}{0}
 \input{src/A1_Appendix}
 
 \end{document}

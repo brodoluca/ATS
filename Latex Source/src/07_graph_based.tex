@@ -306,7 +306,7 @@ While it could bring some interesting insights, the URP does not contain the nec
 	&\sum_{a \in \mathcal{A}}V^a_{u,v} \leq c_{u,v} \quad \forall (u,v) \in \mathcal{E} \label{eq:cong_free}\\
 	&s_{u}^a + T_{u,v}^a - M*(1-V^a_{u,v}) \leq s_{v}^a  \quad \forall (u,v) \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:relations_node_time}\\
 	%&V^a_{u,v}\cdot(s_{u}^a + T_{u,v}^a - s_{v}^a) \leq 0 \quad \forall (u,v) \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:relations_node_time}\\
-	&a'_v \leq s_{v}^a \leq b'_v \quad \forall v \in \mathcal{E}, \forall a \in \mathcal{A}\label{eq:time_window_constraint}\\
+	&a'_v \leq s_{v}^a \leq b'_v \quad \forall v \in \mathcal{V}, \forall a \in \mathcal{A}\label{eq:time_window_constraint}\\
 	&\sum_{(u,v) \in \mathcal{E}}e^a_{u,v}\cdot V^a_{u,v} \leq B_a(0)\quad \forall a \in \mathcal{A} \label{eq:discharging_constraints}\\
 	&M= \underset{(u,v) \in \mathcal{E}}{\text{max}}\{b_u + T_{u,v}-a_u\}\nonumber
 \end{align} 
@@ -331,16 +331,16 @@ Accordingly, the \textit{Routing and Dispatching Problem (RDR)} can be formulate
 	&(\ref{eq:cons_quantity_p}),(\ref{eq:cons_quantity_g})\nonumber\\	
 	&(\ref{eq:req_served}),(\ref{eq:req_served_per_vehicle})\nonumber\\	
 	&(\ref{eq:flow_conservation_graph_u})\nonumber\\%-(\ref{eq:flow_cons_departure_graph_u})\nonumber\\
-	&(\ref{eq:cong_free})-(\ref{eq:discharging_constraints})\nonumber\\
+	&(\ref{eq:cong_free}),(\ref{eq:discharging_constraints})\nonumber\\
 	&\sum_{ u \in \mathcal{N}^+_{\underline{s_a}} }V^a_{ \underline{s_a},u} = 1 \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_arrival_graph_u_d}\\
 	&\sum_{u \in \mathcal{N}^-_{\bar{t_a}} } V^a_{u, \bar{t_a}} = 1 \quad r \in \mathcal{R},  \forall a \in \mathcal{A} \label{eq:flow_cons_departure_graph_u_d}\\
 	&\sum_{u \in \mathcal{N}^-_{\underline{t'_r}} } V^a_{u, \bar{t'_r}} \ge x_{a,r} \quad  \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:must_arrive_dep}	\\
 	&\sum_{u \in \mathcal{N}^+_{\underline{s'_r}} } V^a_{ \underline{s'_r}, u} \ge x_{a,r} \quad   \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:must_go_start}\\
-	%&x_{a,r}\cdot(s_{\underline{s'_r}}^a - s_{\bar{t'_r}}^a) \leq 0 \quad \forall r \in \mathcal{R}, \forall a \in \mathcal{A}\label{eq:pick_bef_del}\\
-	\nonumber
-	%& V^a_{u,\underline{s'_a}} \ge  V^a_{\bar{t'_a}, v} \quad \forall u\in \mathcal{N}^-_{\underline{s'_a}}, \forall v \in \mathcal{N}^+_{\bar{t'_a}} , \forall (\underline{s'_a}, \bar{t'_a}) \in R_a, \forall a \in \mathcal{A}\label{eq:s_before_t}
+	&s_{u}^a + T_{u,v}^a - M*(1-V^a_{u,v}) \leq s_{v}^a  \quad \forall (u,v) \in \mathcal{E},  \forall a \in \mathcal{A}\label{eq:relations_node_time_2}\\
+	 &\quad \quad \quad\quad \quad \quad \quad \quad \quad \quad \quad u,v \notin \{\underline{s'_a},\bar{t'_a} | \forall r in \mathcal{R}\}\nonumber\\
+	 &s_{\bar{t'_a} }^a - s_{\underline{s'_a} }^a \ge x_{a,r}  \quad \forall r \in \mathcal{R}, \forall a \in \mathcal{A} \label{eq:req_order}
 \end{align}
-Constraints (\ref{eq:flow_cons_arrival_graph_u_d}) and (\ref{eq:flow_cons_departure_graph_u_d}) impose that a vehicle must leave the starting depot and reach its final depot, respectively.  (\ref{eq:must_arrive_dep}) guarantees that, when a request $r$ is allocated to vehicle $a$, the vehicle must reach the terminal station of the request at least once. Moreover, equation (\ref{eq:must_go_start}) ensures that the vehicle traverses the starting station associated with the assigned request. \\
+Constraints (\ref{eq:flow_cons_arrival_graph_u_d}) and (\ref{eq:flow_cons_departure_graph_u_d}) impose that a vehicle must leave the starting depot and reach its final depot, respectively.  (\ref{eq:must_arrive_dep}) guarantees that, when a request $r$ is allocated to vehicle $a$, the vehicle must reach the terminal station of the request at least once. Moreover, (\ref{eq:must_go_start}) ensures that the vehicle traverses the starting station associated with the assigned request. (\ref{eq:relations_node_time_2}) is the subtour elimination constraint, with, however a further constraint represented by (\ref{eq:req_order}), which forces the end station of a request to be visited after the start station. \\
 These requirements, furtermore, with this formulation, also ensure that a vehicle can only move from one node to the other only if they left the starting depot as well. \\ 
 As an alternative to (\ref{eq:flow_cons_arrival_graph_u_d}) and (\ref{eq:flow_cons_departure_graph_u_d}), one can also relate the two constraints to the request assignment, which would transform the requirements as following. 
 \begin{equation}
@@ -429,7 +429,7 @@ In (\ref{eq:v_prim_def}), the function $f :  \mathcal{V}_c \times \mathcal{V}_n 
 \begin{equation}
 |\mathcal{R}'_v| = \sum_{r \in \mathcal{R}_v'} \lambda_r
 \end{equation}
-where 
+
 \begin{equation}
 \mathcal{R}_v'= \{ r \in \mathcal{R} : \underline{s_r}' \in \mathcal{V'}_v \} \label{eq:req_per_reg}
 \end{equation}
@@ -485,7 +485,7 @@ Finally, within the model established in prior sections, the \textit{Unconstrain
 (\ref{eq:flow_conservation_graph_u23}) insures the flow conservation. (\ref{eq:each_vehicle_start}) indicates that the vehicles leave the starting node only from one edge. (\ref{eq:each_vehicle_end}) guarantees a vehicle must reach only one deposit at the time. (\ref{eq:capacity_depot_respected}) insures there the capacity of the deposits is respected. Finally, (\ref{eq:goods_cap}) and (\ref{eq:people_cap}) are used to ensure the vehicles being rebalanced to a certain station have the capacity to fulfill the requests of the area. 
 
 \subsection{Congestion-Free Dispatching, Routing and Rebalancing Problem}
-While the previous formulation works for a stand-alone, if one wishes to solve routing, dispatching and rebalancing in one formulation, it would introduce a big number of new variable, which would lead to a unefficient formulation. Assuming that the requests can be estimated, a more efficient formulation can be introduced.\\
+While the preceding approach is suitable for a standalone application, amalgamating routing, dispatching, and rebalancing into a single formulation would entail a considerable increase in the number of variables, resulting in an inefficient formulation. However, if requests can be estimated, a more streamlined formulation is feasible.\\
 Let 
 \begin{equation*}
 	b_{\bar{t}}^a = 
@@ -592,18 +592,15 @@ While information regarding customer demands are relatively easy to obtain, othe
 \end{equation}
 where $l_{u,v}$ is the speed limit of the link $\langle u,v\rangle$. \\
 Although data on customer mobility is readily accessible, obtaining precise information on goods delivery poses a challenge. This includes details on the specific category of goods being transported and the exact dropoff locations. Multiple might be the reasons for it, such as privacy, commercial sensitivity or due to the highly heterougenous nature of this field. Nevertheless, a potential approach to glean insights into goods delivery could involve leveraging publicly accessible datasets such as the GetFood Historical Data (\cite{getfoodnyc}). Amid the COVID-19 pandemic, initiatives like GetFoodNYC have been instrumental in facilitating emergency home food delivery for residents unable to access food through conventional means. Although the data provided does not contain delivery location, this can be simulated by picking a random location within the road network and the quantity can be estimated by the available data.\\
-To better estimate the performance of a given system, a specific measure, referred to as $r$ index is introduced. It indicates the ratio of requests served per road used. It expresses, basically, how many requests the vehicles can serve per road used and it is calculated as follows. 
- \begin{equation}
-	r = \dfrac{\sum_{a\in \mathcal{A}}\sum_{r \in \mathcal{R}}x_{a,r} }{\sum_{(u,v) \in \mathcal{E}} \underset{\sum_{a \in \mathcal{A}}}{\max}\{V^a_{u,v}\}}
-	\label{eq:r_index}
-\end{equation}
-Clearly, if the number of roads used increases, the $r$ index decreases. Viceversa, if the number of requests increases, so does $r$. This measure can be used to better understand how efficiently a road network is used by two approaches. \\
 The simulations have been carried out using the CBC (\cite{schumacher2022rcbc}) and Gurabi (\cite{gurobi}) solvers used in combination with PuLP (\cite{dunning2011pulp}) on a 2018 Intel i7 MacbookPro. 
 
 \subsection{Rebalancing-Free Analysis}
 This use-case refers to the RDR (\algoref{RDR}) with the alternatives defined in (\ref{eq:alternative_constraint_depots}) and the goal is to serve as many requests as possible, i.e. to minimize the cost function in \equaref{eq:req_served}.  For this use-case, since the rebalancing is not considered, the end depots are chosen randomly at the beginning of the simulation and only the starting and ending depots of transporting vehicles are exchanged at every iteration. As a result, transporting vehicles move from starting to end depot at one iteration and viceversa at the next iteration. Two main aspects are considered, namely charging time and congestion constraints. These two variables, which greatly influence the system's performance, have been varied to analyse how the system behave with \text{(i)} high roads capacity low requests rate, i.e. high charging times, since vehicles can start moving after their battery has been charge with an additional 40\%; \text{(ii)} same road capacity, but high request rate ( additional 5 \% of charging); \text{(iii)} low road capacity and high charging rate; finally \text{(iv)} lower capacity, but higher charging rate. 
  The details of the simulations are shown in \tabref{tab:routingless_simu_details} and the starting distribution of the vehicles in the depot is described in \tabref{tab:routingless_depot_distribution}. The overall performance is summarized in \tabref{tab:routingless_simu_performance}\footnote{Further information can be found in Appendix \ref{appendix:additional_info}
  }.  \\
+
+
+
 
 \begin{table}[h]
 		\centering
@@ -616,55 +613,12 @@ This use-case refers to the RDR (\algoref{RDR}) with the alternatives defined in
 			Vehicles \#& 24&-&- &-&-\\
 			Iterations & 20&-&-&-&-\\
 			Requests / $i$ & 40&-&-&-&-\\
-			Charging \% / $i$ & 40&20&10&20&10\\
-			$c_{u,v}$  / $i$ & 50&40&20&10&10\\
+			Charging \% / $i$ & 60&40&30&10&30\\
+			$c_{u,v}$  / $i$ & 50&-&-&5&5\\
 		\end{tabular}
 		\caption[Details of the Rebalancing-less Simulation]{Details of the Rebalancing-less Simulation. $i$ stands for iteration and '-' means the entry has not been changed from the previous one}
 		\label{tab:routingless_simu_details}   
 \end{table} 
-
-	\begin{table}[h]
-		\centering
-		\begin{tabular}{ |p{2cm} | c |}
-				\hline
-			Depot ID & \# Vehicles\\
-			\hline
-			1 & 3\\
-			2 & 6\\
-			3 & 8\\
-			4 & 4\\
-			5 & 3\\
-		\end{tabular}
-		\caption{Depot Distribution of the Rebalancing-less Simulation}
-		\label{tab:routingless_depot_distribution}   
-	\end{table}
-	
-
-\begin{table}[h]
-	\centering
-	\begin{tabular}{ p{3.7cm}|c|c|c|c|c|}
-		%\hline
-		%\multicolumn{2}{|c|}{Depot Distribution} \\
-		%\hline
-		&Sim. 1 & Sim.2 &Sim. 3&Sim. 4&Sim. 5\\
-		\hline
-		Total Distance (m)&3454956&2278108& 2420612&2522745&2327609  \\
-		Average Distance (m) & 143956&94921& 100859&105114  &96984\\
-		Total Time (s) & 69099&45562&48412&50455  &46552\\
-		Average Time  (s) & 2879&1898&2017&2102  &1940 \\
-		Total Request Served & 1260&1073&1144&1192  & 1138 \\
-		Request Served(\%) & 84 &72&76&80& 75\\
-		$r$ index & 0.99920&0.983&0.9549&0.986& 0.93\\
-		
-		%235488.79
-		
-		%\hline
-	\end{tabular}
-	\caption{Performance of the Routing-less Simulation.  }
-	\label{tab:routingless_simu_performance}   
-\end{table}
-
-
 
 \begin{figure}[th]
 	\centering
@@ -695,30 +649,30 @@ This use-case refers to the RDR (\algoref{RDR}) with the alternatives defined in
 				height=6cm
 				]
 				\addplot coordinates{
-					(1,99.91870942373679)
-					(2,99.43622770785026)
-					(3,99.74680236863433)
-					(4,99.71564281467816)
-					(5,99.9339102799694)
-					(6,99.95387927633739)
-					(7,99.7144213837322)
-					(8,99.9666255353801)
-					(9,99.88237241035162)
+					(1,98.43523210637584)
+					(2,100.0)
+					(3,99.70028911971025)
+					(4,100.0)
+					(5,100.0)
+					(6,100.0)
+					(7,100.0)
+					(8,99.25079230563661)
+					(9,100.0)
 					(10,100.0)
 					(11,100.0)
 					(12,100.0)
 					(13,100.0)
-					(14,99.73400941261062)
-					(15,99.87306387833044)
+					(14,100.0)
+					(15,100.0)
 					(16,100.0)
-					(17,99.82963072054348)
+					(17,100.0)
 					(18,100.0)
 					(19,100.0)
 					(20,100.0)
 					(21,100.0)
 					(22,100.0)
 					(23,100.0)
-					(24,100.0)
+					(24,98.07205105270594)
 				};			
 			\end{axis}
 		\end{tikzpicture}
@@ -731,24 +685,62 @@ This use-case refers to the RDR (\algoref{RDR}) with the alternatives defined in
 	\label{fig:nyc_analysis_no_congestions}
 \end{figure}
 
-In a system characterized by wide charging times and absence of congestion limits ($c_{u,v} > |\mathcal{A}| \quad \forall (u,v) \in \mathcal{E}$), the performance depicted in \figref{fig:nyc_analysis_no_congestions} unfolds. Notably, the objective isn't focused on minimizing overall travel time (\equaref{eq:travel_time_routing}) or total distance traveled (\equaref{eq:distance_time_routing}), but rather on maximizing the number of served requests. Consequently, vehicles tend to cover more distance. This inclination is further facilitated by the lack of real capacity constraints on roads and the freedom for vehicles to traverse them at any time.\\
+
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{ |p{2cm} | c |}
+				\hline
+			Depot ID & \# Vehicles\\
+			\hline
+			1 & 3\\
+			2 & 6\\
+			3 & 8\\
+			4 & 4\\
+			5 & 3\\
+		\end{tabular}
+		\caption{Depot Distribution of the Rebalancing-less Simulation}
+		\label{tab:routingless_depot_distribution}   
+	\end{table}
+	
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ |p{3.7cm}|c|c|c|c|c|}
+		%\hline
+		%\multicolumn{2}{|c|}{Depot Distribution} \\
+		%\hline
+		& Sim. 1 & Sim. 2 & Sim. 3 & Sim. 4 & Sim. 5 \\
+		\hline
+		Total Distance (m)     &731993& 749006   & 824307 & 585955& 718618 \\
+		Average Distance (m)  &30500 & 312089  & 34346 & 24415& 29942\\
+		Total Time (s)         &14640& 14980  & 16486 & 11719& 14372\\
+		Average Time (s)      & 610& 624   & 687 & 488& 599\\
+		Road Used 				&1171&1137&1244&1021& 1170\\
+		Request Served  (\%)&64 & 63   & 68 & 57&60 \\
+		%235488.79
+		%\hline
+	\end{tabular}
+
+	\caption{Performance of the Routing-less Simulation.  }
+	\label{tab:routingless_simu_performance}   
+\end{table}
+
+
+
+
+In a system characterized by wide charging times and absence of congestion limits ($c_{u,v} > |\mathcal{A}| \quad \forall (u,v) \in \mathcal{E}$), the performance depicted in \figref{fig:nyc_analysis_no_congestions} unfolds. Notably, the objective isn't focused on minimizing overall travel time (\equaref{eq:travel_time_routing}) or total distance traveled (\equaref{eq:distance_time_routing}), but rather on maximizing the number of served requests. Consequently, with more charging time and less road constraint, vehicles tend to cover more distance. This inclination is further facilitated by the lack of real capacity constraints on roads and the freedom for vehicles to traverse them at any time.\\
 As a consequence, the utilization of the road network is uneven, as illustrated in \figref{fig:nyc_road_usage}, where the most-utilized links are highlighted in red. This uneven distribution can be attributed partly to the concentration of drop-off and pick-up points, as well as depots, primarily within downtown Manhattan. However, the presence of a depot uptown causes an area of relatively high vehicles activity, although there are not many relevant location there, as shown in \figref{fig:nyc_simplified_info}. This suggests that if the aim is to mitigate vehicle usage and road congestion, this region shouldn't exhibit high vehicular activity. This consideration becomes significant when addressing rebalancing strategies.  \\
-An effective rebalancing strategy might also help improving system's performance. For example, the $r$ index of the simulation two with inverted depot is slightly higher (0.9919). \\
 Furthermore, \figref{fig:charge_vehicle_baseline} suggests that most of the vehicles have not been used during the shift. This can be inferred by observing that, for half of the vehicles, the average charge is exactly 100\%, i.e. the same as the starting battery charge. This suggests that the fleet of vehicles could  be reduced in number and maintaining the same capacity. \\
-\figref{fig:nyc_analysis_congestions} shows the same metrics for the third simulation. Starting from \figref{fig:nyc_road_usage_cong}, contrary to \figref{fig:nyc_road_usage}, vehicle tend to use the road network less efficiently. As expected, there are still roads that stand out as the most used ones, they still reflect the result obtained previously and it is still to associate with the fact that terminal depots are not assigned properly. What suggests a less efficient road use is the $r$ index. Although more requests can be served in comparison with the approach in simulation two, the vehicles must use more roads than the previous case due to the capacity limits and, therefore, $r$ index is lower.\\
- Furthermore, as shown in \figref{fig:charge_vehicle_baseline_cong}, the fleet is also used differently compared to previous approaches. The distribution of average charge appears to be more uneven compared to \figref{fig:charge_vehicle_baseline} , with some vehicles maintaining an average charge of around 90\%, while others show a charge as low as approximately 20\%. As vehicles don't fully recharge at the end of each shift, their evolution over the simulation period can be observed (\figref{fig:ex_soc_vehicles}). This underscores the varying usage patterns among vehicles. For instance, vehicles like 9 and 13 exhibit consistent usage, evident from their gradually decreasing charge levels. Conversely, vehicles like 1 are seldom utilized. This indicates an improper use of the fleed and it is another aspect that can be further optimized with a proper rebalancing strategy.  \\
- Although the capacity limit is an influencing factor, the performance of simulation 4 suggests that the charging time is more determinant. As a matter of fact, while the road capacity is much lower than any previous case, simulation four still exhibits a more efficient road usage, as indicated by an $r$ index which is comperable to the first simulation.  \\
- As expected, the lowest performance has been obtained on the last simulation, i.e. simulation 5. This situation has underscored the critical role of both charging infrastructure and road capacity in the efficiency and effectiveness of electric vehicle (EV) simulations. With the lowest charging capacity, simulation 5 faces significant challenges in accommodating the charging needs of vehicles, leading to increased downtime and congestion on the road network. Additionally, the constrained road capacity exacerbates these issues, resulting in reduced overall performance compared to other simulations. Moreover, the performance disparity between simulations highlights the interconnected nature of charging infrastructure and road capacity in shaping the efficacy of EV systems. Even with relatively low road capacity, simulation 4's efficient road usage suggests that prioritizing charging time optimization can mitigate some of the challenges posed by limited road space. However, in simulation 5, the combined constraints of charging and road capacity result in a notable degradation of system performance.
-
-
+\figref{fig:nyc_analysis_charging} shows the same metrics for the third simulation. Although the charging time is reduced in half, this simulation results in a much more efficient use of the road network. First of all, as shown in \tabref{tab:routingless_simu_performance}, more requests could be surved in the same amount of time. Furthermore, although with less charge, vehicles tend to travel more. Though it may seem counterintuitive, the reason could be that the solver has been limited to ten minutes. As a result of this restriction, it is likely that, within this time limit, the solver has been able to prune out unfeasible solutions thanks to the more stringent requirement. Furthermore, from \figref{fig:nyc_road_usage_charge}, contrary to \figref{fig:nyc_road_usage}, it is evident that the road network is used more evenly. As expected, there are still roads that stand out as the most used ones, which reflects the result obtained previously and it is still to associate with the fact that terminal depots are not assigned properly. 
+ On the contrary, as shown in \figref{fig:charge_vehicle_limit_charge}, the fleet usage is similar when compared to previous approaches. Although the distribution of average charge appears to be slightly more uneven compared to \figref{fig:charge_vehicle_baseline} , with some vehicles maintaining an average charge of around 90\%, most vehicles are not used entirely. This suggests that the fleet could be reduced in this case as well. Although vehicles don't fully recharge at the end of each shift, according to their evolution over the simulation period observed \figref{fig:ex_soc_vehicles}, since the fleet is generously big, other vehicles can replace charging vehicles for the shift. On the one hand, this results on more vehicles used, however the overall average is well above 80\% at the end of the shift.  
 
 \begin{figure}[th]
 	\centering
 	\begin{subfigure}[b]{0.35\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{assets/img/07_graph_based/nyc_road_usage_cong.png}
+		\includegraphics[width=\textwidth]{assets/img/07_graph_based/nyc_road_usage_charging.png}
 		\caption{}
-		\label{fig:nyc_road_usage_cong}
+		\label{fig:nyc_road_usage_charge}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.4\textwidth}
 		\centering
@@ -771,54 +763,122 @@ Furthermore, \figref{fig:charge_vehicle_baseline} suggests that most of the vehi
 				height=6cm
 				]
 				\addplot coordinates{
-					(1,47.46358606653552)
-					(2,93.03178185442405)
-					(3,90.73269981390177)
-					(4,44.525453750088246)
-					(5,33.90440757736991)
-					(6,90.71639041507014)
-					(7,95.48267942525808)
-					(8,74.51229345799526)
-					(9,86.8144391215979)
-					(10,47.59303039103948)
-					(11,57.67283311015215)
-					(12,38.37591208034264)
-					(13,48.96792300740162)
-					(14,65.28104764034292)
-					(15,52.08302256712663)
-					(16,68.95112779329484)
-					(17,38.70454890351119)
-					(18,67.87216917502015)
-					(19,92.53347599667872)
-					(20,89.29123773724695)
-					(21,65.93054403869442)
-					(22,35.973956353325384)
-					(23,26.25377750002766)
-					(24,34.12814114858258)
+					(1,100.0)
+					(2,88.35905320863947)
+					(3,89.33530101077898)
+					(4,100.0)
+					(5,90.61846304806419)
+					(6,100.0)
+					(7,99.91893531345714)
+					(8,98.39234898425467)
+					(9,99.1714923967497)
+					(10,99.99845901113507)
+					(11,100.0)
+					(12,100.0)
+					(13,93.98336252725261)
+					(14,100.0)
+					(15,100.0)
+					(16,100.0)
+					(17,100.0)
+					(18,100.0)
+					(19,93.05064515550362)
+					(20,97.20717736304084)
+					(21,91.61194803870156)
+					(22,98.70594024174596)
+					(23,100.0)
+					(24,90.94137883728938)
+				};			
+			\end{axis}
+		\end{tikzpicture}
+		\caption{ }
+		\label{fig:charge_vehicle_limit_charge}
+	\end{subfigure}
+	\caption{Overview of System's Performance with Less Charging Time.
+	}
+	\label{fig:nyc_analysis_charging}
+\end{figure}
+
+
+\begin{figure}[th]
+	\centering
+	\begin{subfigure}[b]{0.35\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{assets/img/07_graph_based/nyc_road_usage_cong.png}
+		\caption{}
+		\label{fig:nyc_road_usage_charg}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				ybar,
+				xtick=data,
+				xtick={1,5, 10,15,20,24},
+				xlabel={Vehicle Id},
+				ylabel={Charge (\%)},
+				bar width=4pt,
+				ymajorgrids=true,
+				yticklabel pos=right,
+				ylabel near ticks,
+				grid style=dashed,
+				xticklabel pos=right, xlabel near ticks,
+				minor x tick num=9,
+				xtick style={draw=none},
+				width=7cm, 
+				height=6cm
+				]
+				\addplot coordinates{
+					(1,91.96815064537292)
+					(2,100.0)
+					(3,70.0641947932822)
+					(4,99.1575051816054)
+					(5,88.4183678168051)
+					(6,97.72895458312098)
+					(7,71.15084119314325)
+					(8,52.86143074379152)
+					(9,54.25630387855951)
+					(10,100.0)
+					(11,100.0)
+					(12,100.0)
+					(13,100.0)
+					(14,100.0)
+					(15,99.72301488888888)
+					(16,100.0)
+					(17,100.0)
+					(18,84.20912254717499)
+					(19,96.73937986838705)
+					(20,94.287382511374)
+					(21,67.55157749565974)
+					(22,100.0)
+					(23,83.31979792658574)
+					(24,98.49139253136917)
 				};			
 			\end{axis}
 		\end{tikzpicture}
 		\caption{ }
 		\label{fig:charge_vehicle_baseline_cong}
 	\end{subfigure}
-	\caption[Overview of System's Performance with Congestions and Less Charging Time]{Overview of System's Performance with Congestions and Less Charging Time.
-		\subfigref{fig:nyc_road_usage_cong} illustrates the utilization of the entire road network during the whole shift considering road congestions, while \ref{fig:charge_vehicle_baseline_cong} shows averaging charging percentage of the vehicles. 
+	\caption[Overview of System's Performance with Less Charging Time and Stringent Road Limitation]{Overview of System's Performance with Less Charging Time and Road stringent Limitation.
 	}
 	\label{fig:nyc_analysis_congestions}
 \end{figure}
+The performance of simulation number four can be observed in \figref{fig:nyc_analysis_congestions}. In this case, a more stringent approach for the congestion limit has been considered, i.e. no more than five vehicles can traverse a link at the same time. Furthermore, vehicles have only been charged up to ten per cent after each iteration. As a result, the fleet has been able only to serve up to 57\%. While the ten minutes limit on the solver is contributing, the strict capacity on the streets in combination with the low charging rate is resulting in a major downgrade in performance. The vehicles tend to travel less, for less time and can not reach all the requests. Since the graph is an abstraction of the real street network in Manhattan, one way roads are also modelled, therefore, reaching a particular node, might be hindered by a common link not being accessible by more than four vehicles at the same time. Furthermore, road capacity and charging limits have also a high influence on the fleet usage. As shown in \figref{fig:charge_vehicle_baseline_cong}, more vehicles tend to be used, as the overall charge is lower, with an average charge as low as below 60\& . The evolution of the vehicles with the lowest average charge over time shown in \figref{fig:ex_soc_vehicles2} suggests two main phenomena:  \textit{i} vehicles tend to be used for up to 50\% of the shift duration or until their charge is enough to cover the requests and \textit{(ii)} as soon as their charge is not enough to cover a batch of requests, they are not considered for a while. These two phenomena are clearly fleet dependend, since more vehicles in the fleet will accentuate them more and a lower one would imply a bigger need for every vehicle to be active. \\
+A similar effect can be found by analysing simulation number five\footnote{The same metrics can be found in \figref{app:fig:nyc_analysis_congestions_simu5}
+and \figref{fig:ex_soc_vehicles_simu5}}
 
 
 
 
-\begin{figure}
+\begin{figure}[th]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
 	\begin{tikzpicture}
 		\begin{axis}[
 			xlabel={Iteration},
-			ylabel={Charge (\%)},
-			xmin=0, xmax=30,
-			ymin=0, ymax=110,
-			xtick={0,5,10,15,20,25,30},
-			ytick={0,20,40,60,80,100},
+			%ylabel={Charge (\%)},
+			xtick={0,1,2,3,4,5,6,7,8,9,10},
+			ytick={50,60,70,80,90,100},
+			width=7cm,
 			%legend pos=north west,
 			legend style={at={(1.05,1)},anchor=north west},
 			ymajorgrids=true,
@@ -831,183 +891,178 @@ Furthermore, \figref{fig:charge_vehicle_baseline} suggests that most of the vehi
 (0,100.0)
 (1,100.0)
 (2,100.0)
-(3,57.47533699731435)
-(4,29.844169507912405)
-(5,24.964928144353884)
-(6,34.964928153284006)
-(7,44.96492814475593)
-(8,17.823913605647245)
-(9,25.658073654270492)
-(10,10.57348665135297)
-(11,20.57348666100752)
-(12,30.573486666309996)
-(13,39.62290268013569)
-(14,49.6228992840332)
-(15,59.62289928744536)
-(16,69.62289929219985)
-(17,79.62289849358825)
-(18,89.62289847561837)
-(19,93.36102630462172)
-(20,66.48095315437554)
-(21,39.64679304568202)
-(22,49.64679287320045)
-(23,27.59592512023427)
-(24,36.89293192074598)
-(25,18.72833748816129)
-(26,27.50672150619101)
-(27,10.715189640480776)
-(28,20.71518917660731)
-(29,27.093161236195236)
+(3,100.0)
+(4,100.0)
+(5,100.0)
+(6,79.2423995137849)
+(7,71.47515527664328)
+(8,53.30015430658257)
+(9,83.30015430658257)
+			};
+			\addplot[color = viridisyellowcolor]
+			coordinates {
+				(0,100.0)
+				(1,73.40339554214273)
+				(2,67.23253780560712)
+				(3,97.23253780560712)
+				(4,77.69769627922065)
+				(5,100.0)
+				(6,100.0)
+				(7,100.0)
+				(8,100.0)
+				(9,75.08009271013051)
+			};
+			\addplot[color= viridisgreencolor]
+			coordinates {
+(0,100.0)
+(1,57.9251313726367)
+(2,87.9251313726367)
+(3,100.0)
+(4,100.0)
+(5,100.0)
+(6,100.0)
+(7,100.0)
+(8,100.0)
+(9,100.0)
 			};
 			
-			\addplot[color= viridisgreencolor]
+			\addplot[color= viridisorangecolor]
+			coordinates {
+			(0,100.0)
+			(1,100.0)
+			(2,100.0)
+			(3,74.86459626736757)
+			(4,100.0)
+			(5,100.0)
+			(6,100.0)
+			(7,100.0)
+			(8,100.0)
+			(9,100.0)
+			};
+			
+			\addplot[ color = viridispurplecolor]
 			coordinates {
 (0,100.0)
 (1,100.0)
 (2,100.0)
 (3,100.0)
-(4,100.0)
-(5,75.93931132461357)
-(6,85.93931132962908)
-(7,95.93931133243365)
-(8,66.21553179073908)
-(9,71.88495648438712)
-(10,79.94678122894948)
-(11,89.94678123100671)
-(12,99.94678124245608)
-(13,100.0)
-(14,100.0)
-(15,100.0)
-(16,100.0)
-(17,100.0)
-(18,100.0)
-(19,100.0)
-(20,100.0)
-(21,100.0)
-(22,100.0)
-(23,100.0)
-(24,100.0)
-(25,100.0)
-(26,67.38763593521568)
-(27,77.38763593782711)
-(28,87.38763594103965)
-(29,97.3876330030043)
+(4,81.98335399237313)
+(5,100.0)
+(6,100.0)
+(7,53.244527771615566)
+(8,83.24452777161557)
+(9,100.0)
+			};
+			
+			\legend{1,2, 9, 13,20}
+		\end{axis}
+		
+	\end{tikzpicture}
+\caption{}
+\label{fig:ex_soc_vehicles}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+	\begin{tikzpicture}
+		\begin{axis}[
+			xlabel={Iteration},
+			%ylabel={Charge (\%)},
+			xtick={0,1,2,3,4,5,6,7,8,9},
+			ytick={20,35,50,70,85,100},
+			%legend pos=north west,
+			legend style={at={(1.05,1)},anchor=north west},
+			ymajorgrids=true,
+			grid style=dashed,
+			thick,
+			width=7cm
+			]
+			
+			\addplot[color = viridisbluecolor]
+			coordinates {
+	(0,100.0)
+(1,100.0)
+(2,58.671770977635866)
+(3,38.61429996010891)
+(4,48.61429996010891)
+(5,58.61429996010891)
+(6,68.61429996010891)
+(7,78.61429996010891)
+(8,88.61429996010891)
+(9,58.855551973406776)
+			};
+			\addplot[color = viridisyellowcolor]
+			coordinates {
+	(0,55.50411485319626)
+(1,35.03765182543403)
+(2,45.03765182543403)
+(3,55.03765182543403)
+(4,37.027161272925056)
+(5,47.027161272925056)
+(6,57.027161272925056)
+(7,67.02716127292506)
+(8,77.02716127292506)
+(9,87.02716127292506)
+			};
+			\addplot[color= viridisgreencolor]
+			coordinates {
+				(0,100.0)
+	(1,47.95085337312048)
+(2,57.95085337312048)
+(3,67.95085337312048)
+(4,77.95085337312048)
+(5,67.24082712699463)
+(6,13.08749809585302)
+(7,23.08749809585302)
+(8,33.08749809585302)
+(9,43.08749809585302)
 			};
 			
 			\addplot[color= viridisorangecolor]
 			coordinates {
-			(0,96.68617494236152)
-			(1,90.1954240204157)
-			(2,89.68978609917077)
-			(3,90.54296604129212)
-			(4,91.3316195093143)
-			(5,95.82757551166532)
-			(6,91.31856294013076)
-			(7,82.94780768829798)
-			(8,70.3442321476916)
-			(9,69.21276252539452)
-			(10,58.79562482108727)
-			(11,53.85266697564957)
-			(12,51.73940949729085)
-			(13,48.92997265223525)
-			(14,46.70109868244315)
-			(15,43.527931791138855)
-			(16,37.9850857028611)
-			(17,32.054782899631846)
-			(18,21.679862796814653)
-			(19,17.036487965083744)
-			(20,13.733453363151026)
-			(21,11.097252425945818)
-			(22,10.343871196454907)
-			(23,10.686103699053389)
-			(24,10.303149695331289)
-			(25,11.562064246115847)
-			(26,11.367464467865874)
-			(27,10.105910498774216)
-			(28,10.598776537481822)
-			(29,11.103559039257506)
+	(0,100.0)
+(1,100.0)
+(2,100.0)
+(3,100.0)
+(4,49.97563626785433)
+(5,59.97563626785433)
+(6,69.97563626785433)
+(7,79.97563626785433)
+(8,89.97563626785433)
+(9,99.97563626785433)
 			};
 			
-			\addplot[ color = viridispurplecolor]
-			coordinates {
-	(0,95.79595042424212)
-	(1,96.5119694509108)
-	(2,87.19923948425189)
-	(3,88.74072966050943)
-	(4,86.28760449803443)
-	(5,85.74788936307851)
-	(6,86.1841944151495)
-	(7,79.9519616652705)
-	(8,74.16995480047629)
-	(9,72.42828379394568)
-	(10,72.1497258179748)
-	(11,75.52422502271395)
-	(12,71.66826631960731)
-	(13,64.41925590019017)
-	(14,60.85761519742576)
-	(15,61.67906238005277)
-	(16,61.44985128788728)
-	(17,63.85556487366196)
-	(18,57.93862813128533)
-	(19,54.561601472001605)
-	(20,53.52747052092065)
-	(21,52.81976339111925)
-	(22,53.1034614251036)
-	(23,53.74044249361274)
-	(24,46.7543185429904)
-	(25,41.51735702325125)
-	(26,36.26549030962664)
-	(27,30.352311847902524)
-	(28,27.948192056747857)
-	(29,24.80225262164109)
-			};
-			
-			\addplot[color = viridisyellowcolor]
+						\addplot[ color = viridispurplecolor]
 			coordinates {
 				(0,100.0)
-				(1,100.0)
-				(2,100.0)
-				(3,100.0)
-				(4,100.0)
-				(5,75.3969300384336)
-				(6,85.39693003898151)
-				(7,64.00206824818339)
-				(8,74.00206825676156)
-				(9,50.56535738011125)
-				(10,60.56535736838592)
-				(11,70.56535738015397)
-				(12,79.72929340571638)
-				(13,89.7292934122904)
-				(14,71.25378032260441)
-				(15,81.25378032645293)
-				(16,62.4061745128606)
-				(17,69.05295044342063)
-				(18,51.31869980710604)
-				(19,27.526583023381768)
-				(20,37.52657934600039)
-				(21,47.52657935155976)
-				(22,57.52657932972571)
-				(23,40.8699511066764)
-				(24,50.86995101471415)
-				(25,55.14540630650145)
-				(26,35.99609669005264)
-				(27,45.99609669968707)
-				(28,27.76391331237679)
-				(29,10.152092494811985)
+(1,100.0)
+(2,100.0)
+(3,60.63848349247051)
+(4,33.98785392941384)
+(5,43.98785392941384)
+(6,53.98785392941384)
+(7,63.98785392941384)
+(8,73.98785392941383)
+(9,83.98785392941383)
 			};
-			\legend{Vehicle 0,Vehicle 1,Vehicle 9,Vehicle 13,Vehicle 20}
+			
+\legend{2, 6, 7, 8,22}
+			
+			
 			
 		\end{axis}
 	\end{tikzpicture}
-\caption{State of Charge of an exemplary Set of Vehicles in Simulation 3}
-\label{fig:ex_soc_vehicles}
+	\caption{}
+	\label{fig:ex_soc_vehicles2}
+\end{subfigure}
+
+\caption{State of Charge of an exemplary Set of Vehicles. \subfigref{fig:ex_soc_vehicles} is the SOC of simulation three, while  \subfigref{fig:ex_soc_vehicles2} represents run number four}
+\label{fig:ex_soc}
 \end{figure}
+
 	
-
-
-
+	
 %\section{TO-DO}
 %\begin{itemize}
+
 %	\item Make the battery model in terms of the links. The time is, basically, the velocity of that link over the distance.
 %	\item The time must be adapted according to the link travelling time. I.e., each request has a time window. The time from the inbound link must be within the time window.
 %	\item Create a simulation using some fake data

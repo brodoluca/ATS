@@ -1,4 +1,9 @@
 \chapter{Model Predictive Control of AToD}\label{ch:mpc}
+
+\begin{itemize}
+	One motivation is that, after one "horizon", it can be noticed that the program tries to fit everything wiithin one vehicle. This is obviously bad for the long run
+\end{itemize}
+
 This chapter proposes a solution for the dispatcing, routing and rebalancing problems for AToD systems in a different flavour, namely by designing a Model Predictive Control (MPC) to regulate the system. In \secref{sec:linear_discrete_time_model}, a novel model for the system is developed which, contrary to the previous one, is not graph based. Subsequentally, \secref{sec:prob_formulat_mpc} defines the MPC problem and a thorough discussion on the terminal set and on the terminal cost, which are essential to prove stability. In order to achieve this goal, the feasability of the terminal and of the states set are demonstrated. Finally, in \secref{sec:use_case_mpc}, a simulation is proposed to evluate the overall performance of the system. 
 \section{Linear-Discrete Time Model}\label{sec:linear_discrete_time_model}
 The model derived in this section is partially inspired from \cite{zhang2016}. \\
