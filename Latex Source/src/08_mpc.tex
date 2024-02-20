@@ -1,29 +1,30 @@
-\chapter{Model Predictive Control of AToD}\label{ch:mpc}
-
-\begin{itemize}
-	One motivation is that, after one "horizon", it can be noticed that the program tries to fit everything wiithin one vehicle. This is obviously bad for the long run
-\end{itemize}
-
-This chapter proposes a solution for the dispatcing, routing and rebalancing problems for AToD systems in a different flavour, namely by designing a Model Predictive Control (MPC) to regulate the system. In \secref{sec:linear_discrete_time_model}, a novel model for the system is developed which, contrary to the previous one, is not graph based. Subsequentally, \secref{sec:prob_formulat_mpc} defines the MPC problem and a thorough discussion on the terminal set and on the terminal cost, which are essential to prove stability. In order to achieve this goal, the feasability of the terminal and of the states set are demonstrated. Finally, in \secref{sec:use_case_mpc}, a simulation is proposed to evluate the overall performance of the system. 
+\chapter{Model Predictive Control of an ATS}\label{ch:mpc}
+This chapter proposes a solution for the dispatcing, routing and rebalancing problems for ATSs in a different flavour, namely by designing a Model Predictive Control (MPC) to regulate the system. This is motivated by the hinsights obtained in the previous chapter, which suggested that making decisions in the present have a great impact on the future. In \secref{sec:linear_discrete_time_model}, a novel model for the system is developed which, contrary to the previous one, is not graph based. Subsequentally, \secref{sec:prob_formulat_mpc} defines the MPC problem and a thorough discussion on the terminal set and on the terminal cost, which are essential to prove stability. In order to achieve this goal, the feasability of the terminal and of the states set are demonstrated. Finally, in \secref{sec:use_case_mpc}, a simulation is proposed to evaluate the overall performance of the system. 
 \section{Linear-Discrete Time Model}\label{sec:linear_discrete_time_model}
 The model derived in this section is partially inspired from \cite{zhang2016}. \\
-Consider a transportation network be composed of $|\mathcal{V}|$ stations scattered around a space $\Omega$ and $|\mathcal{A}|$ multi-occupancy, goods-carrying vehicles working within the same space $\Omega$. Within this context, customers are assumed to requests rides only from the abovementioned stations. Similarly, goods can be carried out only from one station to another. With this assumption, stations and customers can be considered synonims within this section. \\
-Similarly to the model described in \chapref{sec:vc_model}, other than carrying goods or people, vehicle are expected to \textit{(i)} serve clients from one station to another and \textit{(ii)} reach locations in $\Omega$ in order to avoid system imbalance. \\
-Let $d_{ij} \in \mathcal{R}_{\ge0}$ be the total lenght of a road \(\langle i,j\rangle\). Let $v^a_{ij}(t) \in \{0,1\}$ indicate whether a transporting vehicle $a \in \mathcal{A}$ is moving from station $i$ to station $j$ ($v^a_{ij}(t) = 1$) and, likewise, $w^{a}_{ij}\in \{0,1\} $ whether an empty vehicle is moving from $i$ to $j$ ($w^{a}_{ij}(t)= 1$). Let $V_{ij}(t) = \sum_{a \in \mathcal{A}} v^{a}_{ij}(t) +w^{a}_{ij}(t)$ being the total number of vehicles currently circulating on the street $\langle i,j\rangle$, it follows that $V_{ij}(t) \in \mathbb{N}_+$. \\
-When a vehicle is in transit, it is essential to monitor the anticipated duration until it reaches its destination. In order to do so, let's assume the road $\langle i,j\rangle$ to have a speed limit $l_{i,j}$. Accordingly, since the system is dealing with fully autonomous vehicles, in a typical driving scenario, one can safely assume this to be the cruising speed as well. In other words, one can assume the vehicles to be driving with a speed $l_{i,j}$ over $\langle i,j\rangle$ in normal road conditions.  Motivated by safety concerns, the cruising speed cannot be consistently maintained at \(l_{i,j}\) due to various factors. These factors may include road conditions, weather conditions, traffic density, or any unforeseen circumstances. Therefore, the actual cruising speed during the journey over road \(\langle i,j\rangle\) may vary based on these dynamic elements, ensuring that the autonomous vehicles can adapt to changing conditions and prioritize safety over a fixed cruising speed. One factor which is directly controllable is the traffic density. Therefore, taking inspiration from the BPR model (\figref{fig:bpr_models_approx}), we can approximate the cruising speed according to the amount of vehicles on the road. More specifically, we can modify \equaref{eq:model_bpr_approximation} to reflect this condition, and therfore rewriting it as \\
+Consider a transportation network be composed of $|\mathcal{V}|$ stations connected by a set of $|\mathcal{N}|$ roads and $|\mathcal{A}|$ multi-occupancy, goods-carrying vehicles. Within this context, customers are assumed to requests rides only from the abovementioned stations. Similarly, goods can be carried out only from one station to another. With this assumption, stations and customers can be considered synonims within this section. \\
+Similarly to the model described in \chapref{sec:vc_model}, other than carrying goods or people, vehicle are expected to \textit{(i)} serve clients from one station to another and \textit{(ii)} reach locations in $\mathcal{V}$ in order to avoid system imbalance. For the rest of the section, a generic road $\langle i,j\rangle \in \mathcal{N}$ will be considered.\\
+Let $d_{ij} \in \mathcal{R}_{\ge0}$ be the total lenght of a road $\langle i,j\rangle$. Let $v^a_{ij}(t) \in \{0,1\}$ indicate whether a transporting vehicle $a \in \mathcal{A}$ is moving from station $i$ to station $j$ ($v^a_{ij}(t) = 1$) and, likewise, $w^{a}_{ij}\in \{0,1\} $ whether an empty vehicle is moving from $i$ to $j$ ($w^{a}_{ij}(t)= 1$). Let $V_{ij}(t) \in \{ x \in \mathbb{N}_0 : x \leq |\mathcal{A}|$ being the total number of vehicles currently circulating on the street $\langle i,j\rangle$, this can be trivially expressed as in \equaref{eq:vehicles_on_street}. \\
+
+\begin{equation}
+	V_{ij}(t) = \sum_{a \in \mathcal{A}} v^{a}_{ij}(t) +w^{a}_{ij}(t)
+	\label{eq:vehicles_on_street}
+\end{equation}
+
+When a vehicle is in transit, it is essential to monitor the anticipated duration until it reaches its destination. In order to do so, let's assume the road $\langle i,j\rangle$ to have a speed limit $l_{i,j}$. Accordingly, since the system is dealing with fully autonomous vehicles, in a typical driving scenario, one can safely assume this to be the cruising speed as well. In other words, one can assume the vehicles to be driving with a speed $l_{i,j}$ over $\langle i,j\rangle$ in normal road conditions.  Motivated by safety concerns, the cruising speed cannot be consistently maintained at $l_{i,j}$ due to various factors. These factors may include road conditions, weather conditions, traffic density, or any unforeseen circumstances. Therefore, the actual cruising speed during the journey over road $\langle i,j\rangle$ may vary based on these dynamic elements, ensuring that the autonomous vehicles can adapt to changing conditions and prioritize safety over a fixed cruising speed. One factor which is directly controllable is the traffic density. Therefore, taking inspiration from the BPR model (\figref{fig:bpr_models_approx}), one can approximate the cruising speed according to the amount of vehicles on the road. More specifically, one can modify \equaref{eq:model_bpr_approximation} to reflect this condition, and therfore rewriting it as \\
 \begin{equation}
 	\begin{aligned}	
 		s_{ij}(V_{ij}) &= \begin{cases}
-			l_{ij} \quad\quad &\text{if } V_{ij}\in[0,V_{ij}^{th}]\\ 
-			l_{ij} - b\cdot(V_{ij} - V_{ij}^{th}) \quad\quad &\text{if }V_{ij}\in[V_{ij}^{th}, V_{ij}^{max}]\\ 
+			l_{ij} \quad\quad &\text{if } V_{ij}\in[0,V_{ij}^{th})\\ 
+			l_{ij} - b\cdot(V_{ij}^{th}- V_{ij}) \quad\quad &\text{if }V_{ij}\in[V_{ij}^{th}, V_{ij}^{max})\\ 
 			0\quad\quad &\text{if }V_{ij} \ge V_{ij}^{max}\\ 
 		\end{cases}\\
-		\text{with } b  &=  \dfrac{l_{ij}}{ V_{ij}^{th} -  V_{ij}^{max}}
+		\text{with } b  &=  \dfrac{l_{ij}-\epsilon }{ V_{ij}^{th} -  V_{ij}^{max}} \text{ and } \epsilon \in (0,1)
 \end{aligned}
 	\label{eq:model_bpr_approximation2}
 \end{equation}
-An example can be seen in \figref{fig:speed_model}. The last case, i.e. when $V_{ij} \ge V_{ij}^{max}$, is inspired from the congestion model used in \secref{sec:vc_model} and in this case is modeling stale mate traffic. Intuitively, if too many cars are on the road, these will not be able to circulate with a high speed and eventually stop-and-go traffic will be created. \\
-From the definition, it follows that $s_{if}$ is defined as $s_{ij}: \mathbb{N}_{+} \rightarrow \mathbb{R}_{\ge 0}$.
+From the definition, it follows that $s_{if}$ is defined in the following domain $s_{ij}: \mathbb{N}_0 \rightarrow \mathbb{R}_{\ge eps}$.
+An example can be seen in \figref{fig:speed_model}. The last case, i.e. when $V_{ij} \ge V_{ij}^{max}$, is inspired from the congestion model used in \secref{sec:vc_model} and in this case is modeling stale mate traffic. Intuitively, if too many cars are on the road, these will not be able to circulate with a high speed and eventually stop-and-go traffic will be created. In this case, vehicles will be modelled as circulating at a vary low speed. \\
 
 \begin{figure}[t]
 	\centering
@@ -42,12 +43,12 @@ From the definition, it follows that $s_{if}$ is defined as $s_{ij}: \mathbb{N}_
 			]
 			% Piecewise function
 			\addplot[blue, thick, domain=0:100] {60};
-			\addplot[blue, thick, domain=100:150] {60 - 1.2*(x-100)};
+			\addplot[blue, thick, domain=100:150] {60 - 1.19*(x-100)};
 			\addplot[blue, thick, domain=150:200] {0};
 			%\addlegendentry{B}
 		\end{axis}
 	\end{tikzpicture}
-	\caption[Cruising speed in function of traffic density]{Cruising speed in function of traffic density. In this example, $l_{ij} = 60 km/h,V_{ij}^{th} = 100$,$V_{ij}^{max} = 150$.  }
+	\caption[Cruising speed in function of traffic density]{Cruising speed in function of traffic density. In this example, $l_{ij} = 60 km/h,V_{ij}^{th} = 100$,$V_{ij}^{max} = 150$ and $\epsilon = 0.5$.  }
 	\label{fig:speed_model}
 \end{figure}
 This allows to effectively track the position of the vehicle in terms of time as well. However, the position should be tracked only if the vehicle is currently driving on the street. 
@@ -65,30 +66,59 @@ Therefore, position of the vehicle $a$ over $\langle i,j\rangle$ is propagated u
 As mentioned above, \equaref{eq:position_propagation} tracks the position of a moving vehicle, i.e. takes care of the state of moving vehicles. In addition to this, the model also needs to track the number of vehicles currently stationed in $i$. This is achieved by introducing an additional variable $f^a_i(t)$, which indicates whether a vehicle arrived at a station $i$. It is defined as following.
 \begin{equation}
 	f^a_{i}(t) =\begin{cases}
-		1 & \text{if }x^a_{ji}(t)= d_{ji}\\
+		1 & \text{if }x^a_{ji}(t) \ge d_{ji}\\
 		0 & \text{otherwise}
 	\end{cases}
 	\label{eq:station_propagation}
 \end{equation}
-This is propagated with the help of the indicator function. 
+This variable can be propagated by introducing two more variables, i.e. $p^a_{ji}$ and $g^a_{ji}$, to indicate wether a vehicle has departed or arrived at a station $i$, respectively. 
 \begin{equation}
-	f^a_i(t+1) =f^a_i(t) + 1_{d_{ji} = x^a_{ji}(t)} - \sum_{j\in\mathcal{V}}(v_{ij}^a + w_{ij}^a) %1_{d_{ji} \neq x^a_{ji}(t)}
-	\label{eq:stationed_propagation_ind}
+		f^a_i(t+1) =f^a_i(t) + \sum_{j\in\mathcal{V}}(g^a_{ji}(t) - p_{ij}^a(t)) 
+		\label{eq:stationed_propagation_ind}
 \end{equation}
 \equaref{eq:stationed_propagation_ind} also ensures that a vehicle performs an action on the road $\langle i,j\rangle$ only when stationed at $i$.\\
+The variables $p^a_{ji}$ and $g^a_{ji}$ are binary variables as well and their definition is as follows:
+\begin{align}
+	p^a_{ji}(t) =\begin{cases}
+		1 & \text{if }x^a_{ji}(t) \le d_{ji}\\
+		0 & \text{otherwise}
+	\end{cases}
+	\label{eq:departed_variable}
+\end{align}
+
+\begin{equation}
+	g^a_{ji}(t) =\begin{cases}
+		1 & \text{if }x^a_{ji}(t) \ge d_{ji}\\
+		0 & \text{otherwise}
+	\end{cases}
+	\label{eq:arrived_variable}
+\end{equation}
+The propagation of $g^a_{ji} $ follows a straightforward pattern: if the variable is zero at time $ t $, it can become either one or zero at $ t+1 $, representing the possibility of the vehicle reaching a station or not. However, if $ g^a_{ji}(t) = 1 $ at time $ t $, then $ g^a_{ji}(t+1) = 0 $, indicating a reset.  The variable $ p^a_{ji}$ is not propagated, however its definition depends on time. Initially, at $ t=0 $, $p^a_{ji} $ is set to zero, implying no vehicle can start at time zero. At instant $ t+1 $,  $p^a_{ji} = 1$ only if the vehicle has moved at time $t$, but was stationed at time $t-1$, otherwise must remain zero\footnote{For a more comprehensive analysis and explanation, please refer to \secref{appendix:sec:propagation_g} and \secref{appendix:sec:definition_p}. }. \\
+The definition in \ref{eq:arrived_variable} imposes that the vehicles must top if they reached a station. This is translated  in  (\ref{eq:prop_w}) and (\ref{eq:prop_v})
+\begin{align}
+	w_{ij}^a(t+1) &= \neg v^a_{ij}(t) \land \neg g^a_{ji}(t) \land \neg v^a_{ij}(t)  \label{eq:prop_w}\\
+	v_{ij}^a(t+1) &= \neg w^a_{ij}(t) \land \neg g^a_{ji}(t) \land \neg w^a_{ij}(t) \label{eq:prop_v}
+\end{align}
+This formulation leverages the fact that all the above variables are binary. In simply words, this is enusring that a vehicle can only be rebalancing or driving only if it was performing the same action on the previous instance or if it has not arrived yet. In addition, also insures that if the vehicle reached a station, then it stops, i.e. $v^a_{ij}(t)=w^a_{ij}(t)=0$\footnote{Please refer to \secref{appendix:sec:const_w_v} for the derivation of these two constraints.}. 
+
+%\begin{equation}
+%	f^a_i(t+1) =f^a_i(t) + 1_{d_{ji} \leq x^a_{ji}(t)} - \sum_{j\in\mathcal{V}}(v_{ij}^a + w_{ij}^a) %1_{d_{ji} \neq x^a_{ji}(t)}
+%	\label{eq:stationed_propagation_ind}
+%\end{equation}
+
 %\begin{equation}
 %	f^a_i(t+1) = f^a_i(t) +1_{d_{ji} = x^a_{ji}(t)} - \sum_{j \in \mathcal{N}}( v^a_{ij} + w^a_{ij})
 %	\label{eq:stationed_propagation}
 %\end{equation}
-The function $1_x$ is commonly known as the indicator function, denoting a Boolean variable x that can take values {true, false}. Specifically, $1_x$ is defined as follows:
-\begin{equation}
-	1_x = \begin{cases}
-		1 & \text{if } x \text{ is true} \\
-		0 & \text{if } x \text{ is false}
-	\end{cases}
-\end{equation}
-In other words, $1_x$ equals 1 when x is true and equals 0 when x is false, making it a convenient way to express the truth value of the variable x in mathematical notation.\\
-Crucially, the vehicles can not perform the aforementioned actions, i.e. waiting, routing and rebalancing, at the same time and this must be insured. Furthermore, the vehicles can not perform the actions on multiple stations or roads. Therefore, the following constraint is necessary. \\
+%The function $1_x$ is commonly known as the indicator function, denoting a Boolean variable x that can take values {true, false}. Specifically, $1_x$ is defined as follows:
+%\begin{equation}
+%	1_x = \begin{cases}
+%		1 & \text{if } x \text{ is true} \\
+%		0 & \text{if } x \text{ is false}
+%	\end{cases}
+%\end{equation}
+%In other words, $1_x$ equals 1 when x is true and equals 0 when x is false, making it a convenient way to express the truth value of the variable x in mathematical notation.\\
+Crucially, for the abovementioned constraint to work, the vehicles can not perform the aforementioned actions, i.e. waiting, routing and rebalancing, at the same time. Furthermore, the vehicles can not perform actions on multiple stations or roads. Therefore, the following constraint is necessary. \\
 \begin{equation}
 	\sum_{i \in \mathcal{V}}(f^a_{i}(t+1)+\sum_{j \in \mathcal{V}}v^a_{ij}(t) + \sum_{j \in \mathcal{V}}w^a_{ij}(t)) = 1\label{eq:no_3_actions}
 \end{equation}
@@ -103,15 +133,7 @@ While it is on the one hand interesting to know which station is currently hosti
 \begin{equation}
 	F(t) = |\mathcal{A}| - \sum_{i \in\mathcal{N}}\sum_{a \in\mathcal{A}}f^a_{i}
 \end{equation}
-Furthermore, one can also calculate the required time $T_{ij}(t)$ based on the speed approximation, as shown in \equaref{eq:required_time}. 
-\begin{equation}
-	T_{ij}^a(t) = \begin{cases}
-		\dfrac{d_{ij} - x^a_{ij}(t)}{s_{ij}(V_{ij}(t))} &\quad \text{if } x_{ij}^a(t) > 0\\
-		&\\
-		0 &\quad\text{otherwise }
-	\end{cases}
-	\label{eq:required_time} 
-\end{equation}
+
 
 Denoted by $p_{ij}(t)$ and $g_{ij}(t)$ are the transportation and goods delivery requests respectively starting from station $i$ and headed to $j$. Let $o^p_{ij}(t)$ and $o^g_{ij}(t)$ denoting the number of outstanding requests from $i$ to $j$ for people or goods, respectively, one can describe its propagation as follows:
 
@@ -136,27 +158,32 @@ It follows then that vehicles can not transport more than what requested, i.e.:
 At this point, the definition of the control and the state of the system is complete. More specifically, the state of the system is described by the number outstanding requests $o_{ij}(t)$, the position of each moving vehicle $x_{ij}(t)$ and the position of each idle vehicle $f^a_{i}(t)$. Let the vector x(t) be the column vector column vector created by reshaping and concatenating $o_{ij}(t)$, $x_{ij}(t)$, $T_{ij}^a(t)$ and $f^a_{i}(t)$, the set of feasible states $\mathcal{X}$ is defined as follows. 
 
 \begin{equation}
-	\mathcal{X} := \left\{
 	\begin{aligned}
-		& o^p_{ij} \in (\mathbb{N}_+)^{|\mathcal{V}|},o^p_{ii} = 0, o^g_{ij} \in (\mathbb{N}_+)^{|\mathcal{V}|},o^g_{ii} = 0   \\
-		 x = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, T_{ij}^a]^T \Bigg| &f^a_{i} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|}, \text{(\ref{eq:position_station})} \\
-		&  x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}, T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|} \\
+	\mathcal{X} &:= \left\{
+	\begin{aligned}
+		&  o^p_{ij} \in (\mathbb{N}_0)^{|\mathcal{N}|}, o^g_{ij} \in (\mathbb{N}_0)^{|\mathcal{N}|},  \\
+		 x \quad  \Bigg| \quad&g^a_{ij}, p^a_{ij},f^a_{i} \in \{0,1\}^{|\mathcal{A}||\mathcal{N}|} \\%, \text{(\ref{eq:departed_variable})}, \text{(\ref{eq:arrived_variable})}, \text{(\ref{eq:stationed_propagation_ind})} \\
+		&  x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{N}|}, V_{ij} \in \{ a \in \mathbb{N}_0 : a \leq |\mathcal{A}| \}^{|\mathcal{N}|}\\%T^a_{ij} \in [0, \dfrac{d_{ij}}{\epsilon}]^{|\mathcal{V}|}%T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|} \\
 	\end{aligned}
-	\right\}
+	\right\}\\
+	&\\
+	&\text{where }  x = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, V_{ij} , g^a_{ij}, p^a_{ij}]^T
+\end{aligned}
 \end{equation}
-%Note that because of  \equaref{eq:position_propagation}, the set of feasible states is time-dependent. 
+Note that $o^p_{ii} = 0$ and $o^p_{ii} = 0$. \\
+%Note that because of   \equaref{eq:prop_w} \equaref{eq:prop_w}, the set of feasible states is time-dependent. 
 Similarly, considering the control inputs $v^{a}_{ij}(t)$ and $w^{a}_{ij}(t)$, one can derive the set of feasible control set $\mathcal{U}(t)$ as follows. 
 \begin{equation}
 	\mathcal{\mathcal{U}}(t) := \left\{
 	\begin{aligned}
-		&v^a_{ij} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|}, v^a_{ii} = 0 \\
-		u = [v^{a}_{ij}, w^{a}_{ij}]^T \Bigg|&w^a_{ij} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|},w^a_{ii} = 0 \\ 
-		&\text{(\ref{eq:no_3_actions}),(\ref{eq:no_more_than_request})
+		&v^a_{ij} \in \{0,1\}^{|\mathcal{A}||\mathcal{N}|}, v^a_{ii} = 0 \\
+		u = [v^{a}_{ij}, w^{a}_{ij}]^T \Bigg|&w^a_{ij} \in \{0,1\}^{|\mathcal{A}||\mathcal{N}|},w^a_{ii} = 0 \\ 
+		&\text{(\ref{eq:prop_w})},\text{(\ref{eq:prop_v})}, \text{(\ref{eq:no_3_actions}),(\ref{eq:no_more_than_request})
 		} \\
 	\end{aligned}
 	\right\}
 \end{equation}
-Since (\ref{eq:no_3_actions})-(\ref{eq:no_more_than_request}) depend on time, $\mathcal{U}(t)$ is also time-dependent. \\
+Since (\ref{eq:prop_w}) and (\ref{eq:prop_v}) depend on time, $\mathcal{U}(t)$ is also time-dependent. \\
 Thanks to these formulations, the system can be written as a linear time-dependent system of the form
 \begin{equation}
 	x(t+1) = Ax(t) + Bu(t)\label{eq:normal_system}
@@ -165,14 +192,18 @@ where $x(t) \in \mathcal{X}$, $u(t) \in \mathcal{U}(t)$ and $A$ and $B$ are the 
 \subsection{Objectives}
 Clearly, the main objective is to serve all the outstanding requests. 
 \begin{equation}
-	J_1(x(t)) = \sum_{i,j \in \mathcal{V}}o_{ij}(t)
+	J_1(x(t)) = \sum_{i,j \in \mathcal{V}}(o^p_{ij}(t) + o^g_{ij}(t))\label{eq:no_request_left}
 \end{equation}
 However, the performance of the system can be optimized if other aspects are considered as well.  \\
-Since the speed of the vehicles, according to the model, is determined by the number of vehicles on the street, limiting it will improve performance. Vehicles serving requests are responsible for the main objective and their number is directly proportional to the number of outstanding requests. On the other hand, rebalancing vehicles, while help reducing the  number of requests, they also contribute to congestions. Therefore, by optimizing the time they spend on the street, the speed of the transporting vehicles is optimized as a result. 
+Since the speed of the vehicles, according to the model, is determined by the number of vehicles on the street, limiting it will improve performance. Vehicles serving requests are responsible for the main objective and their number is directly proportional to the number of outstanding requests. On the other hand, rebalancing vehicles, while help reducing the  number of requests, they also contribute to congestions. Therefore, by reducing the number of free vehicles, the speed of the transporting ones is optimized as a result. 
 \begin{equation}
-	J_2(x(t)) = \sum_{i,j \in \mathcal{V}}T_{ij}^aw^a_{ij}(t)
+	J_2(x(t)) = \sum_{i,j \in \mathcal{V}}w^a_{ij}(t) %T_{ij}^a
 \end{equation}
-
+Therefore, the final stage cost will be a combination of the two described above. 
+\begin{equation}
+	I(x(t)) = J_1(x(t)) + \lambda \cdot J_2(x(t)) 
+\end{equation}
+where $\lambda$ is the weight used to determine the influence the rebalancing must have in the system.
 \subsection{Model Evaluation}
 Some comments are in order. Requests are treated considering customers and goods as single entities. More specifically, if a group consisting of three customers reach a station, this is treated as three individual requests, therefore $p_{ij}(t) = 3$. While this simplifies the model description and reflects the requirements for goods delivery, it would create an inconvenient scenario for traveling customers. As a matter of fact, it is not hard to envision situations where a group of travelers would like to travel together. However, it is out of the scope of this work to treat this scenario. One might also argue that this simplification effectively treats the model as if vehicles where single-occupancy and it is true in terms of intuition, this addition allows to reduce the number of variables by a constant factor, i.e. the sum of all vehicles' capacity. \\
 The system described in \equaref{eq:normal_system} implicitely assumes the customer arrival to be known a priori. In order words, this is not treated as noise, but rather as a known quantity. 
@@ -188,10 +219,20 @@ Similarly to \secref{sec:vc_model}, the model must take into account that statio
 	\label{eq:parking_limit}
 \end{equation}
 where $C_i$ indicates the number of parking spots available at $i$. \\
-This is a crucial 
+Furthermore, \equaref{eq:model_bpr_approximation2} imposes an implicit capacity limit on the streets. If $\epsilon=0$ and the limit $V^{max}_{ij}$ was exceeded, than the speed would also be zero. In this condition, the time would not be within the defined bounds, i.e. a constraint is violated. \\
+Furthermore, one can also calculate the required time $T_{ij}(t)$ based on the speed approximation, as shown in \equaref{eq:required_time}. 
+\begin{equation}
+	T_{ij}^a(t) = \begin{cases}
+			\dfrac{d_{ij} - x^a_{ij}(t)}{s_{ij}(V_{ij}(t))} &\quad \text{if } x_{ij}^a(t) \in (0,d_{ij})\\
+			&\\
+			0 &\quad\text{otherwise }
+		\end{cases}
+	\label{eq:required_time} 
+\end{equation}
+Since this function fails to satisfy the properties of homogeneity and additivity, it is not linear. Consequently,incorporating this function in the model will result in a non-linear model as well. Therefore, it has been decided to exclude it from the final version
 
 \section{Problem Formulation}\label{sec:prob_formulat_mpc}
-The MPC for the AToD problem is formulated as follows. \\
+The MPC for the ATS problem is formulated as follows. \\
 Given $x(t) \in \mathcal{X}$, determine the controls $u(t), \dots, u(t+N)$ according to the following optimization problem.
 \begin{equation}
 	\begin{aligned}
@@ -201,19 +242,19 @@ Given $x(t) \in \mathcal{X}$, determine the controls $u(t), \dots, u(t+N)$ accor
 		%& k = t, \dots, t+N\\
 		&x(N) \in \mathcal{X}_f\\
 	\end{aligned}
-	\label{eq:mpc_atod}
+	\label{eq:mpc_ats}
 \end{equation}
 where $J_f(x(t+N))$ is the terminal cost function and $\mathcal{X}_f$ is the terminal set. \\
-As the main goal is to prove the stability of (\ref{eq:mpc_atod}), a proper definition of those will facilitate this objective. The strategy used to prove stability is the one described in \secref{sec:stable_mpc_systems}. For this purpose, the terminal set is required to be defined around an equilibrium point $x_*$. A good canidate for the equilibrium point in such systems can be found by observing that the system remains at a equilibrium whenever no more requests arrive and the are no more outstanding requests within the system. In other words, when 
+As the main goal is to prove the stability of (\ref{eq:mpc_ats}), a proper definition of those will facilitate this objective. The strategy used to prove stability is the one described in \secref{sec:stable_mpc_systems}. For this purpose, the terminal set is required to be defined around an equilibrium point $x_*$. A good canidate for the equilibrium point in such systems can be found by observing that the system remains at a equilibrium whenever no more requests arrive and the are no more outstanding requests within the system. In other words, when 
 \begin{align*}
 	p_{ij}(t) &=0 \\
 	g_{ij}(t) &=0\quad\quad \forall i,j\in\mathcal{V}\\
 	o^p_{ij}(t) &=0\\
 	o^g_{ij}(t) &=0\\
 \end{align*}
-By \equaref{eq:demand_time}, this implies that, eventually, no more vehicles will transport goods or people anymore. Furthermore, one can also conclude that vehicles will also stop rebalancing themselves. Therefore, $o_{ij}, x_{ij}^a$ and $T_{ij}^a$ all assume value zero. However, there is no way of knowing exactly where vehicles are going to be stationed. Upon inspection, however, one can canclude that vehicles must be stationed somewhere, since they are not driving. In other words, $f^a_{i}$ could assume any value in $\{0,1\}^{|\mathcal{A}||\mathcal{V}|} $ except $ \{0\}^{|\mathcal{A}||\mathcal{V}|}$. Furthermore, at equilibrium, all the vehicles are stationed. That means, the set of possible values for  $f^a_{i}$ is further limited accordingly. To define this set, let's consider a function $n : \mathcal{D}_{f^a_{ij}} \rightarrow N$, where $\mathcal{D}'_{f^a_{ij}}  = \{0,1\}^{|\mathcal{A}||\mathcal{V}|} \setminus \{0\}^{|\mathcal{A}||\mathcal{V}|}$, which sums the number of 1s in the set. With this addition, we can fully define the set of values of $f^a_{i}$  at equilibrium. 
+By \equaref{eq:demand_time}, this implies that, eventually, no more vehicles will transport goods or people anymore. Furthermore, one can also conclude that vehicles will also stop rebalancing themselves. Therefore, $o_{ij}, x_{ij}^a$ and $V_{ij}$ all assume value zero. However, there is no way of knowing exactly where vehicles are going to be stationed. Upon inspection, however, one can canclude that vehicles must be stationed somewhere, since they are not driving. In other words, $f^a_{i}$ could assume any value in $\{0,1\}^{|\mathcal{A}||\mathcal{V}|} $ except $ \{0\}^{|\mathcal{A}||\mathcal{V}|}$. Furthermore, at equilibrium, all the vehicles are stationed. That means, the set of possible values for  $f^a_{i}$ is further limited accordingly. To define this set, let's consider a function $n : \mathcal{D}_{f^a_{i}} \rightarrow N$, where $\mathcal{D}'_{f^a_{i}}  = \{0,1\}^{|\mathcal{A}||\mathcal{V}|} \setminus \{0\}^{|\mathcal{A}||\mathcal{V}|}$, which sums the number of 1s in the set. With this addition, one can fully define the set of values of $f^a_{i}$  at equilibrium. 
 \begin{equation}
-\mathcal{D}_{f^a_{ij}} := 	\left\{
+\mathcal{D}_{f^a_{i}} := 	\left\{
 	x   \quad | \quad x \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|},  n(x) = |\mathcal{A}|
 	\right\}\label{eq:set_of_fs}
 \end{equation}
@@ -222,26 +263,38 @@ While the set is indeed smaller, it is still quite hard to exactly pin-point a s
 \begin{equation}
 	\mathcal{E} := \left\{
 	\begin{aligned}
-		& o^p_{ij} \in \{0\}^{|\mathcal{V}||\mathcal{A}|} , o^g_{ij} \in \{0\}^{|\mathcal{V}||\mathcal{A}|}  \\
-		e = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, T_{ij}^a]^T \Bigg| &f^a_{i} \in \mathcal{D}_{f^a_{ij}}   \\
-		&  x_{ij}^a\in\{0\}^{|\mathcal{V}||\mathcal{A}|} , T^a_{ij}\in \{0\}^{|\mathcal{V}||\mathcal{A}|} \\
+		& o^p_{ij} \in \{0\}^{|\mathcal{N}||\mathcal{A}|} , o^g_{ij} \in \{0\}^{|\mathcal{N}||\mathcal{A}|}  \\
+		e = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, V_{ij}]^T \Bigg| &g^a_{ij}, p^a_{ij}\in \{0\}, f^a_{i} \in \mathcal{D}_{f^a_{i}}   \\
+		&  x_{ij}^a\in\{0\}^{|\mathcal{N}||\mathcal{A}|}, V_{ij} \in \{0\}^{|\mathcal{N}|} \\%, T^a_{ij}\in \{0\}^{|\mathcal{V}||\mathcal{A}|} \\
 		%&  x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}, T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|} \\
 	\end{aligned}
 	\right\}\label{eq:final_eq}
 \end{equation}\\
-While this could be considered as a candidate for the terminal set $\mathcal{X}_f$, it turns out to be too restrictive. This is due to the fact that it would require all vehicles to be stationed and, therefore, not moving. Some of the conditions, however, can be relaxed by considering some implicit assumptions made during the development of the model. Mainly, vehicles are assumed to be perfect and to never break, therefore, one can consider a request to be satisfied the moment it has been picked up. As a result, while the number of requests is still zero, the conditions for $x_{ij}^a$, $f_{i}^a$ and $T_{ij}^a$ can be relaxed. 
+While this could be considered as a candidate for the terminal set $\mathcal{X}_f$, it turns out to be too restrictive. This is due to the fact that it would require all vehicles to be stationed and, therefore, not moving. Some of the conditions, however, can be relaxed by considering some implicit assumptions made during the development of the model. Mainly, vehicles are assumed to be perfect and to never break, therefore, one can consider a request to be satisfied the moment it has been picked up. As a result, while the number of requests is still zero, the conditions for $x_{ij}^a$, $f_{i}^a$, $g^a_{ij}$ and $V_{ij}$ can be relaxed. Furthermore, (\ref{eq:stationed_propagation_ind}) is slighly changed so that vehicles do not leave the station as they arrive. This is achived by simply setting  $\sum_{j\in\mathcal{V}}(p^a_{ji}(N-1))=0$.
 \begin{equation}
-	\mathcal{X}_f := \left\{
+	f^a_i(N) =f^a_i(N-1) + \sum_{j\in\mathcal{V}}(g^a_{ji}(N-1)) 
+	\label{eq:stationed_propagation_ind2}
+\end{equation}
+
+
+
+\begin{equation}
 	\begin{aligned}
-		& o^p_{ij} \in \{0\}^{|\mathcal{V}||\mathcal{A}|} , o^g_{ij} \in \{0\}^{|\mathcal{V}||\mathcal{A}|}  \\
-		x_f = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, T_{ij}^a]^T \Bigg| &f^a_{i} \in \{0,1\}^{|\mathcal{V}||\mathcal{A}|}  , \text{(\ref{eq:position_station})}   \\
+	\mathcal{X}_f &:= \left\{
+	\begin{aligned}
+		& o^p_{ij} \in \{0\}^{|\mathcal{N}||\mathcal{A}|} , o^g_{ij} \in \{0\}^{|\mathcal{N}||\mathcal{A}|}  \\
+		x_f \quad \Bigg| \quad &g^a_{ij},f^a_{i} \in \{0,1\}^{|\mathcal{N}||\mathcal{A}|},  p^a_{ij}\in \{0\}^{|\mathcal{N}||\mathcal{A}|}\\%\text{(\ref{eq:departed_variable})}, \text{(\ref{eq:arrived_variable})}, \text{(\ref{eq:stationed_propagation_ind2})}   \\
 		%&  x_{ij}^a\in\{0\}^{|\mathcal{V}||\mathcal{A}|} , T^a_{ij}\in \{0\}^{|\mathcal{V}||\mathcal{A}|} \\
-		&  x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}, T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|} \\
+		&  x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{N}|}, V_{ij} \in \{ a \in \mathbb{N}_0: a \leq |\mathcal{A}| \}^{|\mathcal{N}|}\\% T^a_{ij} \in [0, \dfrac{d_{ij}}{\epsilon}]^{|\mathcal{V}|}%T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|} \\
 	\end{aligned}
-	\right\}\label{eq:final_x_f}
+	\right\}\\
+	&\\
+	&\text{where }  x_f = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, V_{ij} , g^a_{ij}, p^a_{ij}]^T
+	\end{aligned}
+	\label{eq:final_x_f}
 \end{equation}\\
-By definition, therefore, $\mathcal{E} \subset \mathcal{X}_f \subset \mathcal{X}$. \\
-In addition, thanks to this definition, another desiderable conditions apply. Since $ x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}$ and $T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|}$, empty vehicles can also be navigating, which allows rebalancing, too. Moreover, since vehicles are not required to be stationed and the minimum requirement for a request to be satisfied is to be picked up, as long as the capacity of the vehicle stationed in $i$ is enough to cover the request, than the number of outstanding requests is still zero. 
+By construction, therefore, $\mathcal{E} \subset \mathcal{X}_f \subset \mathcal{X}$. \\
+In addition, thanks to this definition, another desiderable conditions apply. Since $ x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}$ and $V_{ij} \in \{ a \in \mathbb{N}_0 : a \leq |\mathcal{A}| \}^{|\mathcal{N}|}$, empty vehicles can also be navigating, which allows rebalancing, too. Moreover, since vehicles are not required to be stationed and the minimum requirement for a request to be satisfied is to be picked up, as long as the capacity of the vehicle stationed in $i$ is enough to cover the request, than the number of outstanding requests is still zero. 
 \begin{equation}
 \begin{aligned}
 	\sum_{a \in \mathcal{A}}  P_a\cdot f^a_{i}(t) &\ge p_{ij}(t) \\
@@ -271,105 +324,50 @@ The control law that must be designed can be seen as a function mapping $\mathca
  	\label{eq:replace_vehicle}
  \end{equation}
 \equaref{eq:replace_vehicle} is used to ensure that, if a vehicle leaves a station, it must be replaced by one or more vehicles with at least the same capacity.
+A remark is required. \equaref{eq:no_more_than_request_f} and \equaref{eq:replace_vehicle} indeed allow vehicles to be replaced and, therefore, potentially take care of the requests. However, in addition to the assumption made for \equaref{eq:no_more_than_request_f}, the state of the system will remain in $\mathcal{X}_f$ only as long as the requests are made within a time interval corresponding to the time required to travel  from the furthest station to the starting station. In other words, this is a very particular case of extrogenous requests. Therefore, for the rest of this section, the external arriving requests will be considered as zero, i.e. $o^p_{ij}(t) =  o^g_{ij}(t) = 0$, therefore treating the system as undisturbed. This also allows to determine a simpler subset for the control law. Considering all the requests are served, then no more transporting vehicles $v^a_{ij}$ should leave stations and, likewise, since no more requests are going to arrive, then the number of new rebalancing vehicles $w^a_{ij}$ should also be zero
 \begin{equation}
 	\mathcal{\mathcal{U}}_{\kappa_f}(t) := \left\{
 	\begin{aligned}
-		&v^a_{ij} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|}, v^a_{ii} = 0 \\
-		u = [v^{a}_{ij}, w^{a}_{ij}]^T \Bigg|&w^a_{ij} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|},w^a_{ii} = 0 \\ 
-		&\text{(\ref{eq:no_3_actions}),(\ref{eq:no_more_than_request_f}),(\ref{eq:replace_vehicle})
+		&v^a_{ij} \in \{0\}^{|\mathcal{A}||\mathcal{V}|} \\
+		u = [v^{a}_{ij}, w^{a}_{ij}]^T \Bigg|&w^a_{ij} \in \{0\}^{|\mathcal{A}||\mathcal{V}|}\\ 
+		&\text{(\ref{eq:prop_w})},\text{(\ref{eq:prop_v})}, \text{(\ref{eq:no_3_actions}),(\ref{eq:no_more_than_request})
 		} \\
 	\end{aligned}
 	\right\}
 \end{equation}
-It is trivial to demonstrate that $\mathcal{\mathcal{U}}_{\kappa_f}(t) \subseteq \mathcal{U}$. By construction \equaref{eq:no_3_actions} and \equaref{eq:no_more_than_request} are satisfied (the latter specifically from \equaref{eq:no_more_than_request_f}). \\
-A remark is required. \equaref{eq:no_more_than_request_f} and \equaref{eq:replace_vehicle} indeed allow vehicles to be replaced and, therefore, potentially take care of the requests. However, in addition to the assumption made for \equaref{eq:no_more_than_request_f}, the state of the system will remain in $\mathcal{X}_f$ only as long as the requests are made within a time interval corresponding to the time required to travel  from the furthest station to the starting station. In other words, this is a very particular case of extrogenous requests. Therefore, for the rest of this section, the external arriving requests will be considered as zero, i.e. $o^p_{ij}(t) =  o^g_{ij}(t) = 0$, therefore treating the system as undisturbed.\\
+It is trivial to demonstrate that $\mathcal{\mathcal{U}}_{\kappa_f}(t) \subseteq \mathcal{U}$. By construction \equaref{eq:no_3_actions} and \equaref{eq:no_more_than_request} are satisfied. \\
 This assumption also allows to derive an appropriate cost function for the system. As indicated in \secref{sec:stable_mpc_systems}, the candidate terminal cost must be a Lyapunov function (see \secref{sec:general_definitions} for more details).  \\
-Within the assumptions made, one candidate for the terminal cost function can be found by observing the vehicles that are still driving around the system. \\
-Intuitively, one can consider the time that the vehicles will spend on the road. At first glance, according to the definition found in \equaref{eq:required_time}, this would be difficult to prove to be Lyapunov. As a matter of fact, the speed of the vehicles depends on the amount of vehicles on the road, which would mean the function is not guaranteed to strictly decrease. In this situation, however, since we are dealing with an undisturbed system near its equilibrium, new vehicles will not be put it motion. In other words, at time $t$, if there are $\sum_{i,j \in \mathcal{V}}V_{ij}(t)$ vehicles in the whole system, this number will only decrease as the system progresses, since eventually vehicles will become stationed. As a consequence, the speed of the vehicles will also improve and, therefore, the time will decrese. \\
-Therefore, the final const function $J(x) : \mathcal{X}_f \rightarrow R_+$ can be constructed in the following way. 
+While it is usually difficult to construct an appropriate Lyapunov function, since the system considered is undisturbed, one can construct a function satisfying the Lyapunov properties by starting from the vehicles in motion during the system. Within the decisions made, one candidate for the terminal cost function can be found by observing the vehicles that are still driving around the system. Since the system is undisturbed and the requests are all taken care of, three candidate can be determinded. Firstly, if the traveling time $T_{ij}^a$ has been included in the model, this can be used to determine a cost function $J_t(x)$ which can be proved to be Lyapunov\footnote{The definition and proof can be found in \secref{appendix:sec:lyapunovitity_time} }. Alternatively, an immidiate candidate is the number of vehicles stll moving in the system. The terminal cost function $J_v(x) : \mathcal{X}_f \rightarrow R_+$ is trivial to define. \\
 \begin{equation}
-	J_f(x(N)):= \sum_{i,j \in \mathcal{V}}\sum_{a \in\mathcal{A}}T_{ij}^a
-	\label{eq:cost_function_time}
+	 J_v(x(N)):= \sum_{i,j \in \mathcal{V}}V_{ij}\label{eq:cost_function_v}
 \end{equation}
+With these assumptions proving $J_v(x)$ to be Lyapunov is straight forward. \\
 
 \begin{proposition}{}
-Within the definition of $\mathcal{X}_f$, (\ref{eq:cost_function_time}) is a Lyapunov Function in $\mathcal{X}_f$
+	Within the definition of $\mathcal{X}_f$, (\ref{eq:cost_function_v}) is a Lyapunov Function in $\mathcal{X}_f$
 \end{proposition}\\
-
-\textit{Proof. } Three conditions must be met.\\
+\textit{Proof. } Considering an equilibrium point $x_{\mathcal{E}}\in\mathcal{E}$, three conditions must be met.\\
 \begin{enumerate}
-	\item The function must be strictly positive, except at zero, i.e.
+	\item The function must be strictly positive except at $x_{\mathcal{E}}$, i.e.
 	\begin{equation*}
-		\sum_{i,j \in \mathcal{V}}\sum_{a \in\mathcal{A}}T_{ij}^a >0
+		\sum_{i,j \in \mathcal{V}}V_{ij}(t) >0
 	\end{equation*}
-	This is indeed true by definition of $T_{ij}^a$. More specifically, when the system is not at zero, then there are vehicles moving ($\sum_{i \in \mathcal{V}}\sum_{j \in \mathcal{V}}\sum_{a \in\mathcal{A}}w_{ij}^a >0$). Then, at least one vehicle is moving. As a result, $x_{ij}^a >0$ and consequently $T_{ij}^a>0$. \\
-	\item Secondly, the function must be assume the value of zero at equilibrium. ln other words, given any point $x_{\mathcal{E}}\in\mathcal{E}$
+	This is indeed satisfied by definition of $\mathcal{X}_f$. More specifically, when the system is not at $x_{\mathcal{E}}$, then there are vehicles stll moving, hence $\sum_{i,j \in \mathcal{N}}V_{ij} >0$. \\
+	\item Secondly, the function must assume the value of zero at equilibrium. ln other words, given the point $x_{\mathcal{E}}$
 	\begin{equation*}
-		J_f(x_{\mathcal{E}}) = 0
+		J_v(x_{\mathcal{E}}) = 0
 	\end{equation*}
 	At equilibrium, there are no vehicles moving. Clearly, the terminal cost function is zero. 
-	\item $J_f$ must decrease $\forall x \in \mathcal{X}_f$. 
+	\item $J_v$ must decrease $\forall x \in \mathcal{X}_f$. 
 	\begin{equation*}
-		J(x(k+1)) - J(x(k))\leq 0
+		J_v(x(k+1)) - J_v(x(k))\leq 0
 	\end{equation*}
-	Let's consider a vehicle $a$. If the vehicle is not rebalancing, it can be considered at equilibrium, hence $T^a_{ij} = 0$. The sum of the timings for these vehicles do not contribute to $J_f$. More specifically, their sum is equal to 0.\\
-	If the vehicle is moving, since it can not move backwards, as time increases, by propagation of $x_{ij}^a$, its position always increases untile $x_{ij}^a = d_{ij}$. As $x_{ij}^a$ increases, $T_{ij}^a$ decreases, since the speed of the vehicles can not decrease, as discussed above. If $x_{ij}^a = d_{ij}$, then $T_{ij}^a=0$, falling in the scenario above.
-
-	
-
+	Let's consider a sytem with only one vehicle $a$ still moving. If the vehicle is not rebalancing or transporting a customer, it can be considered at equilibrium, hence $\sum_{i,j \in \mathcal{N}}V_{ij} =0$ . $J_v$ does not increase nor decrease with time, hence the condition is satisfied. \\
+	If the vehicle is moving, since it can not move backwards, as time increases, by propagation of $x_{ij}^a$, its position always increases until $x_{ij}^a \ge d_{ij}$. During this time window, $\sum_{i,j \in \mathcal{N}}V_{ij} =1$, eventually reaching the station $j$ and therefore not being in motion anymore, hence the condition remains satisfied. For a system composed of more vehicles, regardless of whether on the same link or not, the same discussion applies. More specifically, since the number of moving vehicles can not increase, can only decrease or remaining the same, hence the condition remains satisfied.
 \end{enumerate}
 
 
-%\begin{equation}
-%	\mathcal{K}(t) := \left\{
-%	\begin{aligned}
-%		&v^a_{ij} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|}, v^a_{ii} = 0 \\
-%		u = [v^{a}_{ij}, w^{a}_{ij}]^T \Bigg|&w^a_{ij} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|},w^a_{ii} = 0 \\ 
-%		&\text{(\ref{eq:no_3_actions}),(\ref{eq:no_more_than_request_f})
-%		} \\
-%	\end{aligned}
-%	\right\}
-%\end{equation}
 
-%\begin{proposition}{( Necessary condition for  (\ref{eq:final_x_f}) )}
-%	Within the model described in \secref{sec:linear_discrete_time_model}, (\ref{eq:final_x_f}) at time $t$ can be achieved only after N = BLABLAN steps.
-%\end{proposition}\\
-%\textit{Proof}. The main goal is to find an upper bound on the number of steps. Let's consider a station $i$. At time $t$, there are the following amount of unserved requests. 
-%\begin{equation}
-%	\begin{aligned}
-%		o^p_{ij}(t) =& o^p_{ij}(t-1) + p_{ij}(t)\\ %- \sum_{a \in \mathcal{A}} P_a\cdot v^a_{ij}(t)\\
-%		o^g_{ij}(t) =& o^g_{ij}(t-1) + g_{ij}(t) %- \sum_{a \in \mathcal{A}} G_a \cdot v^a_{ij}(t)\\
-%	\end{aligned}
-%\end{equation}
-%Those requests can be served only by vehicles that are (i) either at the station at time $t$ or (ii) are free to reach that station (which would mean the request is satisfied).\\
-%In the best possible case, if $a$
-
-%\textit{Proof}. The main idea behind this proof is to demonstrate that the number of requests descreases at any time step under the number of incoming that the request is lower than the vehicle capacity, eventually reaching zero. Considering \equaref{eq:demand_time}, the number of requests within the system decreases only when the following holds.
-%\begin{equation}
-%	\sum_{j\in \mathcal{V}}(\sum_{a \in \mathcal{A}} (G_a + P_a)\cdot v^a_{ij}(t)) >\sum_{j\in \mathcal{V}}(p_{ij}(t) + g_{ij}(t)) \quad \forall i \in \mathcal{V}\label{eq:correct_lb}
-%\end{equation}
-%Alternatively, by adopting a more holistic point of view, the number of requests decreases according to the following relation
-%\begin{equation}
-%	\sum_{i\in \mathcal{V}}\sum_{j\in \mathcal{V}}\sum_{a \in \mathcal{A}} (G_a + P_a)\cdot v^a_{ij} (t)> \sum_{i\in \mathcal{V}}\sum_{j\in \mathcal{V}}(p_{ij}(t) + g_{ij}(t))
-%\end{equation}
-%Since the main interest is to find a minimum lower bound, this can be achieved by exploiting (\ref{eq:correct_lb}). This minimum lower bound can be found as follows.
-%\begin{equation}
-%	m  =\min_{\forall i \in \mathcal{V}} \dfrac{	o_{ij}(t)
-%																		}{	\sum_{a \in \mathcal{A}} (G_a + P_a)\cdot v^a_{ij}(t) - p_{ij}(t) - g_{ij}(t)
-%																		}
-%\end{equation}
-%
-%\begin{equation}
-%	o_{ij}(t+1) = o_{ij}(t) + p_{ij}(t) + g_{ij}(t) - \sum_{a \in \mathcal{A}} (G_a + P_a)\cdot v^a_{ij}
-%\end{equation}
-%It follows then that vehicles can not transport more than what requested, i.e.:
-%\begin{equation}
-%	\sum_{a \in \mathcal{A}} (G_a + P_a)\cdot v^a_{ij}(t) \leq o_{ij}(t) + p_{ij}(t) + g_{ij}(t)
-%\end{equation}
-
-
-
-%In (\ref{eq:final_x_f}), the condition for $x_{ij}^a$ and $T^a_{ij}$ have been relaxed. While  $x_{ij}^a\in\{0\}^{|\mathcal{V}||\mathcal{A}|} $ and $T^a_{ij}\in \{0\}^{|\mathcal{V}||\mathcal{A}|}$ are also viable conditions, these ultimately limit the final set too
 
 \subsection{Proof of Stability}
 
@@ -378,62 +376,38 @@ For the rest of this section, the notation will be eased as follows.
 	x &= x(t)\\
 	u &= u(t)\\
 	x^+ &= x(t+1)
-\end{align*}\\
-
-In order to prove stability of (\ref{eq:mpc_atod}), it is imperative to first demonstrate the feasibility of the state sets $\mathcal{X}$ adn $\mathcal{X}_f$. \\
+\end{align*} In order to prove stability of (\ref{eq:mpc_ats}), it is imperative to first demonstrate the feasibility of the state sets $\mathcal{X}$ and $\mathcal{X}_f$\footnote{\secref{appendix:feasibility_x_xf_time} contains the same proof for the sets containing time. The proof in this section works in with those definitions as well} .\\
 
 
 \begin{proposition}{(Feasibility of $\mathcal{X}$)}\label{pro:feas_x}
 	Let $x \in \mathcal{X}$ and $u \in \mathcal{U}(t)$, then $x_+ \in \mathcal{X}$
 \end{proposition}\\
 
-\textit{Proof}. Let $x^+ = [o_{ij}^+, x_{ij}^{a+}, f^{a+}_{i}, T_{ij}^{a+}]^T$ and $u = [v^{a}_{ij}, w^{a}_{ij}]^T$. Since $u \in \mathcal{U}$, then \equaref{eq:no_more_than_request} is satisfied, therefore $o_{ij}^+ \in (\mathbb{N}^+)^{|\mathcal{V}|}$. By assumption, $o_{ii}^+ = 0$ is also satisfied.\\
-The condition $f^{a+}_{i} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|}$ can be proven with the help of \equaref{eq:stationed_propagation_ind}. At first vehicles are either present at a station $i$ or not. If vehicles are not stationed, then no action can be taken due to \equaref{eq:no_3_actions} (if $u \in \mathcal{U}$, then it is satisfied). Otherwise, if vehicles are indeed stationed, then $f^{a}_{i} = 1$. If a vehicle moves, i.e. if $w^a_{ij}(t) = 1$ or $v^a_{ij}(t) = 1$, because of the first condition of \equaref{eq:position_propagation},then as of \equaref{eq:stationed_propagation_ind}, then, at the next step $f^{a+}_{i} =0$. In this scenario, at the next time step, the first condition applies. Furthermore, \equaref{eq:position_station} is satisfied, since the vehicle is traveling towards the station. If, on the other hand, the vehicle is approaching the station, i.e. $f^{a}_{i} =0$ and 
-$w^a_{ji}(t) = 1$, then $f^{a+}_{i} =1$. \equaref{eq:position_station} is still satisfied because of \equaref{eq:no_3_actions}, as the latter considers all the transportation network and, therefore $ x_{ij}^{a+} = 0$ as a result of  $w_{ij}^{a+}$ or ($ v_{ij}^{a+}$) being set to 0.\\
-To prove $x_{ij}^{a+}\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}$, one can use a similar argument by observing the defintion of the propagation of  $x_{ij}^a$ in  \equaref{eq:position_propagation}. In case $v^a_{ij}(t) + w^a_{ij}(t)= 0$ or $i=j$, the condition is satisfied, since  $x_{ij}^{a+} = 0$.  On the other hand, in case of $v^a_{ij}(t) + w^a_{ij}(t)= 1$, the condition is satisfied by definition of $s_{ij}$ and $V_{ij}(t)$. \\
-Finally, $T_{ij}^{a+} \in \mathbb{R}_{\ge0}$ can be proven as a result of the discussion made previously. It is necessary to prove the following. 
-\begin{align*}
-	 \dfrac{d_{ij} - x^a_{ij}(t)}{s_{ij}(V_{ij}(t))} &\ge 0\\
-	 d_{ij} - x^a_{ij}(t) &\ge 0\\
-	 d_{ij} &\ge x^a_{ij}(t)\\
-\end{align*}
-Since the variable $x_{ij}^a$ tracks the position of the vehicle on the road, this can not be bigger than the road itself. Furthermore, due to \equaref{eq:no_3_actions}, this is also salvaguarded, as the vehicles becomes stationed if it reaches the end of the road. \\
+\textit{Proof}. Let $x^+ = [o_{ij}^{p+}, o_{ij}^{g+}, x_{ij}^{a+}, f^{a+}_{i}, V_{ij}^{+}, g^{a+}_{ij}, p^{a+}_{ij}]^T$ and $u = [v^{a}_{ij}, w^{a}_{ij}]^T$. Since $u \in \mathcal{U}$, then \equaref{eq:no_more_than_request} is satisfied, hence $o_{ij}^{p+}, o_{ij}^{g+} \in (\mathbb{N}_0)^{|\mathcal{V}|}$. Trivially, by construction $V_{ij}^{+}$ is also $\in \mathcal{X}$. Likewise, $g^{a+}_{ij}, p^{a+}_{ij} \in \{0,1\}$ because of (\ref{eq:arrived_variable}) and (\ref{eq:departed_variable}). \\
+The condition $f^{a+}_{i} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|}$ can be proven with the help of \equaref{eq:stationed_propagation_ind}. At first vehicles are either present at a station $i$ or not. If vehicles are not stationed, then no action can be taken due to \equaref{eq:no_3_actions} (if $u \in \mathcal{U}$, then it is satisfied), which impliese no vehicle is departing or arriving at the station. Otherwise, if vehicles are indeed stationed, then $f^{a}_{i} = 1$. If a vehicle moves, i.e. if $w^a_{ij}(t) = 1$ or $v^a_{ij}(t) = 1$, because of the first condition of \equaref{eq:position_propagation}, then because of \equaref{eq:departed_variable} and (\ref{eq:arrived_variable}) being mutually exclusive, at the next step $f^{a+}_{i} =0$. If, on the other hand, the vehicle is approaching the station, i.e. $f^{a}_{i} =0$ and 
+either $v^a_{ji}(t) = 1$ or $w^a_{ji}(t) = 1$, then the following enfolds. If $x_{ij}^{a} \leq d_ij$, $f^{a+}_{i} =0$. Assuming $x_{ij}^{a} \ge d_{ij}$, then $g^{a+}_{ij} = 1$, due to \equaref{eq:stationed_propagation_ind}, then either $f^{a+}_{i} =1$ if  $v^a_{ji}(t) = w^a_{ji}(t) = 0$, or $f^{a+}_{i} =0$, if $v^a_{ji}(t) = 1$ or $w^a_{ji}(t) = 1$, which would imply $p^{a+}_{ij}=1$. \\
+ $x_{ij}^{a+}\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}$ is proved by observing $x_{ij}^a$ in  \equaref{eq:position_propagation}. In case $v^a_{ij}(t) + w^a_{ij}(t)= 0$, the condition is satisfied, since  $x_{ij}^{a+} = 0$.  On the other hand, in case of $v^a_{ij}(t) + w^a_{ij}(t)= 1$, the condition is satisfied by definition of $s_{ij}$ and $V_{ij}(t)$. \\
 
 \begin{proposition}{(Feasibility of $\mathcal{X}_f$)}\label{pro:feas_xf}
 	Let $x \in \mathcal{X}_f$ and $\kappa_f(x) \in \mathcal{U}_{\kappa_f}(t)$, then $x_+\in \mathcal{X}_f$
 \end{proposition}\\
 
-\textit{Proof}. Let $x^+ = [o_{ij}^+, x_{ij}^{a+}, f^{a+}_{i}, T_{ij}^{a+}]^T$ and $\kappa_f(x) = [v^{a}_{ij}, w^{a}_{ij}]^T$. By assumption, $o_{ii}^+ = 0$ is satisfied. Furthermore, since the system is treated as undisturbed, $o_{ij}^+ = 0$. Because $\kappa_f(x) \in \mathcal{U}_{\kappa_f}(t)$, then \equaref{eq:no_more_than_request_f} is satisfied, implieng there is no vehicle leaving the station to serve a request. \\
-If $w^a_{ij} = 0$ , then nothing happens within the system, therefore all the vehicles remain at the station, then $ f^{a+}_{i} \in \{0,1\}^{|\mathcal{V}||\mathcal{A}|}$ $\forall i \in \mathcal{V}$. Consequently   $x_{ij}^{a+} = 0$, $T_{ij}^{a+}=0$, i.e. both belonging to $\mathbb{R}_{\ge 0}$.\\
-If vehicles are in movement, i.e. $w^a_{ij} = 1$, a similar argument to the one proposed for the feasibility of $\mathcal{X}$ can be made. Because of \equaref{eq:stationed_propagation_ind}, $f^{a+}_{i}=0$ and $x_{ij}^{a+}\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}$, by definition of $s_{ij}$ and $V_{ij}(t)$. Similarly, the same reason applies for $T_{ij}^{a+} \in \mathbb{R}_{\ge0}$. Eventually, as the vehicle approached the station, i.e. $d_{ji} = x^a_{ji}(t)$, then $f^{a+}_{i}=1$ due to \equaref{eq:stationed_propagation_ind}. Since 
-\equaref{eq:no_3_actions} is respected ($\kappa_f(x) \in \mathcal{U}_{\kappa_f}(t)$), then  (\ref{eq:position_station}) is also respected, as $ w^{a+}_{ij}=0 \implies x_{ij}^{a+}=0$. \\
-Condition (\ref{eq:replace_vehicle}) is always respected, assuming there is no new requests. \\
+\textit{Proof}. Let $x^+ = [o_{ij}^{p+}, o_{ij}^{g+}, x_{ij}^{a+}, f^{a+}_{i}, V_{ij}^{+}, g^{a+}_{ij}, p^{a+}_{ij}]^T$ and $\kappa_f(x) = [v^{a}_{ij}, w^{a}_{ij}]^T$. Since the system is treated as undisturbed, $o_{ij}^{p+}= o_{ij}^{g+},=0$. Because $\kappa_f(x) \in \mathcal{U}_{\kappa_f}(t)$, then \equaref{eq:no_more_than_request_f} is satisfied, implying there is no vehicle leaving the station to serve a request. By construction $V_{ij}^{+}$ is also $\in \mathcal{X}_f$. Likewise, $g^{a+}_{ij}\in \{0,1\}$ because of (\ref{eq:arrived_variable}). \\
+If $w^a_{ij} = 0$ , then nothing happens within the system, therefore all the vehicles remain at the station, then $ f^{a+}_{i} \in \{0\}^{|\mathcal{V}||\mathcal{A}|}$ $\forall i \in \mathcal{V}$. Consequently   $x_{ij}^{a+} = 0$, i.e.  $\in \mathbb{R}_{\ge 0}$.\\
+If vehicles are in movement, i.e. $w^a_{ij} = 1$, a similar argument to the one proposed for the feasibility of $\mathcal{X}$ can be made. Because of \equaref{eq:stationed_propagation_ind}, $f^{a+}_{i}=0$ and $x_{ij}^{a+}\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}$, by definition of $s_{ij}$ and $V_{ij}(t)$. Eventually, as the vehicle approaches the station, $d_{ji} = x^a_{ji}(t)$, then $f^{a+}_{i}=1$ due to \equaref{eq:stationed_propagation_ind} and $p^{a+}_{ij}=0$. Since 
+\equaref{eq:no_3_actions} is respected ($\kappa_f(x) \in \mathcal{U}_{\kappa_f}(t)$), then  (\ref{eq:position_station}) is also respected, as $ w^{a+}_{ij}=0 \implies x_{ij}^{a+}=0$. Condition (\ref{eq:replace_vehicle}) is always respected, assuming there is no new requests. \\
 
 
-%(\ref{eq:no_3_actions}),,(\ref{eq:replace_vehicle}
-%\begin{equation}
-%	\mathcal{X}_f := \left\{
-%	\begin{aligned}
-%		& o^p_{ij} \in \{0\}^{|\mathcal{V}||\mathcal{A}|} , o^g_{ij} \in \{0\}^{|\mathcal{V}||\mathcal{A}|}  \\
-%		x_f = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, T_{ij}^a]^T \Bigg| &f^a_{i} \in \{0,1\}^{|\mathcal{V}||\mathcal{A}|}    \\
-%		%&  x_{ij}^a\in\{0\}^{|\mathcal{V}||\mathcal{A}|} , T^a_{ij}\in \{0\}^{|\mathcal{V}||\mathcal{A}|} \\
-%		&  x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}, T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|} \\
-%	\end{aligned}
-%	\right\}\label{eq:final_x_f}
-%\end{equation}\\
+
+\subsection*{Controller stability}
 
 
-%%%%%%%%%%%%WIP
+\begin{proposition}{(Stability of \ref{eq:mpc_ats})}\\
 
-\subsection*{Model stability}
-
-
-\begin{proposition}{(Stability of \ref{eq:mpc_atod})}
-
-	Given $\mathcal{X}_f$and $J_f$ defined in (\ref{eq:final_x_f}) and (\ref{eq:cost_function_time}), respectively, and let $\kappa_f:\mathcal{X}\rightarrow\mathcal{U}_{\kappa_f}$,  then the controller defined in (\ref{eq:mpc_atod}) is stable in the sense of Lyapunov.
+	Given $\mathcal{X}_f$and $J_f$ defined in (\ref{eq:final_x_f}) and (\ref{eq:cost_function_v}), respectively, and let $\kappa_f:\mathcal{X}\rightarrow\mathcal{U}_{\kappa_f}$,  then the controller defined in (\ref{eq:mpc_ats}) is stable in the sense of Lyapunov.
 \end{proposition}\\
 
-\textit{Proof.} The proof is divided in two parts. In the first part, the recursive feasibility of the controller is proved. Secondly, the stability is proven by showing than the optimal cost function $J^*$ is a Lyapunov function. 
+\textit{Proof.} To prove stability, one must (1) prove the recursive feasibility of $\mathcal{X}_f$ and (2) that the optimal cost function $J*$ is Lyapunov .
 \begin{enumerate}
 	\item As stated by Proposition \ref{pro:feas_x}, $\mathcal{X}$ is feasible. Let $x\in \mathcal{X}$ and $[u^*_0, u^*_1, \dots, u^*_{N-1}]$ be an optimal control sequence calculated at $x$. At $x^+$ the control sequence $[u^*_0, u^*_1, \dots, \kappa_f(x^*_N)]$ is feasible. This is because $x_N\in \mathcal{X}_f$ and, therefore, $x_+=Ax^*+B\kappa_f(x^*_N) \in \mathcal{X}_f$, since $\mathcal{X}_f$ is feasible, as proven in Proposition \ref{pro:feas_xf}.\\
 	This proves recursive feasibility.
@@ -457,21 +431,23 @@ Condition (\ref{eq:replace_vehicle}) is always respected, assuming there is no n
 	As a result, the optimal cost is a Lyapunov function. Hence, the system is asymptotically stable. 
 \end{enumerate}
 
+\section{Use Case Analysis}\label{sec:use_case_mpc}
+The use case has been developed using the same data \secref{sec:use_case_analysis_ats} with three main goals in mind. First, the theoratical hinsights about the stability of the controller need to be confermed. The hypothesis is that, if the model has full knoweledge of the future requests, as long as every request is satisfies, then a control law should be found such that minimizes the cost function defined in \equaref{eq:no_request_left}. Secondly, while the stability of the undesturbed controller is necessary, a real world application will likely deal with a noisy system, which, in this context, translates in extrogenous requests which are not considered in advanced. In this case, the hypothesis is that the controller, albeit with a longer horizon, is still able to minimize \equaref{eq:no_request_left}. Finally, the model's performance needs to be evaluated using real-world data to determine if it's feasible for application. A summary of the parameters for the simulation can be found in \tabref{tab:mpc_simu}.  
 
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ |l| c|c|c|}
+		%\hline
+		%	\multicolumn{2}{|c|}{Simulation Details} \\
+		\hline
+		&Sim. 1 & Sim. 2& Sim.3\\
+		\hline
+		Vehicles \#& 20&5&20\\
+		Horizon (h) & 5 &- &-\\
+		Requests / $i$ & 60&60&\\
+	\end{tabular}
+	\caption[Details of the various MPC Simulations]{Details of the various MPC Simulations. '-' means the entry has not been changed from the previous one}
+	\label{tab:mpc_simu}   
+\end{table} 
 
-
-
-
-
-%\textit{Proof}. This proof is divided in two parts. The first part involves proving that $x_N\in \mathcal{X}_f$, which leads to the conclusion that the control law $\kappa_f(x^*_N)$  is feasible. The second part, finally, is focused on proving that $x_N^+ = Ax^*+B\kappa(x_N^*)\in \mathcal{X}_f$\\
-%In order to prove  $x_N\in \mathcal{X}_f$, we need to prove that all the requests have been served and that no vehicle is moving anymore. Assuming there are no more customers' demands
-
-
-
-%\begin{itemize}
-%	\item N steps are the sum of amount of request / the capacity of all the the vehicles . Lower bound
-%	\item the arriving requests must be less than the vehicle capacity at that station.
-%	\item ------The time horizon should be as much as the longest road. This is because, if I am looking this far in the future, then I have time to move all the cars from one link to another and therefore respect the conditions. -----\\
-%\end{itemize}
-%
-\section{Use Case/Simulation / Evaluation}\label{sec:use_case_mpc}
+\section{Conclusion}

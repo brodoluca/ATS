@@ -1,4 +1,4 @@
-\chapter{Additional Information on Congestion-Free Simulation}\label{appendix:additional_info}
+\chapter{Additional Information on Rebalancing-Free Simulation}\label{appendix:additional_info}
 
 
 
@@ -144,8 +144,196 @@
 
 
 
-
 	\begin{figure}
+	\begin{tikzpicture}
+		\begin{axis}[
+			xlabel={Iteration},
+			%ylabel={Charge (\%)},
+			xtick={0,1,2,3,4,5,6,7,8,9},
+			ytick={20,35,50,70,85,100},
+			%legend pos=north west,
+			legend style={at={(1.05,1)},anchor=north west},
+			ymajorgrids=true,
+			grid style=dashed,
+			thick,
+			width=7cm
+			]
+			
+			\addplot[color = viridisbluecolor]
+			coordinates {
+				(0,100.0)
+				(1,100.0)
+				(2,100.0)
+				(3,100.0)
+				(4,100.0)
+				(5,100.0)
+				(6,96.65992436129552)
+				(7,100.0)
+				(8,100.0)
+				(9,85.30054975932255)
+			};
+			\addplot[color = viridisyellowcolor]
+			coordinates {
+				(0,100.0)
+				(1,100.0)
+				(2,100.0)
+				(3,90.0761164440697)
+				(4,72.36715758393342)
+				(5,82.02357338140166)
+				(6,100.0)
+				(7,100.0)
+				(8,85.5967113765882)
+				(9,100.0)
+			};
+			\addplot[color= viridisgreencolor]
+			coordinates {
+				(0,100.0)
+				(1,100.0)
+				(2,88.32023388997223)
+				(3,100.0)
+				(4,100.0)
+				(5,100.0)
+				(6,83.39423880255124)
+				(7,91.17426983229112)
+				(8,100.0)
+				(9,100.0)
+			};
+			
+			\addplot[color= viridisorangecolor]
+			coordinates {
+				(0,100.0)
+				(1,100.0)
+				(2,100.0)
+				(3,100.0)
+				(4,100.0)
+				(5,100.0)
+				(6,100.0)
+				(7,100.0)
+				(8,100.0)
+				(9,100.0)
+			};
+			
+			\addplot[ color = viridispurplecolor]
+			coordinates {
+				(0,100.0)
+				(1,100.0)
+				(2,100.0)
+				(3,100.0)
+				(4,100.0)
+				(5,100.0)
+				(6,100.0)
+				(7,39.88363385808256)
+				(8,69.88363385808256)
+				(9,99.88363385808256)
+			};
+			
+			\legend{1, 3, 7, 14,2}
+			
+			
+			
+		\end{axis}
+	\end{tikzpicture}
+	\caption{State of Charge of an exemplary Set of Vehicles for Simulation 5.}
+	\label{fig:ex_soc_vehicles_simu5}
+\end{figure}
+
+
+
+
+
+\begin{figure}[th]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\begin{tikzpicture}
+			\begin{axis}[
+				xlabel={Iteration},
+				%ylabel={Charge (\%)},
+				xtick={0,1,2,3,4,5,6,7,8,9,10},
+				ytick={50,60,70,80,90,100},
+				width=7cm,
+				%legend pos=north west,
+				legend style={at={(1.05,1)},anchor=north west},
+				ymajorgrids=true,
+				grid style=dashed,
+				thick,
+				]
+				
+				\addplot[color = viridisbluecolor]
+				coordinates {
+					(0,100.0)
+					(1,100.0)
+					(2,100.0)
+					(3,100.0)
+					(4,100.0)
+					(5,100.0)
+					(6,79.2423995137849)
+					(7,71.47515527664328)
+					(8,53.30015430658257)
+					(9,83.30015430658257)
+				};
+				\addplot[color = viridisyellowcolor]
+				coordinates {
+					(0,100.0)
+					(1,73.40339554214273)
+					(2,67.23253780560712)
+					(3,97.23253780560712)
+					(4,77.69769627922065)
+					(5,100.0)
+					(6,100.0)
+					(7,100.0)
+					(8,100.0)
+					(9,75.08009271013051)
+				};
+				\addplot[color= viridisgreencolor]
+				coordinates {
+					(0,100.0)
+					(1,57.9251313726367)
+					(2,87.9251313726367)
+					(3,100.0)
+					(4,100.0)
+					(5,100.0)
+					(6,100.0)
+					(7,100.0)
+					(8,100.0)
+					(9,100.0)
+				};
+				
+				\addplot[color= viridisorangecolor]
+				coordinates {
+					(0,100.0)
+					(1,100.0)
+					(2,100.0)
+					(3,74.86459626736757)
+					(4,100.0)
+					(5,100.0)
+					(6,100.0)
+					(7,100.0)
+					(8,100.0)
+					(9,100.0)
+				};
+				
+				\addplot[ color = viridispurplecolor]
+				coordinates {
+					(0,100.0)
+					(1,100.0)
+					(2,100.0)
+					(3,100.0)
+					(4,81.98335399237313)
+					(5,100.0)
+					(6,100.0)
+					(7,53.244527771615566)
+					(8,83.24452777161557)
+					(9,100.0)
+				};
+				
+				\legend{1,2, 9, 13,20}
+			\end{axis}
+			
+		\end{tikzpicture}
+		\caption{}
+		\label{fig:ex_soc_vehicles}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
 		\begin{tikzpicture}
 			\begin{axis}[
 				xlabel={Iteration},
@@ -162,78 +350,85 @@
 				
 				\addplot[color = viridisbluecolor]
 				coordinates {
-				(0,100.0)
-(1,100.0)
-(2,100.0)
-(3,100.0)
-(4,100.0)
-(5,100.0)
-(6,96.65992436129552)
-(7,100.0)
-(8,100.0)
-(9,85.30054975932255)
+					(0,100.0)
+					(1,100.0)
+					(2,58.671770977635866)
+					(3,38.61429996010891)
+					(4,48.61429996010891)
+					(5,58.61429996010891)
+					(6,68.61429996010891)
+					(7,78.61429996010891)
+					(8,88.61429996010891)
+					(9,58.855551973406776)
 				};
 				\addplot[color = viridisyellowcolor]
 				coordinates {
-				(0,100.0)
-(1,100.0)
-(2,100.0)
-(3,90.0761164440697)
-(4,72.36715758393342)
-(5,82.02357338140166)
-(6,100.0)
-(7,100.0)
-(8,85.5967113765882)
-(9,100.0)
+					(0,55.50411485319626)
+					(1,35.03765182543403)
+					(2,45.03765182543403)
+					(3,55.03765182543403)
+					(4,37.027161272925056)
+					(5,47.027161272925056)
+					(6,57.027161272925056)
+					(7,67.02716127292506)
+					(8,77.02716127292506)
+					(9,87.02716127292506)
 				};
 				\addplot[color= viridisgreencolor]
 				coordinates {
-				(0,100.0)
-(1,100.0)
-(2,88.32023388997223)
-(3,100.0)
-(4,100.0)
-(5,100.0)
-(6,83.39423880255124)
-(7,91.17426983229112)
-(8,100.0)
-(9,100.0)
+					(0,100.0)
+					(1,47.95085337312048)
+					(2,57.95085337312048)
+					(3,67.95085337312048)
+					(4,77.95085337312048)
+					(5,67.24082712699463)
+					(6,13.08749809585302)
+					(7,23.08749809585302)
+					(8,33.08749809585302)
+					(9,43.08749809585302)
 				};
 				
 				\addplot[color= viridisorangecolor]
 				coordinates {
-				(0,100.0)
-(1,100.0)
-(2,100.0)
-(3,100.0)
-(4,100.0)
-(5,100.0)
-(6,100.0)
-(7,100.0)
-(8,100.0)
-(9,100.0)
+					(0,100.0)
+					(1,100.0)
+					(2,100.0)
+					(3,100.0)
+					(4,49.97563626785433)
+					(5,59.97563626785433)
+					(6,69.97563626785433)
+					(7,79.97563626785433)
+					(8,89.97563626785433)
+					(9,99.97563626785433)
 				};
 				
 				\addplot[ color = viridispurplecolor]
 				coordinates {
-				(0,100.0)
-(1,100.0)
-(2,100.0)
-(3,100.0)
-(4,100.0)
-(5,100.0)
-(6,100.0)
-(7,39.88363385808256)
-(8,69.88363385808256)
-(9,99.88363385808256)
+					(0,100.0)
+					(1,100.0)
+					(2,100.0)
+					(3,60.63848349247051)
+					(4,33.98785392941384)
+					(5,43.98785392941384)
+					(6,53.98785392941384)
+					(7,63.98785392941384)
+					(8,73.98785392941383)
+					(9,83.98785392941383)
 				};
 				
-				\legend{1, 3, 7, 14,2}
+				\legend{2, 6, 7, 8,22}
 				
-
+				
 				
 			\end{axis}
 		\end{tikzpicture}
 		\caption{}
-		\label{fig:ex_soc_vehicles_simu5}
-	\end{figure}
+		\label{fig:ex_soc_vehicles2}
+	\end{subfigure}
+	
+	\caption[State of Charge of an exemplary Set of Vehicles for Simulation 3 and 4.]{ \subfigref{fig:ex_soc_vehicles} is the SOC of simulation three, while  \subfigref{fig:ex_soc_vehicles2} represents run number four.}
+	\label{fig:ex_soc}
+\end{figure}
+
+
+

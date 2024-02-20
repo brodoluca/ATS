@@ -1,5 +1,6 @@
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{\numberline {1}Motivation}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Thesis Organization}{1}{section.1.1}%
 \contentsline {chapter}{\numberline {2}Preliminaries}{2}{chapter.2}%
 \contentsline {section}{\numberline {2.1}General Definitions}{2}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Model Predictive Control}{5}{section.2.2}%
@@ -7,26 +8,40 @@
 \contentsline {section}{\numberline {2.3}Graph Transformation Theory}{7}{section.2.3}%
 \contentsline {chapter}{\numberline {3}Literature Review}{13}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Fleet and Transportation Network}{13}{section.3.1}%
-\contentsline {section}{\numberline {3.2}AToD Challanges}{15}{section.3.2}%
-\contentsline {section}{\numberline {3.3}MPC for AToDs}{18}{section.3.3}%
+\contentsline {section}{\numberline {3.2}ATS Challanges}{15}{section.3.2}%
+\contentsline {section}{\numberline {3.3}MPC for ATSs}{18}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Applications of Graph Transformation Systems }{18}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Time-Invariant Model of AToD}{20}{chapter.4}%
+\contentsline {chapter}{\numberline {4}Time-Invariant Model of ATS}{20}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Vehicle-centric Model}{20}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Model Evalutation}{25}{subsection.4.1.1}%
-\contentsline {section}{\numberline {4.2}Problem Formulation}{27}{section.4.2}%
+\contentsline {section}{\numberline {4.2}Analysing ATS challenges}{27}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Dispatching}{27}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Routing}{29}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Rebalancing}{35}{subsection.4.2.3}%
-\contentsline {subsection}{\numberline {4.2.4}Congestion-Free Dispatching, Routing and Rebalancing Problem}{38}{subsection.4.2.4}%
-\contentsline {section}{\numberline {4.3}Use Case Analysis}{39}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Rebalancing-Free Analysis}{41}{subsection.4.3.1}%
-\contentsline {chapter}{\numberline {5}Model Predictive Control of AToD}{47}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Linear-Discrete Time Model}{47}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Objectives}{51}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Model Evaluation}{52}{subsection.5.1.2}%
-\contentsline {section}{\numberline {5.2}Problem Formulation}{52}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Proof of Stability}{57}{subsection.5.2.1}%
-\contentsline {section}{\numberline {5.3}Use Case/Simulation / Evaluation}{59}{section.5.3}%
-\contentsline {chapter}{\numberline {6}Part 2 - Graph Transformation Theory}{60}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Summary and Outlook}{61}{chapter.7}%
-\contentsline {chapter}{\numberline {A}Additional Information on Congestion-Free Simulation}{1}{appendix.A}%
+\contentsline {subsection}{\numberline {4.2.3}Rebalancing}{34}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Problem Formulation for the Complete ATS Managing problem}{37}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Use Case Analysis}{39}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Rebalancing-Free ATS Analysis}{41}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Rebalancing-Integrated System Analysis}{45}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Conclusion}{47}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Model Predictive Control of an ATS}{49}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Linear-Discrete Time Model}{49}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Objectives}{54}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Model Evaluation}{55}{subsection.5.1.2}%
+\contentsline {section}{\numberline {5.2}Problem Formulation}{56}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Proof of Stability}{60}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}Use Case Analysis}{62}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Conclusion}{63}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Part 2 - Graph Transformation Theory}{64}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Summary and Outlook}{65}{chapter.7}%
+\contentsline {chapter}{\numberline {A}Additional Information on Rebalancing-Free Simulation}{1}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Additional Information on the Simulation with Rebalancing}{4}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Additional Information on the MPC for ATS}{6}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Propagation and Definition of the variables in $\mathcal {X}$}{6}{section.C.1}%
+\contentsline {subsection}{\numberline {C.1.1}Propagation of $g^a_{ji}$}{6}{subsection.C.1.1}%
+\contentsline {subsection}{\numberline {C.1.2}Definition of $p^a_{ji}$}{6}{subsection.C.1.2}%
+\contentsline {subsection}{\numberline {C.1.3}Constraints on $w$ and $v$}{7}{subsection.C.1.3}%
+\contentsline {section}{\numberline {C.2}Further Proof of Stability}{7}{section.C.2}%
+\contentsline {subsection}{\numberline {C.2.1}Proof that $J(x)_t $ is a Lyapunov Function}{7}{subsection.C.2.1}%
+\contentsline {subsection}{\numberline {C.2.2}Feasibility of $\mathcal {X}^t$ and $\mathcal {X}^t_f$ }{9}{subsection.C.2.2}%
+\contentsline {subsubsection}{\numberline {C.2.2.1}Feasibility of $\mathcal {X}^t$}{9}{subsubsection.C.2.2.1}%
+\contentsline {subsubsection}{\numberline {C.2.2.2}Feasibility of $\mathcal {X}^t_f$}{10}{subsubsection.C.2.2.2}%

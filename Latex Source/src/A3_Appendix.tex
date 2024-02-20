@@ -1,0 +1,176 @@
+\chapter{Additional Information on the MPC for ATS}\label{appendix:additional_info_mpc_ats}
+
+\section{Propagation and Definition of the variables in $\mathcal{X}$}
+
+\subsection{Propagation of $g^a_{ji}$}\label{appendix:sec:propagation_g}
+The propagation of $g^a_{ji}$ is implemented with the following two constraints. 
+\begin{align*}
+	g^a_{ji}(t+1) &\ge g^a_{ji}(t) - 1\\
+	g^a_{ji}(t+1) &\leq 1- g^a_{ji}(t) 
+\end{align*}
+This is basically the implementation of the following truth table.
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ |c|c|}
+		\hline
+		$g^a_{ji}(t)$ &$g^a_{ji}(t+1)$ \\
+		\hline
+		0&0\\
+		0&1\\
+		1&0\\
+	\end{tabular}
+	\label{appendix:tab:propagation_of_arrived}
+	\caption{Truth table for the propagation of $g^a_{ji}$}
+\end{table}
+
+
+\subsection{Definition of $p^a_{ji}$}\label{appendix:sec:definition_p}
+The propagation of $g^a_{ji}$ follows the truth table in \tabref{appendix:tab:propagation_of_departed}. For simplicity, let $a = v_{ij}^a(t-1) + w_{ij}^a(t-1) $ and $b = v_{ij}^a(t-2) +w_{ij}^a(t-2)$. Note that this equality works because $v_{ij}^a(t-1) + w_{ij}^a(t-1)$ is either 0 or 1. Following the conjuntive normal form, this is simplified as $p^a_{ji}(t) = a\bar{b}$.
+
+
+\begin{table}
+	\centering
+	\begin{tabular}{ |c|c|c|}
+		\hline
+		$a$ &$b$&$p^a_{ji}(t)$ \\
+		\hline
+		0&0&0\\
+		0&1&0\\
+		1&0&1\\
+		1&1&0\\
+	\end{tabular}
+	\label{appendix:tab:propagation_of_departed}
+	\caption{Truth table for the propagation of $p^a_{ji}$}
+\end{table}
+
+\subsection{Constraints on $w$ and $v$}\label{appendix:sec:const_w_v}
+The constraints on $w$ and $v$ follow the idea that can be set to 1 at any time if they are zero, since vehicles can start moving at any time instance, and they have to remain in motion until they arrived, i.e. $g^a_{ji}=1$. This is described by the following truth table. 
+\begin{table}
+	\centering
+	\begin{tabular}{ |c|c|c|c|c|}
+		\hline
+		$w^a_{ij}(t)$ &$v^a_{ij}(t)$&$g^a_{ji}(t)$ &$w^a_{ij}(t+1)$&$v^a_{ij}(t+1)$ \\
+		\hline
+		0&0&0&0 &0\\
+		0&0&0& 0&0\\
+		0&0&0& 1&0\\
+		0&0&0& 0&1\\
+		0&1&0& 0&1\\
+		0&1&1& 0&0\\
+		1&0&0&1 &0\\
+		1&0&1& 0&0\\
+	\end{tabular}
+	\caption{Truth table for the constrains on $w^a_{ji}$ and $v^a_{ji}$}
+	\label{appendix:tab:propagation_of_w_v}
+\end{table}
+\tabref{appendix:tab:propagation_of_w_v} can be simplified using the conjunctive normal form. For instance, in case of $v^a_{ij}(t+1)$, its constraint is described in \equaref{appendix:eq:v}
+\begin{equation}
+	\begin{aligned}
+		v^a_{ij}(t+1) &= \lnot w^a_{ij}(t+1) \land \lnot g^a_{ji}(t) \land \lnot w^a_{ij}(t) [v^a_{ij}(t)  \lor \lnot v^a_{ij}(t) ] \\
+							&=\lnot w^a_{ij}(t+1) \land \lnot g^a_{ji}(t) \land \lnot w^a_{ij}(t)
+	\end{aligned}
+	\label{appendix:eq:v}
+\end{equation}
+
+
+\section{Further Proof of Stability}
+\subsection{Proof that $J(x)_t $ is a Lyapunov Function}\label{appendix:sec:lyapunovitity_time}
+
+Intuitively, one can consider the time that the vehicles will spend on the road. At first glance, according to the definition found in \equaref{eq:required_time}, this would be difficult to prove to be Lyapunov. As a matter of fact, the speed of the vehicles depends on the amount of vehicles on the road, which would mean the function is not guaranteed to strictly decrease. In this situation, however, since the systemis undisturbed near its equilibrium, new vehicles will not be put it motion. In other words, at time $t$, if there are $\sum_{i,j \in \mathcal{V}}V_{ij}(t)$ vehicles in the whole system, this number will only decrease as the system progresses, since eventually vehicles will become stationed. As a consequence, the speed of the vehicles will also improve and, therefore, the time will decrese. \\
+Therefore, the final cost function $J(x)_t : \mathcal{X}_f \rightarrow R_+$ can be constructed in the following way. 
+\begin{equation}
+	J_t(x(N)):= \sum_{i,j \in \mathcal{V}}\sum_{a \in\mathcal{A}}T_{ij}^a
+	\label{eq:cost_function_time}
+\end{equation}
+
+\begin{proposition}{}
+	Within the definition of $\mathcal{X}_f$, (\ref{eq:cost_function_time}) is a Lyapunov Function in $\mathcal{X}_f$
+\end{proposition}\\
+
+\textit{Proof. } Considering an equilibrium point $x_{\mathcal{E}}\in\mathcal{E}$, three conditions must be met.\\
+\begin{enumerate}
+	\item The function must be strictly positive except at $x_{\mathcal{E}}$, i.e.
+	\begin{equation*}
+		\sum_{i,j \in \mathcal{V}}\sum_{a \in\mathcal{A}}T_{ij}^a >0
+	\end{equation*}
+	This is indeed true by definition of $T_{ij}^a$. More specifically, when the system is not at $x_{\mathcal{E}}$, then there are vehicles moving ($\sum_{i \in \mathcal{V}}\sum_{j \in \mathcal{V}}\sum_{a \in\mathcal{A}}w_{ij}^a >0$). Then, at least one vehicle is moving. As a result, $x_{ij}^a >0$ and consequently $T_{ij}^a>0$. \\
+	\item Secondly, the function must assume the value of zero at equilibrium. ln other words, given the point $x_{\mathcal{E}}$
+	\begin{equation*}
+		J_t(x_{\mathcal{E}}) = 0
+	\end{equation*}
+	At equilibrium, there are no vehicles moving. Clearly, the terminal cost function is zero. 
+	\item $J_t$ must decrease $\forall x \in \mathcal{X}_f$. 
+	\begin{equation*}
+		J_t(x(k+1)) - J_t(x(k))\leq 0
+	\end{equation*}
+	Let's consider a sytem with only a vehicle $a$. If the vehicle is not rebalancing or transporting a customer, it can be considered at equilibrium, hence $T^a_{ij} = 0$. $J_v$ does not increase nore decrease with time. More specifically, their sum is equal to 0, hence the condition is satisfied. \\
+	If the vehicle is moving, since it can not move backwards, as time increases, by propagation of $x_{ij}^a$, its position always increases untile $x_{ij}^a \ge d_{ij}$. As $x_{ij}^a$ increases, $T_{ij}^a$ decreases, since the speed of the vehicles can not increase, as discussed above. If $x_{ij}^a \ge d_{ij}$, then $T_{ij}^a=0$, falling in the scenario above.\\
+	For a system composed of more vehicles, regardless of whether on the same link or not, the same discussion applies. More specifically, since the number of vehicles can not increase, since there are no more outstanding requests, the amount vehicles tend to descrease, i.e. the overall system speed increases, which as a result brings the time to decrease. 
+	
+	
+\end{enumerate}
+
+
+\subsection{Feasibility of $\mathcal{X}^t$ and $\mathcal{X}^t_f$ }\label{appendix:feasibility_x_xf_time}
+
+\subsubsection{Feasibility of $\mathcal{X}^t$}
+
+\begin{equation}
+	\begin{aligned}
+		\mathcal{X}^t &:= \left\{
+		\begin{aligned}
+			&  o^p_{ij} \in (\mathbb{N}_0)^{|\mathcal{N}|}, o^g_{ij} \in (\mathbb{N}_0)^{|\mathcal{N}|},  \\
+			x \quad  \Bigg| \quad&g^a_{ij}, p^a_{ij},f^a_{i} \in \{0,1\}^{|\mathcal{A}||\mathcal{N}|} \\%, \text{(\ref{eq:departed_variable})}, \text{(\ref{eq:arrived_variable})}, \text{(\ref{eq:stationed_propagation_ind})} \\
+			&  x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{N}|}, V_{ij} \in \{ a \in \mathbb{N}_0 : a \leq |\mathcal{A}| \}^{|\mathcal{N}|} T^a_{ij} \in [0, \dfrac{d_{ij}}{\epsilon}]^{|\mathcal{V}|}\\%T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|} \\
+		\end{aligned}
+		\right\}\\
+		&\\
+		&\text{where }  x = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, V_{ij} , g^a_{ij}, p^a_{ij}, T^a_{ij}]^T
+	\end{aligned}
+\end{equation}
+
+
+\begin{proposition}{(Feasibility of $\mathcal{X}_t$)}\label{appendix:pro:feas_x}
+	Let $x \in \mathcal{X}^t$ and $u \in \mathcal{U}(t)$, then $x_+ \in \mathcal{X}^t$
+\end{proposition}\\
+
+\textit{Proof}. Let $x^+ = [o_{ij}^{p+}, o_{ij}^{g+}, x_{ij}^{a+}, f^{a+}_{i}, V_{ij}^{+}, g^{a+}_{ij}, p^{a+}_{ij}, T^{a+}_{ij}]^T$ and $u = [v^{a}_{ij}, w^{a}_{ij}]^T$. Since $u \in \mathcal{U}$, then \equaref{eq:no_more_than_request} is satisfied, hence $o_{ij}^{p+}, o_{ij}^{g+} \in (\mathbb{N}_0)^{|\mathcal{V}|}$. Trivially, by construction $V_{ij}^{+}$ is also $\in \mathcal{X}$. Likewise, $g^{a+}_{ij}, p^{a+}_{ij} \in \{0,1\}$ because of (\ref{eq:arrived_variable}) and (\ref{eq:departed_variable}). \\
+The condition $f^{a+}_{i} \in \{0,1\}^{|\mathcal{A}||\mathcal{V}|}$ can be proven with the help of \equaref{eq:stationed_propagation_ind}. At first vehicles are either present at a station $i$ or not. If vehicles are not stationed, then no action can be taken due to \equaref{eq:no_3_actions} (if $u \in \mathcal{U}$, then it is satisfied), which impliese no vehicle is departing or arriving at the station. Otherwise, if vehicles are indeed stationed, then $f^{a}_{i} = 1$. If a vehicle moves, i.e. if $w^a_{ij}(t) = 1$ or $v^a_{ij}(t) = 1$, because of the first condition of \equaref{eq:position_propagation}, then because of \equaref{eq:departed_variable} and (\ref{eq:arrived_variable}) being mutually exclusive, at the next step $f^{a+}_{i} =0$. If, on the other hand, the vehicle is approaching the station, i.e. $f^{a}_{i} =0$ and 
+either $v^a_{ji}(t) = 1$ or $w^a_{ji}(t) = 1$, then the following enfolds. If $x_{ij}^{a} \leq d_ij$, $f^{a+}_{i} =0$. Assuming $x_{ij}^{a} \ge d_{ij}$, then $g^{a+}_{ij} = 1$, due to \equaref{eq:stationed_propagation_ind}, then either $f^{a+}_{i} =1$ if  $v^a_{ji}(t) = w^a_{ji}(t) = 0$, or $f^{a+}_{i} =0$, if $v^a_{ji}(t) = 1$ or $w^a_{ji}(t) = 1$, which would imply $p^{a+}_{ij}=1$. \\
+$x_{ij}^{a+}\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}$ is proved by observing $x_{ij}^a$ in  \equaref{eq:position_propagation}. In case $v^a_{ij}(t) + w^a_{ij}(t)= 0$, the condition is satisfied, since  $x_{ij}^{a+} = 0$.  On the other hand, in case of $v^a_{ij}(t) + w^a_{ij}(t)= 1$, the condition is satisfied by definition of $s_{ij}$ and $V_{ij}(t)$. \\
+Finally, $T_{ij}^{a+} \in [0, \dfrac{d_{ij}}{\epsilon}]$ can be proven as a result of the discussion made previously. \\
+For the first case, i.e. $T_{ij}^{a} \ge 0$, it is necessary to prove the following. 
+\begin{align*}
+	\dfrac{d_{ij} - x_{ij}^{a+}}{s_{ij}(V^+_{ij})} &\ge 0\\
+	d_{ij} - x_{ij}^{a+} &\ge 0\\
+	d_{ij} &\ge x_{ij}^{a+}\\
+\end{align*}
+By construction, $s_{ij}(V_{ij}(t)) \neq 0$.\\
+Since the variable $x_{ij}^{a+}$ tracks the position of the vehicle on the road, this can not be bigger than the road itself. Furthermore, due to \equaref{eq:no_3_actions}, this is also salvaguarded, as the vehicles becomes stationed if it reaches the end of the road. Moreover, $T_{ij}^{a+} =0$ if $x_{ij}^{a+} \not\in  (0,d_{ij})$ by definition. \\
+The second case, i.e. $T_{ij}^{+a} \leq \dfrac{d_{ij}}{\epsilon}$, is indeed always true since $\epsilon \leq s_{ij} \leq l_{ij}$ and only $x_{ij}^{a+} < d_{ij}$ is considered in the first case.\\
+
+\subsubsection{Feasibility of $\mathcal{X}^t_f$}
+\begin{equation}
+	\begin{aligned}
+		\mathcal{X}^t_f &:= \left\{
+		\begin{aligned}
+			& o^p_{ij} \in \{0\}^{|\mathcal{N}||\mathcal{A}|} , o^g_{ij} \in \{0\}^{|\mathcal{N}||\mathcal{A}|}  \\
+			x_f \quad \Bigg| \quad &g^a_{ij},f^a_{i} \in \{0,1\}^{|\mathcal{N}||\mathcal{A}|},  p^a_{ij}\in \{0\}^{|\mathcal{N}||\mathcal{A}|}\\%\text{(\ref{eq:departed_variable})}, \text{(\ref{eq:arrived_variable})}, \text{(\ref{eq:stationed_propagation_ind2})}   \\
+			%&  x_{ij}^a\in\{0\}^{|\mathcal{V}||\mathcal{A}|} , T^a_{ij}\in \{0\}^{|\mathcal{V}||\mathcal{A}|} \\
+			&  x_{ij}^a\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{N}|}, V_{ij} \in \{ a \in \mathbb{N}_0: a \leq |\mathcal{A}| \}^{|\mathcal{N}|} T^a_{ij} \in [0, \dfrac{d_{ij}}{\epsilon}]^{|\mathcal{V}|}\\%T^a_{ij} \in (\mathbb{R}_{\ge 0})^{|\mathcal{V}|} \\
+		\end{aligned}
+		\right\}\\
+		&\\
+		&\text{where }  x = [o^p_{ij},o^g_{ij}, x_{ij}^a, f^a_{i}, V_{ij} , g^a_{ij}, p^a_{ij}, T^a_{ij}]^T
+	\end{aligned}
+	\label{appendix:eq:final_x_f}
+\end{equation}\\
+
+\begin{proposition}{(Feasibility of $\mathcal{X}_f$)}\label{appendix:pro:feas_xf}
+	Let $x \in \mathcal{X}^t_f$ and $\kappa_f(x) \in \mathcal{U}_{\kappa_f}(t)$, then $x_+\in \mathcal{X}^t_f$
+\end{proposition}\\
+
+\textit{Proof}. Let $x^+ = [o_{ij}^{p+}, o_{ij}^{g+}, x_{ij}^{a+}, f^{a+}_{i}, V_{ij}^{+}, g^{a+}_{ij}, p^{a+}_{ij}]^T$ and $\kappa_f(x) = [v^{a}_{ij}, w^{a}_{ij}]^T$. Since the system is treated as undisturbed, $o_{ij}^{p+}= o_{ij}^{g+},=0$. Because $\kappa_f(x) \in \mathcal{U}_{\kappa_f}(t)$, then \equaref{eq:no_more_than_request_f} is satisfied, implying there is no vehicle leaving the station to serve a request. By construction $V_{ij}^{+}$ is also $\in \mathcal{X}_f$. Likewise, $g^{a+}_{ij}\in \{0,1\}$ because of (\ref{eq:arrived_variable}). \\
+If $w^a_{ij} = 0$ , then nothing happens within the system, therefore all the vehicles remain at the station, then $ f^{a+}_{i} \in \{0\}^{|\mathcal{V}||\mathcal{A}|}$ $\forall i \in \mathcal{V}$. Consequently   $x_{ij}^{a+} = 0$, i.e.  $\in \mathbb{R}_{\ge 0}$. If vehicles are in movement, i.e. $w^a_{ij} = 1$, a similar argument to the one proposed for the feasibility of $\mathcal{X}$ can be made. Because of \equaref{eq:stationed_propagation_ind}, $f^{a+}_{i}=0$ and $x_{ij}^{a+}\in (\mathbb{R}_{\ge 0})^{|\mathcal{A}||\mathcal{V}|}$, by definition of $s_{ij}$ and $V_{ij}(t)$. Eventually, as the vehicle approaches the station, $d_{ji} = x^a_{ji}(t)$, then $f^{a+}_{i}=1$ due to \equaref{eq:stationed_propagation_ind} and $p^{a+}_{ij}=0$. Since 
+\equaref{eq:no_3_actions} is respected ($\kappa_f(x) \in \mathcal{U}_{\kappa_f}(t)$), then  (\ref{eq:position_station}) is also respected, as $ w^{a+}_{ij}=0 \implies x_{ij}^{a+}=0$. Condition (\ref{eq:replace_vehicle}) is always respected, assuming there is no new requests. \\
+Finally, in case $w^a_{ij} = 0$, then $T_{ij}^{a+}  = 0$. If $w^a_{ij} = 1$ and the vehicle reached the station, then $g^{a+}_{ij} =1$, which implies $w^a_{ij} = T_{ij}^{a+}  =0$. Otherwise, since $x_{ij}^{a+}\in (\mathbb{R}_{\ge 0})$, a similar argument to Proposition \ref{appendix:pro:feas_x} can be used to prove $T_{ij}^{a+}\in (\mathbb{R}_{\ge 0})$

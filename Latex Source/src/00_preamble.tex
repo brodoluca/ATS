@@ -37,7 +37,7 @@
 \newcommand{\secref}[1]{Section \ref{#1}}
 \newcommand{\chapref}[1]{Chapter \ref{#1}}
 \newcommand{\figref}[1]{Fig \ref{#1}}
-\newcommand{\equaref}[1]{Equation \ref{#1}}
+\newcommand{\equaref}[1]{(\ref{#1})}
 \newcommand{\citepaperof}[2]{\textit{#2} in \cite{#1}}
 \newcommand{\citepaperofs}[2]{\textit{#2 et al.} in \cite{#1}}
 \newcommand{\algoref}[1]{Algorithm \ref{#1}}
@@ -54,19 +54,19 @@
 
 
 \newcounter{definition}[chapter]
-\renewcommand{\thedefinition}{\thesection.\arabic{definition}}
+\renewcommand{\thedefinition}{\thechapter.\arabic{definition}}
 \newenvironment{definition}[1][]{%
 	\refstepcounter{definition}%
-	\textbf{Definition \arabic{definition}#1: }%
+	\textbf{Definition \thedefinition#1: }%
 	%\itshape
 }{\upshape}
 
 
 \newcounter{proposition}[chapter]
-\renewcommand{\thedefinition}{\thesection.\arabic{proposition}}
+\renewcommand{\theproposition}{\thechapter.\arabic{proposition}}
 \newenvironment{proposition}[1][]{%
 	\refstepcounter{proposition}%
-	\textbf{Proposition \arabic{proposition}#1: }%
+	\textbf{Proposition \theproposition#1: }%
 	\itshape
 }{\upshape}
 
