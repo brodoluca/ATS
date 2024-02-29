@@ -1,0 +1,6 @@
+N = 15
+d = 30
+30 vehciles 4 
+requests = 120
+dekta = 0.25
+60-20-30

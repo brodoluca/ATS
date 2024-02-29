@@ -10,7 +10,7 @@ import pickle
 from tqdm import tqdm
 
 df = pd.read_csv("dataset/finished_dataset.csv")
-df_filter = pd.read_csv("requests_done_simulation.csv")
+df_filter = pd.read_csv("dio_aiutami_mpc/filter_reqs.csv")
 filter_ids = df_filter["id"].tolist()
 df = df[df["id"].isin(filter_ids)]
 with open('graph_from_routes_wd.pkl', 'rb') as f:
@@ -31,21 +31,23 @@ l = 50 #km/h#/ 3600#m/h
 # Iterate over edges and add distances to the dictionary
 for u, v, d in nyc_graph.edges(data=True):
     edge_info[(u, v)] = [
-        d["length"],
+        int(d["length"]),
         d["length"] / d["maxspeed"] if not math.isnan(d["maxspeed"]) else d["length"]/l,
         50
     ]
+#for k in edge_info.keys():
+#    print(edge_info[k][0])
 
 # %%
-edge_info = {}
-l = 50 #km/h#/ 3600#m/h
+#edge_info = {}
+#l = 50 #km/h#/ 3600#m/h
 # Iterate over edges and add distances to the dictionary
-for u, v, d in nyc_graph.edges(data=True):
-    edge_info[(u, v)] = [
-        d["length"]/10,
-        d["length"]/500,
-        50
-    ]
+#for u, v, d in nyc_graph.edges(data=True):
+#    edge_info[(u, v)] = [
+#        d["length"]/10,
+#        d["length"]/500,
+#        50
+#    ]
 
 # %%
 from enum import Enum
@@ -201,7 +203,7 @@ def initialize_vehicles_random(depots):
     return vehicles, n_vehicles
 
 # %%
-def initialize_vehicles_with_specific_start_end(depots, end_depots = {42432963:42430044,42430044: 6177439750, 6223571524:42432963, 3786901738:42432963, 6177439750:6223571524}):
+def initialize_vehicles_with_specific_start_end(depots, people=4,end_depots = {42432963:42430044,42430044: 6177439750, 6223571524:42432963, 3786901738:42432963, 6177439750:6223571524}):
     vehicles = []
     n_vehicles = sum(d.vehicles_now for d in depots)
     vehicle_id_counter = 0
@@ -210,7 +212,7 @@ def initialize_vehicles_with_specific_start_end(depots, end_depots = {42432963:4
         end_depot_id = end_depots[start_depot_id]
         for _ in range(d.vehicles_now):
             vehicles.append(Vehicle(id=vehicle_id_counter,
-                                    pcapacity=2,
+                                    pcapacity=people,
                                     gcapacity=10,
                                     R_=1,
                                     ctype = d.type,
@@ -245,10 +247,10 @@ def clean_requests(requests, depots, road_network):
         #    continue
             
     
-        #for d in depots:
-        #    if r.end == d.id or r.start == d.id:
-        #        requests.remove(r)
-        #        continue
+        for d in depots:
+            if r.end == d.id or r.start == d.id:
+                requests.remove(r)
+                continue
                 
 
         if (r.start, r.end) not in road_network.edges():
@@ -403,32 +405,26 @@ def insert_random_end_point(requests, graph):
 p, _, requests = get_requests(df[:300])
 
 depots = initialize_depots(nyc_graph, vehicles_amount = [4]*5)
-#requests, tot = clean_requests(requests, depots, graph)
-random.shuffle(requests)
-vehicles, _ = initialize_vehicles_with_specific_start_end(depots)
+#requests, tot = clean_requests(requests, depots, nyc_graph)
+print(len(requests))
+#random.shuffle(requests)
+vehicles, _ = initialize_vehicles_with_specific_start_end(depots, people=2)
 
 
 # %%
 len(nyc_graph.edges)
 
 # %%
-for r in requests:
-    if (r.start,r.end) not in nyc_graph.edges():
-        nyc_graph.add_edge(r.start,r.end)
-    if (r.end,r.start) not in nyc_graph.edges():
-        nyc_graph.add_edge(r.end,r.start)
+#for r in requests:
+#    if (r.start,r.end) not in nyc_graph.edges():
+#        nyc_graph.add_edge(r.start,r.end)
+#    if (r.end,r.start) not in nyc_graph.edges():
+#        nyc_graph.add_edge(r.end,r.start)
 
-# %%
-len(nyc_graph.edges())
-
-# %%
-tot = 0
 for r in requests:
-    if r.people_ %2 !=0:
-        r.people_+=1
-        #print(r.id, r.people_)
-    tot +=r.people_
-#print(tot)
+    #if r.people_ != 2:
+       r.people_=2
+
 
 # %%
 test_vehicles, _ = initialize_vehicles_with_specific_start_end(depots)
@@ -480,6 +476,69 @@ for i in range(5):
         Request(id = i, people = 2, start=i+7, end=i+8 )
     ]
 
+def nodes_directly_connected(graph, node, am = -1):
+    connected_nodes = []
+    for neighbor in graph.neighbors(node):
+        if node in graph.neighbors(neighbor):
+            connected_nodes.append(neighbor)
+    return connected_nodes[:am]
+
+def create_gts_graph(important_points,road_network, point = 2, r = 7, am=3):
+    modified_G = nx.Graph()
+    modified_G.add_nodes_from(important_points)
+    
+
+    #creates important connections
+    immidiate_connections = {}
+    for node in modified_G.nodes():
+        immidiate_connections[node] = nodes_directly_connected(road_network, node)
+    n_copy = list(modified_G.nodes()).copy()
+    for n in n_copy:
+        modified_G.add_nodes_from(immidiate_connections[n])
+        modified_G.add_edges_from([(n, m) for m in immidiate_connections[n]])
+
+    if point ==0:
+        return modified_G
+    
+    for i in range(r):
+        immidiate_connections = {}
+        for node in modified_G.nodes():
+            immidiate_connections[node] = nodes_directly_connected(road_network, node, am=am)
+        n_copy = list(modified_G.nodes()).copy()
+        for n in n_copy:
+            modified_G.add_nodes_from(immidiate_connections[n])
+            modified_G.add_edges_from([(n, m) for m in immidiate_connections[n]])
+    
+    if point==1:
+        return modified_G
+    
+    nodes_to_remove = ["a"]
+    while(len(nodes_to_remove)>0):
+        nodes_to_remove = [node for node, degree in dict(modified_G.degree()).items() if degree == 1 and node not in important_points]
+        # Remove those nodes from the graph
+        modified_G.remove_nodes_from(nodes_to_remove)
+    
+
+    #Adding info
+    for n in modified_G.nodes():
+        a = road_network.nodes[n]
+        modified_G.nodes[n]["depot"] = a["depot"]
+    for u, v, d in nyc_graph.edges(data=True):
+        if (u,v) in modified_G.edges():
+            modified_G[u][v]["length"] = d["length"]
+            modified_G[u][v]["maxspeed"] = d["maxspeed"]
+    #making it directed
+    directed_graph = nx.DiGraph()
+    for node, data in modified_G.nodes(data=True):
+        directed_graph.add_node(node, **data)
+
+    # Add edges from the undirected graph and copy over the "length" attribute
+    for u, v, data in modified_G.edges(data=True):
+        directed_graph.add_edge(u, v, **data)
+        directed_graph.add_edge(v, u, **data)  # Add the reverse edge with the same attributes
+
+
+    return directed_graph
 
 
 
@@ -512,7 +571,7 @@ def convert_to_time_list(requests, N):
 
 # %%
 def set_up_opt_problem(road_network, vehicles, time_delta, previous_f,requests,d,previous_x={}, N = 10,edge_info={},
-                       l_ij = 60,v_th = 100,v_max = 150,eps = 0.5, requests_per_interval=True
+                       l_ij = 60,v_th = 20,v_max = 30,eps = 0.5, requests_per_interval=True
                        ):
     
     problem = pulp.LpProblem("MPC_ATOD", pulp.LpMinimize)
@@ -559,7 +618,7 @@ def set_up_opt_problem(road_network, vehicles, time_delta, previous_f,requests,d
             problem += V[i,j,t] == pulp.lpSum(w[i,j,a.id,t]+ v[i,j,a.id,t] for a in vehicles)
             
     
-
+    print("First Done")
     
     
     arrived = {}
@@ -570,13 +629,18 @@ def set_up_opt_problem(road_network, vehicles, time_delta, previous_f,requests,d
                 if t ==0:
                     problem += arrived[i,j,a.id,t] == 0
                     continue
-                problem+= x[i,j,a.id,t] - arrived[i,j,a.id,t]*d >=0
-                problem+= x[i,j,a.id,t] -d+1- arrived[i,j,a.id,t]*M<=0
+
+                if edge_info == {}:
+                    problem+= x[i,j,a.id,t] - arrived[i,j,a.id,t]*d >=0
+                    problem+= x[i,j,a.id,t] -d+1- arrived[i,j,a.id,t]*M<=0
+                else:
+                    problem+= x[i,j,a.id,t] - arrived[i,j,a.id,t]*edge_info[i,j][0] >=0
+                    problem+= x[i,j,a.id,t] -edge_info[i,j][0] +1- arrived[i,j,a.id,t]*M<=0
 
                 problem+=arrived[i,j,a.id,t] >= arrived[i,j,a.id,t-1] -1
                 problem+=arrived[i,j,a.id,t] <= 1-arrived[i,j,a.id,t-1]
 
-
+    #print(arrived)
 
     #for (i, j) in road_network.edges():
     #    for a in vehicles:
@@ -601,6 +665,8 @@ def set_up_opt_problem(road_network, vehicles, time_delta, previous_f,requests,d
                     problem += v[i,j,a.id,t] >= w[i,j,a.id,t] + w[i,j,a.id,t] +arrived[i,j,a.id,t-1] -2
 
     
+    print("Second Done")
+
     departed = {}
     for t in range(1,N+1):
         for (i, j) in road_network.edges():
@@ -625,16 +691,21 @@ def set_up_opt_problem(road_network, vehicles, time_delta, previous_f,requests,d
                 if t ==0:
                     problem+= f[i,a.id,t] == previous_f[i,a.id]
                     continue   
-                #if t < N+1:
-                problem+= f[i,a.id,t] == f[i,a.id,t-1] \
+                if t < N+1:
+                    problem+= f[i,a.id,t] == f[i,a.id,t-1] \
                                                 - pulp.lpSum((departed[i,j,a.id,t-1]) for j in road_network.nodes() if (i,j) in road_network.edges())\
                                                 + pulp.lpSum((arrived[j,i,a.id,t-1]) for j in road_network.nodes() if (j,i) in road_network.edges())
-                    
+                    continue
+                problem+= f[i,a.id,t] == f[i,a.id,t-1] \
+                                                + pulp.lpSum((arrived[j,i,a.id,t-1]) for j in road_network.nodes() if (j,i) in road_network.edges())
+
+
                 
                 #to stop the vehicles, one can impose this constraint
                 #problem+= f[i,a.id,t] == pulp.lpSum((arrived[j,i,a.id,t-1]) for j in road_network.nodes() if (j,i) in road_network.edges())
 
-
+    print("Third Done")
+    
     
     for t in range(1,N):
          for a in vehicles:
@@ -647,88 +718,148 @@ def set_up_opt_problem(road_network, vehicles, time_delta, previous_f,requests,d
 
                       
     op = {}
-    if requests_per_interval:
-        time_list = convert_to_time_list(requests, N)
-
-        for r in requests:
-            if (r.start, r.end,0) not in op.keys():
-                op[r.start, r.end, 0] =pulp.LpVariable(f"op{r.start}_{r.end}_{0}", cat="Integer", lowBound=0)
-            if r in time_list[0]:
-                problem += op[r.start, r.end, 0] == r.people_ 
-            else:
-                problem += op[r.start, r.end, 0] ==0
-
-
-        for t in range(1,N+1):
-            for r in requests:
-                if (r.start, r.end,t) not in op.keys():
-                    op[r.start, r.end, t] =pulp.LpVariable(f"op{r.start}_{r.end}_{t}", cat="Integer", lowBound=0)
-                if t <N:
-                    to_add = r.people_ if r in time_list[t] else 0 
-                else:
-                    to_add=0
-                problem += op[r.start, r.end, t] == op[r.start, r.end, t - 1] +to_add - pulp.lpSum(a.pcapacity_ *v[r.start, r.end, a.id, t - 1] for a in vehicles)
-
-    else:
-        
-        for r in requests:
-            for t in range(N + 1):
-                if (r.start, r.end, t) not in op.keys():
-                    op[r.start, r.end, t] = pulp.LpVariable(f"op{r.start}_{r.end}_{t}", cat="Integer", lowBound=0)
-                if t == 0:
-                    problem += op[r.start, r.end, t] == r.people_  # Setting initial value for t=0
-                else:
-                    problem += op[r.start, r.end, t] >= 0  # Non-negativity constraint
-
-                if t > 0:
-                    problem += op[r.start, r.end, t] == op[r.start, r.end, t - 1] - pulp.lpSum(a.pcapacity_ *v[r.start, r.end, a.id, t - 1] for a in vehicles)
-                    #pulp.lpSum(a.pcapacity_ * v[r.start, r.end, a.id, t - 1] for a in vehicles)
-
+    temp = {}
+    request_per_time = convert_to_time_list(requests, N)
     
+    for t in range(N+1):
+        total_people = {}
+        request_to_consider = requests if not requests_per_interval else request_per_time[t]
+        for r in request_to_consider:
+            if (r.start, t) not in op.keys():
+                op[r.start, t] = pulp.LpVariable(f"op{r.start}_{t}", cat="Integer", lowBound=0)
+                #if requests_per_interval and t>0:
+                #    for tt in range(t-1,0,-1):
+                #        if (r.start, tt) not in op.keys():
+                #            op[r.start, tt] = pulp.LpVariable(f"op{r.start}_{tt}", cat="Integer", lowBound=0)
+                #            problem += op[r.start, tt] ==0
+            
+            if r.start not in total_people.keys():
+                total_people[r.start] = 0
+            
+            #creating temp
+            for a in vehicles:    
+                for i in road_network.nodes():
+                    if (r.start,i) not in road_network.edges():
+                        continue
+                    if (r.start,i, a.id, t) not in temp.keys():
+                        temp[r.start, i, a.id,t] = pulp.LpVariable(f"temp{r.start}_{i}_{a.id}_{t}", cat="Binary", lowBound=0)
+                        if t ==0:
+                            problem += temp[r.start, i, a.id,t] ==0
+                            continue
+                        #if requests_per_interval and t>0:
+                        #    for tt in range(t-1,0,-1):
+                        #        if (r.start,i, a.id, tt) not in temp.keys():
+                        #            temp[r.start, i, a.id, tt] = pulp.LpVariable(f"temp{r.start}_{i}_{a.id}_{tt}", cat="Binary", lowBound=0)
+                        #            problem +=temp[r.start, i, a.id, tt] ==0
+
+                        problem +=temp[r.start,i, a.id,t-1] <= departed[r.start,i, a.id, t-1] 
+                        problem +=temp[r.start, i,a.id,t-1] <= v[r.start,i, a.id, t-1] 
+                        problem +=temp[r.start, i,a.id,t-1] >= v[r.start,i, a.id, t-1] + departed[r.start,i, a.id, t-1] -1
+                                                
+            total_people[r.start]+= r.people_
+        
+    print(total_people)
+    #
+    for k in total_people.keys():
+        problem += op[k, 0]== total_people[k]
+    for t in range(1,N+1):
+        for k in total_people.keys():
+            #to_add = 0 if not requests_per_interval else total_people[k]
+            problem += op[k, t] == op[k, t - 1] - pulp.lpSum(a.pcapacity_*temp[k, i,a.id, t-1] for a in vehicles for i in road_network.nodes() if (k,i) in road_network.edges() ) #+ to_add
+
+
+
+    print("Fourth Done") 
+    #for t in range(0,N):
+    #     for a in vehicles:
+    #        for r in requests:
+    #            problem += pulp.lpSum(a.pcapacity_ *v[r.start, r.end, a.id, t]) <= op[r.start, t]
+
 
     #for r in requests:
     #    for t in range(N):
-    #        problem += op[r.start, r.end, t] >= pulp.lpSum(v[r.start, r.end, a.id, t] for a in vehicles)
+    #        problem += op[r.start, t] >= pulp.lpSum(v[r.start, r.end, a.id, t] for a in vehicles)
 
 
-    problem += pulp.lpSum(op[i,j,t]  for i,j in road_network.edges() if (i,j,N) in op.keys() for t in range(N)) #- pulp.lpSum(f[r.end,a.id,N] for a in vehicles for r in requests)
-    #problem += pulp.lpSum(op[i,j,N]  for i,j in road_network.edges() if (i,j,N) in op.keys() for t in range(N)) 
-    #problem += -pulp.lpSum(v[r.start, r.end, a.id, t] for a in vehicles for r in requests for t in range(N))
-    #problem += -pulp.lpSum(f[r.end,a.id,N] for a in vehicles for r in requests)
-    #problem+=-pulp.lpSum(departed[i,j,a.id,t] for i,j in road_network.edges() for a in vehicles for t in range(1,N))
+    problem += pulp.lpSum(op[k,t] for k, t in op.keys() )# + pulp.lpSum(w[p] for p in w.keys()  )#- pulp.lpSum(f[r.end,a.id,N] for a in vehicles for r in requests)
+    #problem += pulp.lpSum(w[i,j,a.id,t] for i,j in road_network.edges() for t in range(N) for a in vehicles )
+    #problem += -pulp.lpSum(v[r.start, i, a.id, t] for a in vehicles for r in requests for t in range(N) for i in road_network.nodes() if (r.start,i) in road_network.edges())
+    #problem += -pulp.lpSum(temp[r.start,i, a.id,t] for t in range(N) for a in vehicles for r in requests for i in road_network.nodes() if (r.start,i) in road_network.edges())
+    #problem+=-pulp.lpSum(arrived[i,r.start,a.id,t] for i in road_network.nodes()for t in range(1,N)  for a in vehicles for r in requests if (i, r.start) in road_network.edges())
                 
-    #problem += -pulp.lpSum(v[i,j,a.id,t] for i,j in road_network.edges() for t in range(N) for a in vehicles )
+    #problem += -pulp.lpSum(departed[i,j,a.id,t] for i,j in road_network.edges() for t in range(N) for a in vehicles )
     #problem += pulp.lpSum(w[i,j,a.id,t] for i,j in road_network.edges() for t in range(N) for a in vehicles )
     #problem += pulp.lpSum(f[i,a.id,N] for i in road_network.nodes() for a in vehicles if previous_f[i,a.id]==0)\
                #+pulp.lpSum(departed[i,j,a.id,t] for i,j in road_network.edges() for a in vehicles for t in range(N))
 
     return problem, V, v,w,s,f, x, departed, arrived,op
         
+test = False
+N = 20 #3 ore
+requests_to_do = requests[:120]
+
+#print([d.id for d in depots])
+reqs_per_d = {d.id:0 for d in depots}
+
+for i,r in enumerate(requests_to_do):
+    min_shortest_path = [1]*1000000
+    d_short = 0
+    for d in depots:
+        if reqs_per_d[d.id] >= len(requests_to_do)/len(depots):
+            continue
+        shortest_path = nx.shortest_path(graph_from_routes, source=d.id, target=r.start, weight='length')
+        if len(shortest_path) <len(min_shortest_path):
+            min_shortest_path = shortest_path
+            d_short = d.id
+            #print(r.start, d.id)
+    reqs_per_d[d_short] += 1
+    #print(min_shortest_path)
+    #print(f"REquest : {i}")
+    #print(r.start, d_short)
+    if len(min_shortest_path) > 3:
+        r.start = min_shortest_path[1]
+    #print(r.start, d_short)
+#print(reqs_per_d)
+important_points = [d.id for d in depots] + [r.start for r in requests_to_do]
 
 
-# %%
-problem, V, v,w,s,f, x, departed, arrived,op = set_up_opt_problem(nyc_graph, vehicles,requests=requests[:20],
-                                                               N = 10, time_delta=1, previous_f = previous_f_nyc, d = 120, requests_per_interval = True)
 
-# %%
-solver = pulp.GUROBI_CMD(msg=1, timeLimit=1000)
-
-# %%
-solution = problem.solve(solver = solver)
-
-# %%
-graph = nyc_graph
-t=3
+for t in range(N+1):
+    total_people = {}
+    request_to_consider = requests_to_do
+    for r in request_to_consider:
+        if r.start not in total_people.keys():
+            total_people[r.start] = 0                                        
+        total_people[r.start]+= r.people_
 
 
 
-# %%
+simplified_nyc = create_gts_graph(important_points,nyc_graph, r = 7, am=3)
 
+if not test:
+    problem, V, v,w,s,f, x, departed, arrived,op = set_up_opt_problem(simplified_nyc, vehicles,requests=requests_to_do,
+                                                                N = N, time_delta=0.5, previous_f = previous_f_nyc, d = 30, requests_per_interval = False, edge_info = {})
+
+    # %%
+    print("problem created")
+    solver = pulp.GUROBI_CMD(msg = 1)
+
+    # %%
+    print("problem solving.....")
+    solution = problem.solve(solver = solver)
+
+    # %%
+    graph = nyc_graph
+if test:
+    tot = 0
+    for i,r in enumerate(requests_to_do):
+        tot+= r.people_
+        #print(i, r.people_, r.start, r.end)
 
      
 
 # %%
-def save_info(graph,v,w,V, op,requests, N,folder_path,name_road = 'road_info.csv',  name_edge_info = "edge_info.csv", name_request_info = "requests_info.csv"):
+def save_info(graph,v,w,V,f, op,requests, N,folder_path,name_road = 'road_info.csv',  name_edge_info = "edge_info.csv", name_request_info = "requests_info.csv"):
     for t in range(N):
         road_info = {}
         for i, j in graph.edges():
@@ -759,46 +890,58 @@ def save_info(graph,v,w,V, op,requests, N,folder_path,name_road = 'road_info.csv
         df = pd.DataFrame.from_dict(road_info, orient='index', columns=[a.id for a in vehicles]).reset_index().rename(columns={'index': 'edge'})
         df.to_csv(os.path.join(folder_path, f"{t:04d}_vehicles_rebalancing_{name_road}"))
 
-
     for t in range(N):
+        road_info = {}
+        for i in graph.nodes():
+            edge_used = []
+            for a in vehicles:
+                edge_used.append(pulp.value(f[i,a.id,t]))
+            road_info[f"{i}"] = edge_used
+
+        df = pd.DataFrame.from_dict(road_info, orient='index', columns=[a.id for a in vehicles]).reset_index().rename(columns={'index': 'edge'})
+        df.to_csv(os.path.join(folder_path, f"{t:04d}_stationed_vehicles_{name_road}"))
+
+
+    for t in range(N+1):
         requests_info = {}
-        for r in requests:
-            requests_info[r.id] = [
-                                    pulp.value(op[r.start,r.end, t]),
-                                    r.start,
-                                    r.end,
-                                    [ a.id for a in vehicles if v[r.start,r.end,a.id,t]==1 ]
-                                    ]
+        for k, tt in op.keys():
+            if tt!=t:
+                continue
+            if tt>t:
+                break
+            requests_info[k] = pulp.value(op[k, t])
+            #requests_info[r.id] = [
+            #                        pulp.value(op[r.start, t]),
+            #                        r.start,
+            #                        #[ x.id for x in vehicles if sum([v[r.start,i,x.id,t] for i in graph.nodes() if (r.start, i) in graph.edges()])==1  ]
+            #                        ]
 
         
         pd.DataFrame.from_dict(requests_info, orient='index', columns=[
                                                         "quantity",
-                                                        "start",
-                                                        "end",
-                                                        "which_vehicle"
-                                                    ]).reset_index().rename(columns={'index': 'id'}).to_csv(os.path.join(folder_path, f"{t:04d}_{name_request_info}"))
+                                                        #"start",
+                                                        #"end",
+                                                        #‚"which_vehicle"
+                                                    ]).reset_index().rename(columns={'index': 'start'}).to_csv(os.path.join(folder_path, f"{t:04d}_{name_request_info}"))
 
 
         
 
     
-    
+if not test:
+    folder_path = check_and_create_folder("analysis_on_length", name_fold = "simu")
+    save_info(graph = simplified_nyc,
+                v = v,
+                w = w,
+                V = V, 
+                f=f,
+                op = op,
+                requests=requests_to_do,
+                N = N,
+                folder_path = folder_path)
+        
 
-# %%
-folder_path = check_and_create_folder("mpc_simulation3", name_fold = "simu")
-
-# %%
-save_info(graph = nyc_graph,
-              v = v,
-              w = w,
-              V = V, 
-              op = op,
-              requests=requests[:10],
-              N = 10,
-              folder_path = folder_path)
-    
-
-# %%
+    # %%
 
 
 

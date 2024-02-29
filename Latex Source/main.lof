@@ -2,26 +2,30 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces BPR Model and Approximation}}{16}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces BPR Model and Approximation}}{17}{figure.caption.9}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Different Charging Profiles According To The Model}}{23}{figure.caption.14}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Example of a Sensible Request aAignment}}{27}{figure.caption.16}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Simplified Example for the Rebalancing Strategy}}{35}{figure.caption.20}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Manhattan's Road Network Representation}}{40}{figure.caption.22}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Overview of System's Performance without Congestions}}{43}{figure.caption.26}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Overview of System's Performance for Routing-less Simulation 3.\relax }}{44}{figure.caption.27}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Overview of System's Performance for Routing-less Simulation 4.\relax }}{45}{figure.caption.28}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Road Usage and State of Charge of an exemplary Set of Vehicles for the Simulation 2 and 3 with Rebalancing.}}{48}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Different Charging Profiles According To The Model}}{23}{figure.caption.10}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Example of a Sensible Request assignment}}{27}{figure.caption.12}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Simplified Example for the Rebalancing Strategy}}{35}{figure.caption.16}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Manhattan's Road Network Representation}}{40}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Overview of System's Performance without Congestions}}{43}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Overview of System's Performance for Routing-less Simulation 3.\relax }}{44}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Overview of System's Performance for Routing-less Simulation 4.\relax }}{45}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Road Usage and State of Charge of an exemplary Set of Vehicles for the Simulation 2 and 3 with Rebalancing.}}{48}{figure.caption.27}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Cruising speed in function of traffic density}}{51}{figure.caption.32}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Cruising speed in function of traffic density}}{51}{figure.caption.28}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces RCS Dimensions for Different Application of Rule \ref {rule:simple_connection}}}{67}{figure.caption.31}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Decrease in Number of Requests Over Time}}{68}{figure.caption.32}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Evolution of The Vehicle Usage Over Time}}{69}{figure.caption.33}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Overview of System's Performance with Congestion Limits and Less Charging Time}}{1}{figure.caption.35}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Overview of System's Performance with Congestion Limits and Less Charging Time}}{2}{figure.caption.36}%
+\contentsline {figure}{\numberline {A.3}{\ignorespaces State of Charge of an exemplary Set of Vehicles for Simulation 5\relax }}{2}{figure.caption.37}%
+\contentsline {figure}{\numberline {A.4}{\ignorespaces State of Charge of an exemplary Set of Vehicles for Simulation 3 and 4}}{3}{figure.caption.38}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Overview of System's Performance with Congestion Limits and Less Charging Time}}{1}{figure.caption.36}%
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Overview of System's Performance with Congestion Limits and Less Charging Time}}{2}{figure.caption.37}%
-\contentsline {figure}{\numberline {A.3}{\ignorespaces State of Charge of an exemplary Set of Vehicles for Simulation 5.\relax }}{2}{figure.caption.38}%
-\contentsline {figure}{\numberline {A.4}{\ignorespaces State of Charge of an exemplary Set of Vehicles for Simulation 3 and 4.}}{3}{figure.caption.39}%
+\contentsline {figure}{\numberline {B.1}{\ignorespaces Road Usage and State of Charge of an exemplary Set of Vehicles for the Simulation 1 with Rebalancing\relax }}{4}{figure.caption.39}%
+\contentsline {figure}{\numberline {B.2}{\ignorespaces Road Usage and State of Charge of an exemplary Set of Vehicles for the Simulation 4 with Rebalancing\relax }}{5}{figure.caption.40}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {B.1}{\ignorespaces Road Usage and State of Charge of an exemplary Set of Vehicles for the Simulation 1 with Rebalancing.\relax }}{4}{figure.caption.40}%
-\contentsline {figure}{\numberline {B.2}{\ignorespaces Road Usage and State of Charge of an exemplary Set of Vehicles for the Simulation 4 with Rebalancing.\relax }}{5}{figure.caption.41}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {D.1}{\ignorespaces Depiction of The Evolution of the RCS\relax }}{13}{figure.caption.44}%

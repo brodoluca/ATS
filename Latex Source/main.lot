@@ -3,19 +3,20 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Parameters choice for the Chargin Stations}}{25}{table.caption.15}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Details of the Rebalancing-less Simulation}}{42}{table.caption.23}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Depot Distribution Used During the Simulation\relax }}{42}{table.caption.24}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces Overview of System's Performance for Routing-less Simulation.}}{42}{table.caption.25}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces Details of the Simulation with Vehicle Rebalancing}}{46}{table.caption.29}%
-\contentsline {table}{\numberline {4.6}{\ignorespaces Performance of the Simulation with Vehicle Rebalancing \relax }}{46}{table.caption.30}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Parameters choice for the Chargin Stations}}{25}{table.caption.11}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Details of the Rebalancing-less Simulation}}{42}{table.caption.19}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Depot Distribution Used During the Simulation\relax }}{42}{table.caption.20}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Overview of the System's Performance for Routing-less Simulation.}}{42}{table.caption.21}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Details of the Simulation with Vehicle Rebalancing}}{46}{table.caption.25}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Performance of the Simulation with Vehicle Rebalancing \relax }}{46}{table.caption.26}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Details of the various MPC Simulations}}{63}{table.caption.34}%
-\addvspace {10\p@ }
-\addvspace {10\p@ }
-\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Various information about the MPC Simulations}}{66}{table.caption.29}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Rule Application for RCS}}{67}{table.caption.30}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {C.1}{\ignorespaces Truth table for the propagation of $g^a_{ji}$\relax }}{6}{table.caption.42}%
-\contentsline {table}{\numberline {C.2}{\ignorespaces Truth table for the propagation of $p^a_{ji}$\relax }}{7}{table.caption.43}%
-\contentsline {table}{\numberline {C.3}{\ignorespaces Truth table for the constrains on $w^a_{ji}$ and $v^a_{ji}$\relax }}{7}{table.caption.44}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {C.1}{\ignorespaces Truth table for the propagation of $g^a_{ji}$\relax }}{6}{table.caption.41}%
+\contentsline {table}{\numberline {C.2}{\ignorespaces Truth table for the propagation of $p^a_{ji}$\relax }}{7}{table.caption.42}%
+\contentsline {table}{\numberline {C.3}{\ignorespaces Truth table for the constrains on $w^a_{ji}$ and $v^a_{ji}$\relax }}{7}{table.caption.43}%
+\addvspace {10\p@ }

@@ -77,13 +77,6 @@ Iain Dunning, Stuart Mitchell, and Michael O'Sullivan.
 \newblock {\em Department of Engineering Science, The University of Auckland},
   September 2011.
 
-\bibitem{8883370}
-Fabian Fehn, Florian Noack, and Fritz Busch.
-\newblock Modeling of mobility on-demand fleet operations based on dynamic
-  electricity pricing.
-\newblock In {\em 2019 6th International Conference on Models and Technologies
-  for Intelligent Transportation Systems (MT-ITS)}, pages 1--6, 2019.
-
 \bibitem{froger2022electric}
 Aur{\'e}lien Froger, Ola Jabali, Jorge~E. Mendoza, and Gilbert Laporte.
 \newblock The electric vehicle routing problem with capacitated charging
@@ -222,6 +215,14 @@ Alejandro Montoya, Christelle Guéret, Jorge~E. Mendoza, and Juan~G. Villegas.
 Heinz Neuburger.
 \newblock The economics of heavily congested roads.
 \newblock {\em Transportation Research}, 5(4):283--293, 1971.
+
+\bibitem{nyc_taxi_history}
+{New York City}.
+\newblock Taxi of tomorrow: New york city's taxi history.
+\newblock
+  \url{https://www.nyc.gov/html/media/totweb/taxioftomorrow_history_links_time2.html\#:\~:text=New\%20York\%20now\%20has\%20only,almost\%201\%2C000\%2C000\%20passengers\%20a\%20day.},
+  Date of Access.
+\newblock Accessed: February 29, 2024.
 
 \bibitem{getfoodnyc}
 {New York City Mayor's Office of Food Policy}.
@@ -391,12 +392,6 @@ Rick Zhang.
 \newblock Ph.d. thesis, Stanford University, Department of Aeronautics and
   Astronautics, 2016.
 \newblock Submitted to the Department of Aeronautics and Astronautics.
-
-\bibitem{queue_theory}
-Rick Zhang and Marco Pavone.
-\newblock A queueing-network approach to the analysis and control of
-  mobility-on-demand systems.
-\newblock {\em Proceedings of the American Control Conference}, 2015, 09 2014.
 
 \bibitem{zhao2020robogrammar}
 Allan Zhao, Jie Xu, Mina Konaković~Luković, Josephine Hughes, Andrew

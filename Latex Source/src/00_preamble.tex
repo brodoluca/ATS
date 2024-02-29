@@ -24,6 +24,9 @@
 \usepackage{multirow}
 \usetikzlibrary{decorations.markings}
 \pgfplotsset{compat=1.17,colormap/viridis}
+\usepackage{amsthm} % for theorem environments and \qed symbol
+\usepackage{amssymb} % for \square symbol
+
 %\usepackage{titlesec}
 %\usepackage[sorting=none]{biblatex}
 
@@ -42,8 +45,9 @@
 \newcommand{\citepaperofs}[2]{\textit{#2 et al.} in \cite{#1}}
 \newcommand{\algoref}[1]{Algorithm \ref{#1}}
 \newcommand{\tabref}[1]{Table \ref{#1}}
+\newcommand{\ruleref}[1]{Rule \ref{#1}}
 \newcommand{\subfigref}[1]{(\subref{#1})} 
-
+\newcommand{\appref}[1]{Appendix \ref{#1}}
 \newcommand{\chapterbreak}{\clearpage}
 
 %\titleformat{\chapter}[display]
@@ -57,7 +61,7 @@
 \renewcommand{\thedefinition}{\thechapter.\arabic{definition}}
 \newenvironment{definition}[1][]{%
 	\refstepcounter{definition}%
-	\textbf{Definition \thedefinition#1: }%
+	\textbf{Definition \thechapter.\arabic{definition}#1: }%
 	%\itshape
 }{\upshape}
 
@@ -66,16 +70,16 @@
 \renewcommand{\theproposition}{\thechapter.\arabic{proposition}}
 \newenvironment{proposition}[1][]{%
 	\refstepcounter{proposition}%
-	\textbf{Proposition \theproposition#1: }%
+	\textbf{Proposition \thechapter.\arabic{proposition}#1: }%
 	\itshape
 }{\upshape}
 
 
 \newcounter{example}[chapter]
-\renewcommand{\thedefinition}{\thesection.\arabic{example}}
+\renewcommand{\thedefinition}{\thechapter.\arabic{example}}
 \newenvironment{example}[1][]{%
 	\refstepcounter{example}%
-	\textbf{Example \arabic{example}#1: }%
+	\textbf{Example \thechapter.\arabic{example}#1: }%
 	%\itshape
 }{\itshape}
 
@@ -84,12 +88,17 @@
 \renewcommand{\thedefinition}{\thesection.\arabic{algor}}
 \newenvironment{algori}[1][]{%
 	\refstepcounter{algor}%
-	\textbf{Algorithm \arabic{algor}#1: }%
+	\textbf{Algorithm \thechapter.\arabic{algor}#1: }%
 	%\itshape
 }{\itshape}
 
-
-
+% Redefine counter and environment for rules
+\newcounter{rule}
+\renewcommand{\therule}{\arabic{rule}}
+\newenvironment{roadrule}[1][]{%
+	\refstepcounter{rule}%
+	\textbf{Rule \therule#1: }%
+}{}
 
 \definecolor{viridisgreencolor}{RGB}{32, 162, 57} % Viridis green color
 \definecolor{viridisorangecolor}{RGB}{253, 174, 97}
