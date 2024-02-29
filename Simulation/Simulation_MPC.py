@@ -512,7 +512,7 @@ def convert_to_time_list(requests, N):
 
 # %%
 def set_up_opt_problem(road_network, vehicles, time_delta, previous_f,requests,d,previous_x={}, N = 10,edge_info={},
-                       l_ij = 6,v_th = 10,v_max = 15,eps = 0.5, requests_per_interval=True
+                       l_ij = 60,v_th = 100,v_max = 150,eps = 0.5, requests_per_interval=True
                        ):
     
     problem = pulp.LpProblem("MPC_ATOD", pulp.LpMinimize)
@@ -708,7 +708,7 @@ def set_up_opt_problem(road_network, vehicles, time_delta, previous_f,requests,d
 
 # %%
 problem, V, v,w,s,f, x, departed, arrived,op = set_up_opt_problem(nyc_graph, vehicles,requests=requests[:20],
-                                                               N = 10, time_delta=0.5, previous_f = previous_f_nyc, d = 12, requests_per_interval = True)
+                                                               N = 10, time_delta=1, previous_f = previous_f_nyc, d = 120, requests_per_interval = True)
 
 # %%
 solver = pulp.GUROBI_CMD(msg=1, timeLimit=1000)
