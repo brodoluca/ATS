@@ -1,0 +1,97 @@
+% **************************************************************
+% Hi! Edit this file for your presentation!
+% **************************************************************
+
+% ==================///==================///==================///
+% ==================/// LATEX'S STUFF
+% ==================///==================///==================///
+
+\documentclass{beamer}
+\usepackage{amsfonts,amsmath,oldgerm}
+\usepackage{pgf-pie}
+\usetikzlibrary{positioning}
+\usepackage{pgfplots}
+\usetheme{_statale}
+\usepackage{subcaption}
+\usefonttheme[onlymath]{serif}
+\usepackage{algpseudocode}
+\usetikzlibrary{decorations.pathreplacing,calc,tikzmark}
+
+
+%\usepackage{tikz}
+%\usepackage{pgfplots}
+%\usepackage{pgf-pie}
+
+%\pgfplotsset{compat=1.17}
+
+\newcommand{\testcolor}[1]{\colorbox{#1}{\textcolor{#1}{test}}~\texttt{#1}}
+\newcommand{\hrefcol}[2]{\textcolor{cyan}{\href{#1}{#2}}}
+%\titlebackground*{assets/background}
+
+% ==================///==================///==================///
+% ==================/// SPLASH PAGE
+% ==================///==================///==================///
+
+\title{Modeling and Controlling Autonomous Transportation Systems in Smart Cities}
+\foottitle{Modeling and Controlling ATSs in Smart Cities}
+\subtitle{Master Thesis}
+\course{ }
+\author{
+\href{mailto:luca.brodo001@stud.fh-dortmund.de}{Brodo Luca}
+%\href{mailto:luzius.moll@polytechnique.edu}{Moll Luzius\hspace{10pt}}
+%\href{mailto:riccardo.inghilleri@polytechnique.edu}{Inghilleri Riccardo}
+}
+%\IDnumber{7215156}
+
+% ==================///==================///==================///
+% ==================/// START PRESENTATION
+% ==================///==================///==================///
+
+\begin{document}
+\maketitle
+\pgfplotsset{compat = 1.3}
+
+\footlinecolor{maincolor}
+
+% ==================///==================///==================///
+% ==================/// BODY'S PRESENTATION
+% ==================///==================///==================///
+
+\input{sections/01_introduction}
+\input{sections/02_challenges}
+\input{sections/03_time_invariant_model}
+\input{sections/04_mpc}
+% ==================///==================///==================///
+% ==================/// END PRESENTATION
+% ==================///==================///==================///
+
+%\backmatter
+
+\begin{frame}{Summary and Outlook}	
+	On the one hand, promising fundations have been layed down
+	\vspace{0.15cm}
+	\begin{itemize} 
+		\item Holistic model for an ATS leading to a complete solution of its challenges
+		\item Modular, adaptable and efficient linear model for real-time application
+		\item Definition of a stable MPC for optimal control
+		\item Novel complexity-reduction technique proposed for the road-network representation
+	\end{itemize}
+	\vspace{0.15cm}
+	On the other, multiple research directions have been opened:
+	\vspace{0.15cm}
+	\begin{itemize} 
+		\item GTS must be further explored for more applications
+		\item Using the MPC to control real-world vehicles 
+		\item What about safety insurance?
+	\end{itemize}
+	
+\end{frame}
+
+\bibbegin
+\begin{frame}[allowframebreaks,label=references]{Bibliography}
+    \bibliographystyle{ieeetr}
+    \bibliography{sections/bib} 
+\end{frame}
+\bibend
+
+\end{document}

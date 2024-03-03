@@ -1,11 +1,11 @@
-\chapter{Model Predictive Control of an ATS}\label{ch:mpc}
+\chapter{Modeling and Controlling ATSs - The MPC for ATS and the RCS}\label{ch:mpc}
 Motivated by the hinsights obtained in the previous chapter, which suggested that making decisions in the present have a great impact on the future, a novel model for an ATSs is proposed which, coupled with an ad-hoc designed MPC, aims at optimizing long-term outcomes by dynamically adjusting strategies in response to evolving circumstances. Furthermore, in order to improve the real-time performance of the controller, graph transformation systems are used to derive a more abstract version of the road network, named Reduced Connectivity Schema (RCS), to reduce the complexity of the model. The chapter is organized as follows:
  In \secref{sec:linear_discrete_time_model}, a novel model for the system is developed. Subsequentally, \secref{sec:prob_formulat_mpc} defines the MPC problem and includes a thorough discussion on the terminal set and cost function, which are essential to prove stability. In order to achieve this goal, the feasability of the terminal and of the states set are demonstrated. \secref{sec:gts_mpc} introduces the set of GTS rules and their condition aiming at the creation of a dynamic, adaptive and abstract representation of the road network. Finally, in \secref{sec:use_case_mpc}, a simulation is proposed to evaluate the overall performance of the system. 
-\section{Linear-Discrete Time Model}\label{sec:linear_discrete_time_model}
+\section{Linear Discrete-Time Model of an ATS}\label{sec:linear_discrete_time_model}
 %The model derived in this section is partially inspired from \cite{zhang2016}. \\
 Consider a transportation network be composed of $|\mathcal{V}|$ stations connected by a set of $|\mathcal{N}|$ roads and $|\mathcal{A}|$ multi-occupancy, goods-carrying vehicles. Within this context, customers are assumed to requests rides only from the abovementioned stations.\\ %Similarly, goods can be carried out only from one station to another. With this assumption, stations and customers can be considered synonims within this section. \\
 Similarly to the model described in \chapref{sec:vc_model}, other than carrying goods or people, vehicle are expected to \textit{(i)} serve clients from one station to another and \textit{(ii)} reach locations in $\mathcal{V}$ in order to avoid system imbalance. For the rest of the section, a generic road $\langle i,j\rangle \in \mathcal{N}$ will be considered.\\
-Let $d_{ij} \in \mathcal{R}_{\ge0}$ be the total lenght of a road $\langle i,j\rangle$. Let $v^a_{ij}(t) \in \{0,1\}$ indicate whether a transporting vehicle $a \in \mathcal{A}$ is moving from station $i$ to station $j$ ($v^a_{ij}(t) = 1$) and, likewise, $w^{a}_{ij}\in \{0,1\} $ whether an empty vehicle is moving from $i$ to $j$ ($w^{a}_{ij}(t)= 1$). Let $V_{ij}(t) \in \{ x \in \mathbb{N}_0 : x \leq |\mathcal{A}|$ being the total number of vehicles currently circulating on the street $\langle i,j\rangle$, this can be trivially expressed as in \equaref{eq:vehicles_on_street}. \\
+Let $d_{ij} \in \mathcal{R}_{\ge0}$ be the total lenght of a road $\langle i,j\rangle$. Let $v^a_{ij}(t) \in \{0,1\}$ indicate whether a transporting vehicle $a \in \mathcal{A}$ is moving from station $i$ to station $j$ ($v^a_{ij}(t) = 1$) and, likewise, $w^{a}_{ij}\in \{0,1\} $ whether an empty vehicle is moving from $i$ to $j$ ($w^{a}_{ij}(t)= 1$). Let $V_{ij}(t) \in \{ x \in \mathbb{N}_0 : x \leq |\mathcal{A}|\}$ being the total number of vehicles currently circulating on the street $\langle i,j\rangle$, this can be trivially expressed as in \equaref{eq:vehicles_on_street}. \\
 
 \begin{equation}
 	V_{ij}(t) = \sum_{a \in \mathcal{A}} v^{a}_{ij}(t) +w^{a}_{ij}(t)
@@ -127,7 +127,7 @@ This also implies that, if a vehicle is stationed at a station $i$, it can not h
 \begin{equation}
 	%0<\sum_{i \in \mathcal{V}}(f^a_{i}(t)+\sum_{j \in \mathcal{V}}\dfrac{x^a_{ij}(t)}{d_{ij}}) \leq1 \label{eq:position_station}
 	%d_{ji}
-	\sum_{i \in \mathcal{V}}(f^a_{i}(t)+1_{ x^a_{ji}(t)\neq 0}) =1 \label{eq:position_station}
+	\sum_{i \in \mathcal{V}}(f^a_{i}(t)+\mathbbm{1}_{ x^a_{ji}(t)\neq 0}) =1 \label{eq:position_station}
 \end{equation}
 In other words, if a vehicle is travelling through an edge $\langle ji\rangle$, it can only be stationed at $i$ if it finished travelling. \\
  If, on the one hand, it is interesting to know which station is currently hosting which vehicle, it is might also be important to know the amount of vehicles currently stationing in the system. This can be achieved by flipping the idea from \equaref{eq:vehicles_on_street} and therefore calculating how many vehicles out of the total number is currently not driving. 

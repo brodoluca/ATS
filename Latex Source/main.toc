@@ -10,20 +10,20 @@
 \contentsline {section}{\numberline {3.1}Fleet and Transportation Network}{14}{section.3.1}%
 \contentsline {section}{\numberline {3.2}ATS Challanges}{15}{section.3.2}%
 \contentsline {section}{\numberline {3.3}Applications of Graph Transformation Systems }{18}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Time-Invariant Model of ATS}{20}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Vehicle-centric Model}{20}{section.4.1}%
+\contentsline {chapter}{\numberline {4}Modeling and Managing ATSs - The CATSM Problem}{20}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Time-Invariant Vehicle-centric Model of ATSs}{20}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Model Evalutation}{25}{subsection.4.1.1}%
 \contentsline {section}{\numberline {4.2}Analysing ATS challenges}{27}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Dispatching}{27}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Routing}{29}{subsection.4.2.2}%
 \contentsline {subsection}{\numberline {4.2.3}Rebalancing}{34}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}The Complete ATS Managing Problem Formulation}{37}{section.4.3}%
+\contentsline {section}{\numberline {4.3}The Complete ATS Management Problem Formulation}{37}{section.4.3}%
 \contentsline {section}{\numberline {4.4}Use Case Analysis}{39}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}Rebalancing-Free ATS Analysis}{41}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}Rebalancing-Integrated System Analysis}{46}{subsection.4.4.2}%
 \contentsline {section}{\numberline {4.5}Conclusion}{47}{section.4.5}%
-\contentsline {chapter}{\numberline {5}Model Predictive Control of an ATS}{49}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Linear-Discrete Time Model}{49}{section.5.1}%
+\contentsline {chapter}{\numberline {5}Modeling and Controlling ATSs - The MPC for ATS and the RCS}{49}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Linear Discrete-Time Model of an ATS}{49}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Objectives}{54}{subsection.5.1.1}%
 \contentsline {subsection}{\numberline {5.1.2}Model Evaluation}{55}{subsection.5.1.2}%
 \contentsline {section}{\numberline {5.2}Problem Formulation}{56}{section.5.2}%

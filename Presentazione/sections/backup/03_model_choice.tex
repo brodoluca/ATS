@@ -1,0 +1,136 @@
+\section{Model Autonomous Services}
+
+\begin{frame}
+\frametitle{Model Overview}
+\begin{itemize}
+    \item XGBoost
+    \item LightGBM 
+    \item CNN
+    \item GNN
+    \item SVM
+    \item Kmeans + LightGBM
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{XGBoost, LightGBM}
+\begin{itemize} 
+    \item Obvious choice as benchmark 
+    \item Hyperparameter tuning with Optuna XGB: $f1 = 0.56 \rightarrow f1 = 0.59$
+    \item Hyperparameter tuning with Optuna LGB: $f1 = 0.56 \rightarrow f1 = 0.58$
+    \item Overfitting avoided by optimizing the f1 score of the validation set with Optuna
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Hyperparameter Tuning for XGB, LGB}
+    \begin{algorithmic}
+        \Function{$Objective$}{}
+            \State define parameters to be optimize
+            \State define classifier with certain parameters
+            \State fit classifier on training set
+            \State predict on validation set and calculate f1 
+        \State \Return f1
+        \EndFunction
+        \State Optimize $Objective$ with Optuna
+    \end{algorithmic}  
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{CNN, GNN}
+\begin{itemize}
+    \item Convolutional Neural Network as proposed by Nihei et al. 2019 \cite{mti3030050}
+    \item Graph Attention Networks and Graph Convolution Networks from Github 
+    \item Basic tuning of layer structure, batch size and learning rate
+    \item Avoided overfitting by monitoring/plotting of training and validation loss
+    \item Abondend approach since performance came not close to the one of tuned XGB/LGB
+    \item Promising structure found by Feng et al. 2020 \cite{DBLP:journals/corr/abs-2012-03502} that could be modified for out task
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{SVM}
+\begin{itemize} 
+    \item Good performance without tuning (f1=0.54)
+    \item But limited tuning possibilities 
+    \item Because computational costs were too high 
+    \item Even with normalization and PCA (384 $\rightarrow$ 10 components)
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Kmeans + Classifier}
+\begin{columns}
+    \begin{column}{0.35\textwidth}
+        \begin{itemize}
+            \item Clustering the dataset
+            \item Train a model in every cluster (e.g. LGB)
+            \item Prediction for test set in the clusters
+            \item Hyperparameters tuning required for every model 
+        \end{itemize}
+    \end{column}
+    %%
+    \begin{column}{0.65\textwidth}
+    \begin{tikzpicture}
+    \begin{axis}[
+        ybar stacked, ymin=0,
+        bar width=0.7cm,
+        width=8cm,
+        height=4cm,
+        %xlabel={Cluster label},
+        ylabel={Cluster size},
+        xtick=data,
+        nodes near coords,
+        nodes near coords align={anchor=north}, 
+        ]
+     
+        %Active
+        \addplot [fill=viridisorangecolor, nodes near coords={}] coordinates {
+            ({1},3379)
+            ({2},2151)
+            ({3},783)
+            ({4},3838)
+            ({5},503)};maincolor
+        %Inactive
+        \addplot [fill=maincolor, nodes near coords={}] coordinates {
+            ({1},12205)
+            ({2},1828)
+            ({3},27546)
+            ({4},5618)
+            ({5},247)};
+        \legend{important,unimportant}
+
+        
+    \end{axis}
+    \draw[->, thick] (0.56,-0.5) -- (0.56,-0.8);
+    \node[align=right] at (-0.1,-1.5) {f1=0.46\\\%1s true=0.22\\\%1s pred=0.36};
+    \draw[->, thick] (1.89,-0.5) -- (1.89,-0.8);
+    \node[align=left] at (1.89,-1.5) {0.65\\0.53\\0.72};
+    \draw[->, thick] (3.22,-0.5) -- (3.22,-0.8);
+    \node[align=left] at (3.22,-1.5) {0.22\\0.03\\0.05};
+    \draw[->, thick] (4.55,-0.5) -- (4.55,-0.8);
+    \node[align=left] at (4.55,-1.5) {0.61\\0.41\\0.61};
+    \draw[->, thick] (5.88,-0.5) -- (5.88,-0.8);
+    \node[align=left] at (5.88,-1.5) {0.78\\0.64\\0.82};
+
+        
+    \end{tikzpicture}
+    \end{column}
+\end{columns}
+\end{frame}
+
+
+
+
+

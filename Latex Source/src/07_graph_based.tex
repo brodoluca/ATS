@@ -1,6 +1,6 @@
-\chapter{Time-Invariant Model of ATS}\label{ch:tim_ats}
+\chapter{Modeling and Managing ATSs - The CATSM Problem}\label{ch:tim_ats}
 This chapter focuses on tackling the main problems for an ATS. First, a time-invariant vehicle-centric model for the transportation network is developed in \secref{sec:vc_model}. The model presented in this document expands upon the one formulated in \cite{project_thesis}, using graph theory and a vehicle-centric approach to provide flexibility in handling different vehicle capacities and types. This model be the basis upon which sub-problems of an ATS will be formulated and analyzed in \secref{sec:ats_challenges_analysis}. With those hinsights, the Complete ATS Managing problem will be formulated in \secref{sec:catsm} and its performance evaluated in \secref{sec:use_case_analysis_ats}. 
-\section{Vehicle-centric Model}\label{sec:vc_model}
+\section{Time-Invariant Vehicle-centric Model of ATSs}\label{sec:vc_model}
 The model provided in this section will expand the model formulated in \cite{project_thesis}. It is worth noting that, although the model presented in \cite{project_thesis} is specific for the scenario described in the same work, it can be expanded to cover more general use cases.
 Therefore, the model of the transportation network will be developed using graph theory. While much of the existing literature relies on fluid-dynamic models (\cite{amod_review}), wherein customers and AVs are depicted as continuous flows between nodes, this study will employ a combination with a vehicle-centric approach. In the latter, customers and AVs will be individually modeled. Contrary to the solutions proposed by most of the literature, this work combines mobility of people with goods transportation, therefore modeling vehicles individually will provided the required flexibility to handle different capacities and the increased complexity given by the plethora and variety of vehicles, the set of which will be indicated as $\mathcal{A}$.  \\ 
 Let $\mathcal{G} = \langle \mathcal{V}, \mathcal{E} \rangle$ being the directed graph representing corresponding transportation network of a city, where $\mathcal{V}$ is the set of vertices and $\mathcal{E} \subseteq \mathcal{V} \times \mathcal{V}$ is the set of edges. Any vertex, or node,  $ v \in  \mathcal{V}$ represents a location. For the context of this paper, the two terms will be used intercheangeably, as they ultimately indicate the same thing. Following the work in \cite{project_thesis}, each node consists of an area of interests. An edge $\langle v_i, v_j \rangle \in \mathcal{E}$ represents a connection, which can consist of a road or a combination of those, linking $v_i$ to $v_j$. The level of abstraction is decided by the engineer and can be used to regulate the granularity of the model. Locations $v_i$ and $v_j$ can indicate low level key points, such as cross roads or trafficated traffic lights, as well as higher level areas such as residental areas or leisure centers. Similarly, an edge can contain multiple crossroads or joints or simply indicating a path from $v_i$ to $v_j$, regardless of additional details. A correct granularity is not trivial to decide a priori and a general approach is likewise hard to delineate.  Determining the level of abstraction remains, therefore, an engineer's prerogative and highly depends on the system in question. It is also worth noting that the, for conveniency and to better reflect the situation in real world applications, the graph is a uni-direct graph. To model a two-way road, one should simply make use of two edges from locations $v_i$ and $v_j$. \\
@@ -20,19 +20,17 @@ In addition, each edge $\langle v_i, v_j \rangle$ will also include information 
 	\label{eq:capacity}
 \end{equation}
 Following the discussion above, this is equivalent to setting $T_{ija} = \infty$ for all $a \in \mathcal{A}$ according to this model specifications. In this way, we can treat the road as being unaccessible without increasing the number of conditions and decrease the redeability of the model. \\
-As mentioned above, the set of autonomous vehicles is indicated as $\mathcal{A}$ and each vehicle will be modeled as a tuple $\langle \underline{s_a},\bar{t_a}, S_a, Q_a, I^b_a, R^-_a, R^+_a, \theta_a, B_a(t),\mathcal{R}_a, \mathcal{T}_a \rangle$. $\underline{s_a}\in \mathcal{V} \text{ and } \bar{t_a}\in \mathcal{V}$ are the starting and terminal node respectively; $Q_a \in \mathbb{R}_{>0}$ will be used to indicate battery capacity and charing rate and discharging rate will be represented as  $R^+_a \in \mathbb{R}_{>0}\text{ and } R^-_a\in \mathbb{R}_{>0}$ respectively; $\theta_a \in [0,1]$ is used to model the battery breakpoint and $B_a(t)\in \mathbb{R}_{\ge0}$ is the state of charge at time $t$; $\mathcal{R}_a$ is the set of requests assigned to vehicle $a$ and $\mathcal{T}_a$ is the type. For a more detailed understanding of the vehicle type, the reader is encouraged to analyze the discussion in \cite{project_thesis}. For the purpose of this work, the vehicle type will be understood as a tuple $\langle P_a, G_a, C_a, F_a \rangle$, where , $G_a \in \mathbb{R}_{\ge0}$ and $P_a \in \mathbb{R}_{\ge0}$
-are the goods and people capacity and $C_a \in \mathbb{R}_{>0}$ and $F_a \in \mathbb{R}_{>0}$ indicate operational cost and pollution factor respectively. Furthermore, each set of assigned requests $\mathcal{R}_a$ is a subset of the set of all requests in the systems, i.e. $\mathcal{R}_a \subseteq\mathcal{R}$. For the purpose of this model, we will assume each request assignment to be unique, i.e. $\mathcal{R}_a \neq \mathcal{R}_b \text{ and } \mathcal{R}_a \subseteq \mathcal{R} \setminus \mathcal{R}_b,  \text{ for all } (a,b) \in \mathcal{A} \text{ with } a\neq b$. \\
-The battery will be modeled according to the two operating mode, i.e. charging and discharging. While it is understood that these two operations are highly influenced by multiple factors, it is sensible to make assumptions in order to simplify the model. 
+Each vehicle $a\in \mathcal{A}$ is modeled as a tuple $\langle \underline{s_a},\bar{t_a}, B_a(t),\mathcal{R}_a, \mathcal{T}_a, P_a, G_a, C_a, F_a  \rangle$ where $\underline{s_a}\in \mathcal{V} \text{ and } \bar{t_a}\in \mathcal{V}$ are the starting and terminal node respectively; $B_a(t)\in \mathbb{R}_{\ge0}$ is the state of charge at time $t$; $\mathcal{R}_a$ is the set of requests assigned to vehicle $a$; $G_a \in \mathbb{R}_{\ge0}$ and $P_a \in \mathbb{R}_{\ge0}$ are the goods and people capacity and $C_a \in \mathbb{R}_{>0}$ and $F_a \in \mathbb{R}_{>0}$ indicate operational cost and pollution factor. Furthermore, each set of assigned requests $\mathcal{R}_a$ is a subset of the set of all requests in the systems, i.e. $\mathcal{R}_a \subseteq\mathcal{R}$. For the purpose of this model, we will assume each request assignment to be unique, i.e. $\mathcal{R}_a \neq \mathcal{R}_b \text{ and } \mathcal{R}_a \subseteq \mathcal{R} \setminus \mathcal{R}_b,  \text{ for all } (a,b) \in \mathcal{A} \text{ with } a\neq b$. \\
+Each vehicle's battery is modeled as a tuple $\mathcal{T}_a =\langle Q_a, I^b_a, R^-_a, R^+_a,\theta_a\rangle$, where $Q_a \in \mathbb{R}_{>0}$ will be used to indicate battery capacity; $R^+_a \in \mathbb{R}_{>0}\text{ and } R^-_a\in \mathbb{R}_{>0}$ are the charing rate and discharging rate,  respectively; and $\theta_a \in [0,1]$ is used to model the battery breakpoint . These will be modeled according to the two operating mode, i.e. charging and discharging. While it is understood that these two operations are highly influenced by multiple factors, it is sensible to make assumptions in order to simplify the model. 
 As it is also widely spread in industry, one can neglet the influence of external factors such as weather condition or intrinsic characteristics of the battery, such as temperature or age. The charging profile will be modelled taking inspiration from the model proposed by \citepaperofs{lee2020model}{Lee}. As mentioned above, the vehicles have a charging rate, a battery capacity and a breakpoint, namely $R^+_a, Q_a \text{ and } \theta_a$ respectively. The state of charge at time $t \in \mathbb{R}_{\ge0}$ of a certain vehicle will be obtained according to the model described in \equaref{eq:cc_cv}, which is derived from the CC-CV (Constant current - Constant Voltage ) scheme. (A more complete explanation can be found in \cite{LIU2020101342}).%$B :\mathbb{R}_{\ge 0} \times \mathcal{A}  \rightarrow \mathbb{R}_{\ge0}$
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width =12.5cm]{assets/img/07_graph_based/R_theta_combinations.png}
-	\caption[Different Charging Profiles According To The Model]
-	{Different charging profile obtained according to the model developed in \equaref{eq:cc_cv}. B is the State of Charge in Percentage, while $i(t)$ in function of the time unit $t$. The battery have $Q = 100$ %and the breakpoint is calculated as $b = \dfrac{Q\theta}{R^+}$  
-	}
-	\label{fig:charging_profiles}
-\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%HERE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{assets/img/07_graph_based/battery_profiles}
+%\label{fig:charging_profiles}
+
 \begin{equation}
 	B_a(t+1) = 
 	\begin{cases} 
@@ -49,7 +47,7 @@ As it is also widely spread in industry, one can neglet the influence of externa
 with $b_a = \dfrac{\theta_a Q_a}{R^+_a}$,  $i(t)= \begin{cases} R^+_a \quad \text{if } t \leq  b_a\\
 	R^+_a e^{-(t-b_a)/\tau}\\ \end{cases}$ and $\tau= \dfrac{C_n}{R^+_a\theta_a}\in \mathbb{R}_{\ge0}$  representing how quickly the current decreases. The value of $C_n$ depends on the charging device considered.   \\
 	An example of the charging profiles from this model can be seen in \figref{fig:charging_profiles}. 
-	 Since $i(t)$ is assumed to be constant at time $t\leq b_a$, i.e. $i(t) = R^+_a$,the first condition is derived as follows. 
+	 Since $i(t)$ is assumed to be constant at time $t\leq b_a$, i.e. $i(t) = R^+_a$, the first condition is derived as follows. 
 \begin{align*}
 	B_a(t+\alpha) &= B_a(t) + \int_{t}^{t+\alpha}R^+_adt\\
 	B_a(t+\alpha) &= B_a(t) +R^+_a \int_{t}^{t+\alpha}dt\\
@@ -481,8 +479,8 @@ Finally, within the model established in prior sections, the \textit{Unconstrain
 \end{align}
 (\ref{eq:flow_conservation_graph_u23}) insures the flow conservation. (\ref{eq:each_vehicle_start}) indicates that the vehicles leave the starting node only from one edge. (\ref{eq:each_vehicle_end}) guarantees a vehicle must reach only one deposit at the time. (\ref{eq:capacity_depot_respected}) insures there the capacity of the deposits is respected. Finally, (\ref{eq:goods_cap}) and (\ref{eq:people_cap}) are used to ensure the vehicles being rebalanced to a certain station have the capacity to fulfill the requests of the area. 
 
-\section{The Complete ATS Managing Problem Formulation}\label{sec:catsm}
-While the previosuly described approaches are suitable for standalone applications, amalgamating routing, dispatching, and rebalancing into a single problem would entail a considerable increase in the number of variables, resulting in an inefficient formulation. However, with the hinsights obtained in \secref{sec:ats_challenges_analysis}, the  Complete ATS Managing problem can be efficiently defined with a more streamlined formulation is feasible. \\
+\section{The Complete ATS Management Problem Formulation}\label{sec:catsm}
+While the previosuly described approaches are suitable for standalone applications, amalgamating routing, dispatching, and rebalancing into a single problem would entail a considerable increase in the number of variables, resulting in an inefficient formulation. However, with the hinsights obtained in \secref{sec:ats_challenges_analysis}, a more streamlined formulation which aims at solving all of the aformentioned challenges can be defined. \\
 Let 
 \begin{equation*}
 	b_{\bar{t}}^a = 
@@ -497,7 +495,7 @@ Let
 	\quad\quad \forall a \in \mathcal{A}, \forall \bar{t} \in \mathcal{V}_c
 	\label{eq:assignment}
 \end{equation*}
-the \textit{Complete ATS Managing problem.(CATSM)} can be formulated as follows. \\
+the \textit{Complete ATS Management problem (CATSM)} can be formulated as follows. \\
 
 \begin{algori}{\textit{(CATSM)}}
 	Given a transportation network $\mathcal{G}$, a set of vehicles $\mathcal{A}$, a set of total requests $\mathcal{R}$, defined within the description in section \secref{sec:vc_model},  and the sets of requests per region $\mathcal{R}'$ following (\ref{eq:req_per_reg}), solve: \\
@@ -516,18 +514,18 @@ the \textit{Complete ATS Managing problem.(CATSM)} can be formulated as follows.
 	 &\sum_{\bar{t}\in \mathcal{V}_c} b_{\bar{t}}^a \leq 1\quad \forall a \in \mathcal{A}
 	 \label{eq:one_depot_vehicle}\\
 	&\sum_{a \in \mathcal{A}}b_{\bar{t}}^a  \leq z_{\bar{t}} \quad \forall \bar{t} \in \mathcal{V}_c \label{eq:capacity_depot_respected2}\\
-	&G_{l}\ge\sum_{a \in \mathcal{A}} G_a \cdot b_{\bar{t}}^a \ge \sum_{r \in \mathcal{R'}_{\bar{t}}} G'_r \quad \forall \bar{t} \in \mathcal{V}_c - \sum_{a \in \mathcal{A}} 1_{\underline{s}_a == \bar{t}}G_a  \quad \forall a \in \mathcal{A},\forall \bar{t} \in \mathcal{V}_c\label{eq:goods_cap2}\\
-	&P_{l}\ge\sum_{a \in \mathcal{A}}P_a \cdot b_{\bar{t}}^a\ge \sum_{r \in \mathcal{R'}_{\bar{t}}} P'_r \quad \forall \bar{t} \in \mathcal{V}_c - \sum_{a \in \mathcal{A}} 1_{\underline{s}_a == \bar{t}}P_a \quad \forall a \in \mathcal{A},\forall \bar{t} \in \mathcal{V}_c	\label{eq:people_cap2}\\
+	&G_{l}\ge\sum_{a \in \mathcal{A}} G_a \cdot b_{\bar{t}}^a \ge \sum_{r \in \mathcal{R'}_{\bar{t}}} G'_r \quad \forall \bar{t} \in \mathcal{V}_c - \sum_{a \in \mathcal{A}} \mathbbm{1}_{\underline{s}_a == \bar{t}}G_a  \quad \forall a \in \mathcal{A},\forall \bar{t} \in \mathcal{V}_c\label{eq:goods_cap2}\\
+	&P_{l}\ge\sum_{a \in \mathcal{A}}P_a \cdot b_{\bar{t}}^a\ge \sum_{r \in \mathcal{R'}_{\bar{t}}} P'_r \quad \forall \bar{t} \in \mathcal{V}_c - \sum_{a \in \mathcal{A}} \mathbbm{1}_{\underline{s}_a == \bar{t}}P_a \quad \forall a \in \mathcal{A},\forall \bar{t} \in \mathcal{V}_c	\label{eq:people_cap2}\\
 	&\sum_{\bar{t} \in \mathcal{V}_c}b_{\bar{t}}^a   \ge \underset{ r \in \mathcal{R}}{\max}\{x_{a,r}\}  \quad a \in \mathcal{A} \label{eq:rebalancing_moving}
 \end{align}
-(\ref{eq:flow_conservation_graph_u2}), similarly to (\ref{eq:flow_conservation_graph_u}), imposes the flow conservation for all nodes except the startind depot and the set of terminal depots. (\ref{eq:each_vehicle_end2}) impose a vehicle to stop at a terminal depot.  (\ref{eq:one_depot_vehicle}) ensures each vehicle can be assigned maximum to one terminal depot. (\ref{eq:capacity_depot_respected2}) guarantees that the depot parking facility is not exceeded. (\ref{eq:goods_cap2}) and (\ref{eq:people_cap2}) ensure that the vehicles' capacity is enough to serve the next batch of requests. $G_{l}$ and $P_l$ impose an upperbound for goods and people capacity, respectively, which is useful to reduce the number of rebalancing vehicles in case the aim is not to, directly or indirectly, minimizing it. Finally, (\ref{eq:rebalancing_moving}) insures that a vehicle moving to satisfy a requests is being assigned to a final depot. The function $1_x$ is commonly known as the indicator function, denoting a Boolean variable x that can take values {true, false}. Specifically, $1_x$ is defined as follows:
+(\ref{eq:flow_conservation_graph_u2}), similarly to (\ref{eq:flow_conservation_graph_u}), imposes the flow conservation for all nodes except the startind depot and the set of terminal depots. (\ref{eq:each_vehicle_end2}) impose a vehicle to stop at a terminal depot.  (\ref{eq:one_depot_vehicle}) ensures each vehicle can be assigned maximum to one terminal depot. (\ref{eq:capacity_depot_respected2}) guarantees that the depot parking facility is not exceeded. (\ref{eq:goods_cap2}) and (\ref{eq:people_cap2}) ensure that the vehicles' capacity is enough to serve the next batch of requests. $G_{l}$ and $P_l$ impose an upperbound for goods and people capacity, respectively, which is useful to reduce the number of rebalancing vehicles in case the aim is not to, directly or indirectly, minimizing it. Finally, (\ref{eq:rebalancing_moving}) insures that a vehicle moving to satisfy a requests is being assigned to a final depot. The function $\mathbbm{1}_x$ is commonly known as the indicator function, denoting a boolean variable x that can take values {true, false}. Specifically, $\mathbbm{1}_x$ is defined as follows:
 \begin{equation}
-	1_x = \begin{cases}
+	\mathbbm{1}_x = \begin{cases}
 		1 & \text{if } x \text{ is true} \\
 		0 & \text{if } x \text{ is false}
 	\end{cases}
 \end{equation}
-In other words, $1_x$ equals 1 when x is true and equals 0 when x is false, making it a convenient way to express the truth value of the expression x in mathematical notation.\\
+In other words, $\mathbbm{1}_x$ equals 1 when x is true and equals 0 when x is false, making it a convenient way to express the truth value of the expression x in mathematical notation.\\
 Compared to most of the reviewed literature, the strength of this approach lies in the fact that the rebalancing problem resembles more an assignment problem than routing. As a matter of fact, vehicles are routed in such a way that all the requests are guaranteed to be served and at the same time, the inbalance nature of ATSs is tackled by ensuring that each region has enough vehicle to deal with future requests. \\
 Furthermore, due to its vehicle-centric approach, this formulation offers significant flexibility across several dimensions: \textit{(i)} it accommodates diverse request types, such as goods or people, \textit{(ii)} it allows for a wide range of vehicle characteristics and specification, like for e.g. different capacities or dischargin profiles, and \textit{(iii)} it remains adaptable to various node characteristics, as nodes have different number parking spaces, for example. Simultaneously, it exhibits scalability, with the number of variables increasing linearly in relation to the edges in the graph and the number of vehicles under consideration.\\
 Notably, this formulation solves implicitely two additional issues relating to ATSs, i.e. ride-sharing and delivery pooling. As a matter of fact, by addressing demands with varying pick-up and drop-off locations, this formulation inherently resolves the two additional challenges associated with ATSs. Through the capability to efficiently accommodate customers requiring transportation between disparate points, the system seamlessly integrates both ride-sharing, where passengers share a vehicle for travel, and delivery pooling, which consolidates multiple goods deliveries into a single route
@@ -1097,6 +1095,11 @@ The hypothesis has been confirmed by the simulation. \tabref{tab:rebalancing_sim
 \section{Conclusion}
 This chapter demonstrated how an autonomous transportation system can be modeled, organized and evaluated in order to offer a better service to the customers. The dispatching, routing and rebalancing problems have been formulated and different versions have been proposed. Furthermore, a use case is demonstrated and a possible analysis has been proposed, with the goal of formulating considerations for a better fleet and road network usage. While this is to consider only as an example, multiple outcomes have been reached, which could be used to improve the quality of life of residents of traffic-cities cities such as NYC. Even if it focused on customer transportation and door-to-door delivery for urban cities, however, the analysis of a more bespoken model can be adapted for buisness logistics and transportation. Anticipated consequences included both negative effects, like heightened road and vehicle utilization due to rebalancing, and positive outcomes, such as improved service efficiency. However, unexpected outcomes, such as increased delivery demands with road capacity constraints, were also observed. The system, furthermore, can still be improved, as described in \secref{sec:mode_evaluation_ats} and observed in \secref{sec:use_case_analysis_ats}. The latter, specifically, highlited the need of a better cohesive strategy during the shift which would make optimal decision for the present also in regard of the future.\\
 Despite this, the analysis serves as a foundational framework to inform decisions aimed at fostering a more sustainable and livable environment through optimized road usage and reduced vehicle emissions.
+
+
+
+
+
 
 
 

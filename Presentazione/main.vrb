@@ -1,0 +1,23 @@
+\frametitle{Pre-Processing}
+\begin{columns}  % adding [onlytextwidth] the left margins will be set correctly
+\begin{column}{0.3\textwidth}
+        \begin{itemize}
+            \item Remove Noise words
+            \item Unify Repeated Unigrams
+            \item Remove stop words
+            \item Remove sentences with \# stop words $\leq$ 3
+    \end{itemize}
+    \end{column}
+    \begin{column}{0.7\textwidth}
+        \begin{block}{}
+            \begin{verbatim}
+words_to_remove = ['vocalsound','gap','disfmark'
+                    'like','yep', 'okay',
+                    'well','uh','um','ah',
+                    'pause', 'er', 'aye', 'yeah',
+                    ]
+replace = {'gonna': 'going'}
+            \end{verbatim}
+        \end{block}
+    \end{column}
+\end{columns}
