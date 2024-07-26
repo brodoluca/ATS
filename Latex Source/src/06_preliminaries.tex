@@ -1,6 +1,5 @@
 \chapter{Preliminaries}\label{ch:preliminaries}
-This chapter provides essential background information and definitions that form the foundation for the subsequent chapters in the document. Firsty, in \secref{sec:general_definitions}, a plethora of useful general defitions are provided in order to facilitate the next sections and, as a resul, the rest of the work as well. 
-\secref{sec:mpc_theory} introduces the concept of Model Predictive Control (MPC) as an advanced control strategy for dynamic systems, particularly focusing on the linear case. The linear MPC problem is formulated with a finite prediction horizon, system dynamics, and constraints on state and control variables. Additionally, the stability of MPC systems is briefly discussed, emphasizing the importance of demonstrating recursive feasibility and establishing stability in the sense of Lyapunov. 
+This chapter provides essential background information and definitions that form the foundation for the subsequent chapters in the document. Firstly, in \secref{sec:general_definitions}, a plethora of useful general definitions are provided in order to facilitate the next sections and, as a result, the rest of the work as well. \secref{sec:mpc_theory} introduces the concept of Model Predictive Control (MPC) as an advanced control strategy for dynamic systems, particularly focusing on the linear case. The linear MPC problem is formulated with a finite prediction horizon, system dynamics, and constraints on state and control variables. Additionally, the stability of MPC systems is briefly discussed, emphasizing the importance of demonstrating recursive feasibility and establishing stability in the sense of Lyapunov. Finally, \secref{sec:graph_transformation_theory} will give a thorough overview of Graph transformation theory, establishing its theorical basis and application conditions. 
 
 \section{General Definitions}\label{sec:general_definitions}
 \begin{definition}{Positive Semidefinite}
@@ -45,7 +44,7 @@ This chapter provides essential background information and definitions that form
 	A polyhedral region is a geometric object in three-dimensional space that is defined as the intersection of a finite number of half-spaces. 
 	Formally, a polyhedral region $P$ in three-dimensional space can be expressed as:
 	\[ P = \{ \mathbf{x} \in \mathbb{R}^3 \mid \mathbf{a}_i \cdot \mathbf{x} \leq b_i, \quad i = 1, 2, \ldots, n \} \]
-	where $\mathbf{x}$ is a three-dimensional vector representing a point in space, $\mathbf{a}_i$ are vectors normal to the defining planes, and $b_i$ are constants determining the position of these planes. The inequalities $\mathbf{a}_i \cdot \mathbf{x} \leq b_i$ specify that the point $\mathbf{x}$ lies on or inside the half-space defined by the corresponding plane.
+	where $\mathbf{x}$ is a three-dimensional vector representing a point in space, $\mathbf{a}_i$ are vectors normal to the defining planes, and $b_i$ are constants determining the position of these planes. The inequalities $\mathbf{a}_i \cdot \mathbf{x} \leq b_i$ specify that the point $\mathbf{x}$ lies on or inside the half-space defined by the corresponding plane. $\mathbf{a}_i$ are the normal vectors to the defining planes and $b_i$ determines the position of these planes.
 \end{definition}\\
 
 \begin{definition}{Recursive feasibility}
@@ -61,8 +60,8 @@ This chapter provides essential background information and definitions that form
 
 
 
-\begin{definition}{Comparision Functions}\\
-	For $\mathbb{R}_0^+ [0,\infty)$, the following comparison functions exist
+\begin{definition}{Comparison Functions}\\
+	For $\mathbb{R}_0^+ [0,\infty)$, the following f functions exist
 	\begin{equation}
 		\mathcal{K} := \left\{
 		\begin{aligned}
@@ -80,15 +79,15 @@ This chapter provides essential background information and definitions that form
 	\begin{equation}
 		\mathcal{K}\mathcal{L}:= \left\{
 		\begin{aligned}
-			&\beta \text{ continous}\\
-			\beta :  \mathbb{R}_0^+\times\mathbb{R}_0^+ \rightarrow \mathbb{R}_0^+\Bigg|&\beta(\cdot, t) \in \mathcal{K} \quad \forall t \in  \mathbb{R}_0^+\\
-			&\beta(r,\cdot) \text{ is strictly decreasing to 0 }\forall r\in  \mathbb{R}_0^+ 
+			&\beta \text{ continuous}\\
+			\beta : \mathbb{R}_0^+\times\mathbb{R}_0^+ \rightarrow \mathbb{R}_0^+\Bigg|&\beta(\cdot, t) \in \mathcal{K} \quad \forall t \in \mathbb{R}_0^+\\
+			&\beta(r,\cdot) \text{ is strictly decreasing to 0 }\forall r\in \mathbb{R}_0^+ 
 		\end{aligned}
 		\right\}
 	\end{equation}\\
 \end{definition}
 
-\begin{definition}{Lyapunov Function}\\
+\begin{definition}{Lyapunov Function - Alternative Definition}\\
 	Let $Y \subseteq X$ be a forward invariant set and $x^* \in X$. A function $V : Y \rightarrow \mathbb{R}^+$ is called a Lyapunov function for $x^+ = g(x)$ if the following two conditions hold for all $x \in Y$:
 	
 	\begin{enumerate}
@@ -123,7 +122,7 @@ This chapter provides essential background information and definitions that form
 
 \section{Model Predictive Control}\label{sec:mpc_theory}
 
-Model Predictive Control (MPC) is an advanced control strategy used for dynamic systems. In the case of a linear time-invariant system, the mathematical description of MPC involves optimizing a cost function over a finite prediction horizon while subject to system dynamics and constraints. \\
+Model Predictive Control (MPC) is an advanced control strategy used for dynamic systems. In the case of a linear time-invariant system, the mathematical description of MPC involves optimizing a cost function over a finite prediction horizon while subject to linearsystem dynamics and constraints. \\
 For the purpose of this work, we will only consider the linear case of the MPC. For more details, please refer to \cite{rawlings2020model}. \\
 Consider a linear system described by the following state-space equations:
 \begin{align}
@@ -137,8 +136,12 @@ where:
 	\item $y_k$ is the output at time $k$
 	\item $A$, $B$, and $C$ are matrices that define the system dynamics.
 \end{itemize}
-The objective is to minimize a cost function $J$ over a finite prediction horizon $N$. The cost function is typically defined as the sum of a quadratic performance index over the prediction horizon. \\
-The choice of cost function is critical and highly depends on the final objective. For example, in case the objective is to track a reference signal, a typical cost function assumes the form described in \equaref{eq:cost_f_1}. 
+The objective is to minimize a cost function $J$ over a finite prediction horizon $N$. This cost function usually assumes the following form.
+\begin{equation}
+	J(x) = \text{\textbf{min} } J_f(x(N)) + \sum_{k =0}^{N-1}I(x(k))
+\end{equation}
+where $J_f(x(N))$ and $I(x(k))$ are referred to as final and stage cost respectively. Usually, 
+these are defined as the sum of a quadratic performance index over the prediction horizon, but, more generally, the choice is criticaly and highly depends on the final objective and on the system considered. For example, in case the objective is to track a reference signal, a typical cost function assumes the form described in \equaref{eq:cost_f_1}. 
 \begin{equation}
 	J = \sum_{i=0}^{N-1} \left[ (y_{k+i} - r_{k+i})^T Q (y_{k+i} - r_{k+i}) + u_{k+i}^T R u_{k+i} \right] 
 	\label{eq:cost_f_1}
@@ -146,29 +149,30 @@ The choice of cost function is critical and highly depends on the final objectiv
 where
 \begin{itemize}
 	\item $r_{k+i}$ is the reference trajectory at time $k+i$
-	\item  $Q \succeq 0$ is the weighting matrix for the state error
+	\item $y_{k+i}$ is the system's output at time $k+i$
+	\item $Q \succeq 0$ is the weighting matrix for the state error
 	\item $R \succ 0$ is the weighting matrix for the control input
 \end{itemize}
-Alternatively, another typical cost function has the followin form, 
+Alternatively, another typical cost function has the following form, 
 
 \begin{equation}
-	J = x^T_{N}Px_{N} + \sum_{i=0}^{N-1} x^T_{i}Qx_{i} + u^T_{i}Ru_{i}
+	J = \underset{J_f(x_N)}{\underbrace{ x^T_{N}Px_{N}}} + \sum_{k=0}^{N-1} \underset{I(x(k),u(k))}{\underbrace{ x^T_{k}Qx_{k} + u^T_{k}Ru_{k}}}
 	\label{eq:cost_f_2}
 \end{equation} 
 where
 \begin{itemize}
-	\item $x_i$ is the state vector at time $i$
-	\item $u_i$ is the control variable at time $i$
-	\item  $Q \succeq 0$ is the weighting matrix for the state error
-	\item  $P \succeq 0$ is the weighting matrix indicating the terminal cost
+	\item $x_k$ is the state vector at time $k$
+	\item $u_k$ is the control variable at time $k$
+	\item $Q \succeq 0$ is the weighting matrix for the state error
+	\item $P \succeq 0$ is the weighting matrix indicating the terminal cost
 	\item $R \succ 0$ is the weighting matrix for the control input.
 \end{itemize}
-
-In \equaref{eq:cost_f_2}, the term $x^T_{N}Px_{N}$ is used to mitigate the fact that the MPC is minimizing over a limted time-horizon by ensuring that the system converges to a desired state by the end of the prediction horizon. While the infinite horizon formulation, i.e. $N = \infty$ and $P=0$, possesses nice properties, such as its robustness and the perfect tradeoff between short- and long-term benefits of actions, it can not be computed in practice. Intuitively, since MPC is dealing with optimization problems under constraints, an infinite horizon will bring to having an infinte amount of variables. This is therefore the motivation behind why the horizon is usually shortened to $N$ steps and the terminal cost is introduced. \\
-The Linear MPC problem, therefore, is formulated as follows. \\
+Note that in this particular case the stage cost depends on both the control input and the current state. \\
+In \equaref{eq:cost_f_2}, the term $x^T_{N}Px_{N}$ is used to mitigate the fact that the MPC is minimizing over a limited time horizon by ensuring that the system converges to a desired state by the end of the prediction horizon. While the infinite horizon formulation, i.e., $N = \infty$ and $P=0$, possesses desirable properties, such as robustness and the perfect tradeoff between short- and long-term benefits of actions, it can not be computed in practice. Intuitively, since MPC deals with optimization problems under constraints, an infinite horizon would involve an infinite amount of variables. Hence, the horizon is typically truncated to $N$ steps, and a terminal cost is introduced to ensure convergence to a desired state within this finite horizon. \\
+The Linear MPC problem can be formulated as follows. \\
 \begin{equation}
 	\begin{aligned}
-		J^* = \text{\textbf{min} }&x^T_{N}Px_{N} + \sum_{i=0}^{N-1} x^T_{i}Qx_{i} + u^T_{i}Ru_{i}\\
+		J^* = \text{\textbf{min} }& J_f(x(N)) + \sum_{k =0}^{N-1}I(x(k))\\%\text{\textbf{min} }&x^T_{N}Px_{N} + \sum_{i=0}^{N-1} x^T_{i}Qx_{i} + u^T_{i}Ru_{i}\\
 		\text{\textbf{s.t.}	}&x_{k+i+1} = Ax_{k+i} + Bu_{k+i} \quad \text{for } i = 0, 1, \ldots, N-1 \\
 		 &x_{k+i} \in \mathcal{X}, u_{k+i} \in \mathcal{U} \quad \text{for } i = 0, 1, \ldots, N-1\\
 		 &x_{k+N} \in \mathcal{X}_f\\
@@ -181,36 +185,36 @@ where $J^*$ is the global minimum of $J$ and $\mathcal{X}, \mathcal{X}_f,\mathca
 	x_{\text{min}|f} &\leq x_{k+i} \leq x_{\text{max}|f} \quad \text{for } i = 0, 1, \ldots, N \\
 	u_{\text{min}} &\leq u_{k+i} \leq u_{\text{max}} \quad \text{for } i = 0, 1, \ldots, N-1 
 \end{align*}
-Furthermore, the optimization problem is subject to system dynamics:
-\begin{align*}
-	x_{k+i+1} &= Ax_{k+i} + Bu_{k+i} \quad \text{for } i = 0, 1, \ldots, N-1 \\
-\end{align*}
+%Furthermore, the optimization problem is subject to system dynamics:
+%\begin{align*}
+%	x_{k+i+1} &= Ax_{k+i} + Bu_{k+i} \quad \text{for } i = 0, 1, \ldots, N-1 \\
+%\end{align*}
 
-The solution to this optimization problem provides the optimal control sequence $u_k^*, u_{k+1}^*, \ldots, u_{k+N-1}^*$. The first element of this sequence, $u_k^*$, is then applied to the system, and the optimization problem is solved again at the next time step.
+The solution to this optimization problem provides the optimal control sequence $u_k^*, u_{k+1}^*, \ldots, u_{k+N-1}^*$. Only the first element of this sequence, $u_k^*$, is then applied to the system, and the optimization problem is solved again at the next time step.
 \subsection{Stability of MPC systems}\label{sec:stable_mpc_systems}
-While there exist multiple ways to prove stability of MPC systems, this section will only focus on the one which is mostly relevant for this work, namely proving stability by leveraging the characteristics of the terminal set. More specifically, by defining $\mathcal{X}_f$ as convex set which includes the origin ($x(N) = 0$), one can prove stability by insuring certain properties to be satisfied. These properties assume the cost function to have the following form. 
+While there exist multiple ways to prove asymptotic stability of MPC systems, this section will only focus on the one which is mostly relevant for this work, namely proving stability by leveraging the characteristics of the terminal set. More specifically, by defining $\mathcal{X}_f$ as convex set which includes the origin ($x(N) = 0$), one can prove stability by ensuring certain properties to be satisfied. These properties assume the cost function to have the following form. 
 \begin{equation}
-	J(x) = min_{x, u} V_f(X(N)) + \sum_{t =0}^{N-1}I(x(t), u(t))
+	J(x) = \text{\textbf{min} } J_f(x(N)) + \sum_{k =0}^{N-1}I(x(k))
 \end{equation}
-where $I(x(t), u(t))$ is the stage cost and $V_f(X(N))$ is the terminal cost. \\
+where $I(x(k))$ is the stage cost and $J_f(x(N))$ is the terminal cost. \\
 Accordingly, these are the properties to satisfy.
 \begin{enumerate}
 	\item The stage cost must be strictly positive and zero at the origin.
 	\item The terminal set is invariant under the local control law $\kappa_f(x)$. Namely 
 	\begin{equation}
-		x(t+1) = Ax + B\kappa_f(x)\in\mathcal{X}_f \quad \forall x\in \mathcal{X}_f
+		x(k+1) = Ax + B\kappa_f(x(k))\in\mathcal{X}_f \quad \forall x(k)\in \mathcal{X}_f
 	\end{equation}
-	given that $X_f \subseteq X$ and $\kappa_f(x) \in \mathcal{U}$
+	given that $X_f \subseteq X$ and $\kappa_f(x(k)) \in \mathcal{U}$
 	 
 	\item Establish stability by illustrating that the terminal cost function serves as a Lyapunov function in $\mathcal{X}_f$. 
 	\begin{equation}
-		V_f(x(t+1)) - V_f(x) \leq -I(x, \kappa_f)\quad \forall x \in \mathcal{X}_f
+		J_f(x(k+1)) - J_f(x(k)) \leq -I(x(k))\quad \forall x(k) \in \mathcal{X}_f
 	\end{equation}
 \end{enumerate}
 
 
-\section{Graph Transformation Theory}
-Graph Transformation Theory (GTT),or graph rewriting, is a mathematical framework used to model and analyze the transformation of graphs. Graphs in this context represent structures composed of nodes and edges, and the transformations involve changing the structure of these graphs.\\
+\section{Graph Transformation Theory}\label{sec:graph_transformation_theory}
+Graph Transformation Theory (GTT), or graph rewriting, is a mathematical framework used to model and analyze the transformation of graphs. Graphs in this context represent structures composed of nodes and edges, and the transformations involve changing the structure of these graphs.\\
 This section focuses on the fundamentals of this discipline and for more information, the reader is invited to consult the following resources: \cite{HECKEL2006187}, \cite{handbook_of_gg}, \cite{essential_on_graph_theory}, \cite{2123-19534} and \cite{gtt_se}. The notions for this section have been collected while studying the aforenamed resources. \\
 In order to introduce GTT, some concepts of category theory are necessary. \\
 
@@ -220,7 +224,7 @@ A category $\mathcal{C}$ consists of the following data:
 	\item Objects : A group of mathematical objects, denoted as $\text{Obj}(\mathcal{C})$
 	\item Morphisms (Arrows/Maps): For every pair of objects $A$ and $B$, there is a set of morphisms denoted as $\text{Hom}_{\mathcal{C}}(A, B)$. If $f \in \text{Hom}_{\mathcal{C}}(A, B)$, we write $f: A \to B$. Morphisms must satisfy two properties:
 	\begin{itemize}
-		\item  Associativity: For every triple of objects $A, B, C$ and morphisms $f: A \to B$, $g: B \to C$, and $h: C \to D$, the composition $(h \circ g) \circ f$ is the same as $h \circ (g \circ f)$.
+		\item Associativity: For every triple of objects $A, B, C$ and morphisms $f: A \to B$, $g: B \to C$, and $h: C \to D$, the composition $(h \circ g) \circ f$ is the same as $h \circ (g \circ f)$.
 		\item Identity : For every object $A$, there exists an identity morphism $1_A: A \to A$ such that $f \circ 1_A = f$ and $1_B \circ f = f$ for any morphism $f: A \to B$.
 	\end{itemize}
 	\item Composition: For each pair of morphisms $f: A \to B$ and $g: B \to C$, there exists a composite morphism $g \circ f: A \to C$ in $\text{Hom}_{\mathcal{C}}(A, C)$. Composition must be associative, i.e., $(h \circ g) \circ f = h \circ (g \circ f)$.
@@ -256,7 +260,7 @@ A category $\mathcal{C}$ consists of the following data:
 			\item $\mathcal{L}$ is the set of labels associated with edges
 			\item $s, t : \mathcal{E}\rightarrow\mathcal{V}$ are the source and target functions, respectively
 		\end{itemize}
-		\item Morphisms: $f : G \rightarrow H$ must respect source and target functions, i.e.:
+		\item Morphisms: $f : G \rightarrow H$ must respect source and target functions, i.e.,:
 		\begin{align*}
 			\forall e \in \mathcal{E}.f(s(e)) &= s(f(e))\\
 			\forall e \in \mathcal{E}.f(t(e)) &= t(f(e))
@@ -324,7 +328,7 @@ In simpler terms, the pushout captures a way of amalgamating information from $B
 	In the DPO, productions have the following form:
 	\begin{center}
 		\begin{tikzcd}
-			p:L&K  \arrow[l, "l"'] \arrow[r, "r"] & R
+			p:L&K \arrow[l, "l"'] \arrow[r, "r"] & R
 		\end{tikzcd}
 	\end{center}
 	where:
@@ -337,12 +341,12 @@ In simpler terms, the pushout captures a way of amalgamating information from $B
 	\end{itemize}
 
 	The morphisms are usually injective, indicating that each element in the interface graph $K$ has a unique counterpart in $L$ and $R$, respectively.
-	The overall interpretation of $p: L \leftarrow K \rightarrow R$ is that when the left-hand side $L$ and its context $K$ are found in a larger graph, they can be replaced by the right-hand side $R$ according to the specified morphisms $l$ and $r$.  \\
+	The overall interpretation of $p: L \leftarrow K \rightarrow R$ is that when the left-hand side $L$ and its context $K$ are found in a larger graph, they can be replaced by the right-hand side $R$ according to the specified morphisms $l$ and $r$. \\
 	This production is applied as follows.
 	\begin{center}
 		\begin{tikzcd}
-			L\arrow[d, "m"]&K  \arrow[l, "l"'] \arrow[r, "r"] \arrow[d, "d"] & R\arrow[d, "m'"] \\
-			G&D  \arrow[l, "l'"'] \arrow[r, "r'"] & H
+			L\arrow[d, "m"]&K \arrow[l, "l"'] \arrow[r, "r"] \arrow[d, "d"] & R\arrow[d, "m'"] \\
+			G&D \arrow[l, "l'"'] \arrow[r, "r'"] & H
 		\end{tikzcd}
 	\end{center}
 	
@@ -381,8 +385,8 @@ In simpler terms, the pushout captures a way of amalgamating information from $B
 	
 	\begin{align*}
 		\text{Initial Graph:} & \quad G = \{A \rightarrow B \rightarrow C \rightarrow D\} \\
-		\text{Production Rule:} & \quad p:  \underset{L}{\underbrace{A \rightarrow B \rightarrow C}}\rightarrow\underset{K}{\underbrace{A \rightarrow B \rightarrow C}} \rightarrow \underset{R}{\underbrace{X}} \\
-		\text{Resulting Graph:} & \quad H =  \{X \rightarrow D\}
+		\text{Production Rule:} & \quad p: \underset{L}{\underbrace{A \rightarrow B \rightarrow C}}\rightarrow\underset{K}{\underbrace{A \rightarrow B \rightarrow C}} \rightarrow \underset{R}{\underbrace{X}} \\
+		\text{Resulting Graph:} & \quad H = \{X \rightarrow D\}
 	\end{align*}
 	After applying the production rule, the chain $A \rightarrow B \rightarrow C$ has been replaced by a single node $X$, resulting in the transformed graph $H$. 
 \end{example}\\

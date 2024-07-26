@@ -1,58 +1,58 @@
 This is BibTeX, Version 0.99d (TeX Live 2023)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
-The style file: plain.bst
+The style file: ieeetr.bst
 Database file #1: src/bib.bib
 Warning--entry type for "dlr-nemo-bili" isn't style-file defined
 --line 414 of file src/bib.bib
+Warning--empty journal in handbook_of_gg
+Warning--empty note in 2123-19534
+Warning--empty journal in gtt_se
+Warning--can't use both author and editor fields in doi:10.1137/1.9780898718515
+Warning--empty booktitle in Salaza2019Cong
 Warning--empty booktitle in beck2002VRPGTS
 Warning--empty booktitle in Lara2005ModellingAA
 Warning--empty publisher in inbook_twvrp
-Warning--empty note in 2123-19534
-Warning--empty journal in gtt_se
-Warning--empty journal in handbook_of_gg
-Warning--empty booktitle in Salaza2019Cong
-Warning--can't use both author and editor fields in doi:10.1137/1.9780898718515
 Warning--empty booktitle in voronoi_part
-You've used 66 entries,
-            2118 wiz_defined-function locations,
-            882 strings with 16085 characters,
-and the built_in function-call counts, 22820 in all, are:
-= -- 2215
-> -- 1123
-< -- 14
-+ -- 452
-- -- 376
-* -- 1568
-:= -- 3776
-add.period$ -- 203
-call.type$ -- 66
-change.case$ -- 383
+You've used 67 entries,
+            1876 wiz_defined-function locations,
+            868 strings with 15748 characters,
+and the built_in function-call counts, 18216 in all, are:
+= -- 1811
+> -- 689
+< -- 0
++ -- 257
+- -- 190
+* -- 1236
+:= -- 2523
+add.period$ -- 80
+call.type$ -- 67
+change.case$ -- 65
 chr.to.int$ -- 0
-cite$ -- 75
-duplicate$ -- 837
-empty$ -- 1742
-format.name$ -- 376
-if$ -- 4800
+cite$ -- 76
+duplicate$ -- 946
+empty$ -- 1725
+format.name$ -- 190
+if$ -- 4517
 int.to.chr$ -- 0
-int.to.str$ -- 66
-missing$ -- 57
-newline$ -- 338
-num.names$ -- 132
-pop$ -- 394
+int.to.str$ -- 67
+missing$ -- 58
+newline$ -- 217
+num.names$ -- 67
+pop$ -- 231
 preamble$ -- 1
-purify$ -- 319
+purify$ -- 0
 quote$ -- 0
-skip$ -- 644
+skip$ -- 690
 stack$ -- 0
-substring$ -- 1400
-swap$ -- 197
-text.length$ -- 14
+substring$ -- 1214
+swap$ -- 410
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 256
+type$ -- 0
 warning$ -- 9
-while$ -- 202
-width$ -- 68
-write$ -- 717
+while$ -- 164
+width$ -- 69
+write$ -- 647
 (There were 10 warnings)

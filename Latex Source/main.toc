@@ -6,46 +6,46 @@
 \contentsline {section}{\numberline {2.2}Model Predictive Control}{6}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Stability of MPC systems}{8}{subsection.2.2.1}%
 \contentsline {section}{\numberline {2.3}Graph Transformation Theory}{8}{section.2.3}%
-\contentsline {chapter}{\numberline {3}Literature Review}{14}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Fleet and Transportation Network}{14}{section.3.1}%
-\contentsline {section}{\numberline {3.2}ATS Challanges}{15}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Applications of Graph Transformation Systems }{18}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Modeling and Managing ATSs - The CATSM Problem}{20}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Time-Invariant Vehicle-centric Model of ATSs}{20}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Model Evalutation}{25}{subsection.4.1.1}%
-\contentsline {section}{\numberline {4.2}Analysing ATS challenges}{27}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Dispatching}{27}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Routing}{29}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Rebalancing}{34}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}The Complete ATS Management Problem Formulation}{37}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Use Case Analysis}{39}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Rebalancing-Free ATS Analysis}{41}{subsection.4.4.1}%
+\contentsline {chapter}{\numberline {3}Literature Review}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Fleet and Transportation Network}{15}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}ATS Challanges}{16}{subsection.3.1.1}%
+\contentsline {section}{\numberline {3.2}Applications of Graph Transformation Systems }{20}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Modeling and Managing ATSs - The CATSM Problem}{21}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Time-Invariant Vehicle-centric Model of ATSs}{21}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Model Evalutation}{26}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Analysing ATS challenges}{28}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Dispatching}{28}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Routing}{30}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Rebalancing}{35}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}The Complete ATS Management Problem Formulation}{38}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Use Case Analysis}{40}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Rebalancing-Free ATS Analysis}{42}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}Rebalancing-Integrated System Analysis}{46}{subsection.4.4.2}%
-\contentsline {section}{\numberline {4.5}Conclusion}{47}{section.4.5}%
-\contentsline {chapter}{\numberline {5}Modeling and Controlling ATSs - The MPC for ATS and the RCS}{49}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Linear Discrete-Time Model of an ATS}{49}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Objectives}{54}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Model Evaluation}{55}{subsection.5.1.2}%
-\contentsline {section}{\numberline {5.2}Problem Formulation}{56}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Controller Stability}{59}{subsection.5.2.1}%
-\contentsline {section}{\numberline {5.3}Reduced Connectivity Schema }{63}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Use Case Analysis}{65}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Conclusion}{70}{section.5.5}%
-\contentsline {chapter}{\numberline {6}Summary and Outlook}{71}{chapter.6}%
-\contentsline {chapter}{\numberline {A}Additional Information on Rebalancing-Free Simulation}{1}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Additional Information on the Simulation with Rebalancing}{4}{appendix.B}%
-\contentsline {chapter}{\numberline {C}Additional Information on the MPC for ATS}{6}{appendix.C}%
-\contentsline {section}{\numberline {C.1}Propagation and Definition of the variables in $\mathcal {X}$}{6}{section.C.1}%
-\contentsline {subsection}{\numberline {C.1.1}Propagation of $g^a_{ji}$}{6}{subsection.C.1.1}%
-\contentsline {subsection}{\numberline {C.1.2}Definition of $p^a_{ji}$}{6}{subsection.C.1.2}%
-\contentsline {subsection}{\numberline {C.1.3}Constraints on $w$ and $v$}{7}{subsection.C.1.3}%
-\contentsline {section}{\numberline {C.2}Further Proof of Stability}{7}{section.C.2}%
-\contentsline {subsection}{\numberline {C.2.1}Proof that $J(x)_t $ is a Lyapunov Function}{7}{subsection.C.2.1}%
-\contentsline {subsection}{\numberline {C.2.2}Feasibility of $\mathcal {X}^t$ and $\mathcal {X}^t_f$ }{9}{subsection.C.2.2}%
-\contentsline {subsubsection}{\numberline {C.2.2.1}Feasibility of $\mathcal {X}^t$}{9}{subsubsection.C.2.2.1}%
-\contentsline {subsubsection}{\numberline {C.2.2.2}Feasibility of $\mathcal {X}^t_f$}{10}{subsubsection.C.2.2.2}%
-\contentsline {chapter}{\numberline {D}Additional Information on the MPC Use Case }{12}{appendix.D}%
-\contentsline {section}{\numberline {D.1}Statistics on Taxis in NYC}{12}{section.D.1}%
-\contentsline {subsection}{\numberline {D.1.1}Passengers per Hour}{12}{subsection.D.1.1}%
-\contentsline {subsection}{\numberline {D.1.2}Average Passengers Carry in NYC}{13}{subsection.D.1.2}%
-\contentsline {section}{\numberline {D.2}RCS Evolution}{13}{section.D.2}%
+\contentsline {section}{\numberline {4.5}Conclusion}{48}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Modeling and Controlling ATSs - The MPC for ATS and the RCS}{51}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Linear Discrete-Time Model of an ATS}{51}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Objectives}{56}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Model Evaluation}{57}{subsection.5.1.2}%
+\contentsline {section}{\numberline {5.2}Problem Formulation}{58}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Controller Stability}{61}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}Reduced Connectivity Schema }{65}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Use Case Analysis}{67}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Conclusion}{72}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Summary and Outlook}{73}{chapter.6}%
+\contentsline {chapter}{\numberline {A}Additional Information on Rebalancing-Free Simulation}{A1}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Additional Information on the Simulation with Rebalancing}{B4}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Additional Information on the MPC for ATS}{C6}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Propagation and Definition of the variables in $\mathcal {X}$}{C6}{section.C.1}%
+\contentsline {subsection}{\numberline {C.1.1}Propagation of $g^a_{ji}$}{C6}{subsection.C.1.1}%
+\contentsline {subsection}{\numberline {C.1.2}Definition of $p^a_{ji}$}{C6}{subsection.C.1.2}%
+\contentsline {subsection}{\numberline {C.1.3}Constraints on $w$ and $v$}{C7}{subsection.C.1.3}%
+\contentsline {section}{\numberline {C.2}Further Proof of Stability}{C7}{section.C.2}%
+\contentsline {subsection}{\numberline {C.2.1}Proof that $J(x)_t $ is a Lyapunov Function}{C7}{subsection.C.2.1}%
+\contentsline {subsection}{\numberline {C.2.2}Feasibility of $\mathcal {X}^t$ and $\mathcal {X}^t_f$ }{C9}{subsection.C.2.2}%
+\contentsline {subsubsection}{\numberline {C.2.2.1}Feasibility of $\mathcal {X}^t$}{C9}{subsubsection.C.2.2.1}%
+\contentsline {subsubsection}{\numberline {C.2.2.2}Feasibility of $\mathcal {X}^t_f$}{C10}{subsubsection.C.2.2.2}%
+\contentsline {chapter}{\numberline {D}Additional Information on the MPC Use Case }{D12}{appendix.D}%
+\contentsline {section}{\numberline {D.1}Statistics on Taxis in NYC}{D12}{section.D.1}%
+\contentsline {subsection}{\numberline {D.1.1}Passengers per Hour}{D12}{subsection.D.1.1}%
+\contentsline {subsection}{\numberline {D.1.2}Average Passengers Carry in NYC}{D13}{subsection.D.1.2}%
+\contentsline {section}{\numberline {D.2}RCS Evolution}{D13}{section.D.2}%

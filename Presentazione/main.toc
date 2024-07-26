@@ -1,4 +1,4 @@
 \beamer@sectionintoc {1}{Why Autonomous Transportation Systems?}{2}{0}{1}
-\beamer@sectionintoc {2}{Addressing Key Challenges of ATS}{6}{0}{2}
-\beamer@sectionintoc {3}{Modeling and Managing ATSs - The CATSM Problem}{11}{0}{3}
-\beamer@sectionintoc {4}{Modeling and Controlling ATSs - The MPC for ATS and the RCS}{22}{0}{4}
+\beamer@sectionintoc {2}{Addressing Key Challenges of ATS}{5}{0}{2}
+\beamer@sectionintoc {3}{Modeling and Managing ATSs - The CATSM Problem}{9}{0}{3}
+\beamer@sectionintoc {4}{Modeling and Controlling ATSs - The MPC for ATS and the RCS}{16}{0}{4}

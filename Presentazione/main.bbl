@@ -1,13 +1,30 @@
 \begin{thebibliography}{1}
 
+\bibitem{schrank2012}
+D.~Schrank, B.~Eisele, and T.~Lomax, ``Texas transportation institute 2012
+  urban mobility report,'' tech. rep., Texas Transportation Institute, Texas
+  A\&M University, College Station, TX, 2012.
+
 \bibitem{eea2023}
 {European Environment Agency}, ``Greenhouse gases eu.''
   \url{https://www.eea.europa.eu/data-and-maps/data/data-viewers/greenhouse-gases-viewer}.
 \newblock Accessed: 27.11.2023.
 
-\bibitem{schrank2012}
-D.~Schrank, B.~Eisele, and T.~Lomax, ``Texas transportation institute 2012
-  urban mobility report,'' tech. rep., Texas Transportation Institute, Texas
-  A\&M University, College Station, TX, 2012.
+\bibitem{tomaino2020maas}
+G.~Tomaino, J.~Teow, Z.~Carmon, and et~al., ``Mobility as a service (maas): the
+  importance of transportation psychology,'' {\em Marketing Letters}, vol.~31,
+  pp.~419--428, 2020.
+
+\bibitem{amod_review}
+G.~Zardini, N.~Lanzetti, M.~Pavone, and E.~Frazzoli, ``Analysis and control of
+  autonomous mobility-on-demand systems,'' {\em Annual Review of Control,
+  Robotics, and Autonomous Systems}, vol.~5, no.~1, pp.~633--658, 2022.
+
+\bibitem{zhang2016}
+R.~Zhang, {\em MODELS AND LARGE-SCALE COORDINATION ALGORITHMS FOR AUTONOMOUS
+  MOBILITY-ON-DEMAND}.
+\newblock Ph.d. thesis, Stanford University, Department of Aeronautics and
+  Astronautics, 2016.
+\newblock Submitted to the Department of Aeronautics and Astronautics.
 
 \end{thebibliography}
